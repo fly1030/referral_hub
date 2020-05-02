@@ -4,18 +4,25 @@
   "description": "referral hub with next.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "next"
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
   },
   "author": "Fang Li",
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^4.9.12",
+    "antd": "^4.2.0",
     "dotenv": "^8.2.0",
     "firebase": "^7.14.2",
     "next": "^9.3.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/node": "^13.13.4",
+    "@types/react": "^16.9.34",
+    "prettier": "^2.0.5",
+    "typescript": "^3.8.3"
+  }
 }
