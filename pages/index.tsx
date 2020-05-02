@@ -5,7 +5,7 @@ function Index() {
 	return (
 		<>
 			<MainHead title="Yes Onward" />
-			<Empty />
+			<Empty description="hello" />
 		</>
 	)
 }
