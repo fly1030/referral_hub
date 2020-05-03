@@ -1,11 +1,11 @@
 import MainHead from 'components/MainHead'
-import { Divider, Card } from 'antd'
-import { AlertOutlined, CheckOutlined } from '@ant-design/icons'
+import { Divider } from 'antd'
 
 import { loadDB } from '../lib/db.js'
 import { GetServerSideProps } from 'next'
-import { ReactNode, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { User } from 'firebase'
+import EntryButtonSection from './components/EntryButtonSection'
 
 const style = {
 	entryButtonCont: {
@@ -35,17 +35,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	return { props: { data } }
 }
 
-function EntryButton(props: { title: string; subtitle: ReactNode; href: string }) {
-	return (
-		<a className="flex flex-column items-center p1" href={props.href}>
-			<Card hoverable style={style.entryButton}>
-				<h2 className="center nowrap">{props.title}</h2>
-			</Card>
-			<h3 className="mt1 center">{props.subtitle}</h3>
-		</a>
-	)
-}
-
 const Index = (props: { [key: string]: Array<any> }) => {
 	const [user, setUser] = useState<User | null>(null);
 
@@ -58,49 +47,13 @@ const Index = (props: { [key: string]: Array<any> }) => {
 				setUser(null);
 			}
 		});
+		console.log('user changed 1111: ', user);
 	}, []);
 
-	/*
-	if (user == null) {
-		console.log('user: ', user);
-		const firebase = loadDB();
-		const provider = new firebase.auth.GoogleAuthProvider();
-		firebase.auth().signInWithPopup(provider).then(
-			result => {
-				const user = result.user;
-				setUser(user);
-			}
-		)
-	}
-	*/
-	
-	const { data } = props
 	return (
 		<>
 			<MainHead title="Yes Onward" />
-			<div className="flex justify-center">
-				<div style={style.entryButtonCont} className="flex flex-row justify-center mt4">
-					<EntryButton
-						title="I can refer people"
-						subtitle={
-							<span>
-								Refer people without exposing your personal info <CheckOutlined className="h2" style={{ color: '#7cb305' }} />.
-							</span>
-						}
-						href="/login"
-					/>
-					<Divider type="vertical" style={{ height: '100%' }} />
-					<EntryButton
-						title="I want to be referred"
-						subtitle={
-							<span>
-								Get updates as the referral process progresses <AlertOutlined className="h2" style={{ color: '#f5222d' }} />.
-							</span>
-						}
-						href="/login"
-					/>
-				</div>
-			</div>
+			<EntryButtonSection user={user}/>
 			<Divider orientation="center">
 				<h3 className="center">Get inside contacts to:</h3>
 			</Divider>
