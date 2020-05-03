@@ -8,8 +8,22 @@ import { ReactNode, useState, useEffect } from 'react'
 import { User } from 'firebase'
 
 const style = {
-	entryButton: { border: '2px solid lightblue', borderRadius: 10 },
+	entryButtonCont: {
+		maxWidth: 1024,
+	},
+	entryButton: { border: '2px solid lightblue', borderRadius: 10, maxWidth: 300 },
+	companyLogos: {
+		display: 'flex',
+		width: '100%',
+	},
+	logo: {
+		width: 'auto',
+		height: 32,
+		// objectFit: 'cover' as const,
+	},
 }
+
+const Companies = ['fb', 'uber', 'twitter', 'microsoft', 'linkedin', 'apple', 'doordash', 'airbnb', 'google', 'netflix']
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const firebase = loadDB()
@@ -23,11 +37,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 function EntryButton(props: { title: string; subtitle: ReactNode; href: string }) {
 	return (
-		<a className="entryButton mr4" href={props.href}>
+		<a className="flex flex-column items-center p1" href={props.href}>
 			<Card hoverable style={style.entryButton}>
-				<h2 className="center">{props.title}</h2>
+				<h2 className="center nowrap">{props.title}</h2>
 			</Card>
-			<h3 className="mt1">{props.subtitle}</h3>
+			<h3 className="mt1 center">{props.subtitle}</h3>
 		</a>
 	)
 }
@@ -63,38 +77,41 @@ const Index = (props: { [key: string]: Array<any> }) => {
 	const { data } = props
 	return (
 		<>
-			<style jsx>{`
-				.entryButton {
-					display: block;
-				}
-				.entryButton:hover h3 {
-					font-weight: bold;
-				}
-			`}</style>
-
 			<MainHead title="Yes Onward" />
-			<div className="flex flex-row justify-center mt4">
-				<EntryButton
-					title="I can refer people"
-					subtitle={
-						<span>
-							Refer people without exposing your personal info <CheckOutlined className="h2" style={{ color: '#7cb305' }} />.
-						</span>
-					}
-					href='./login'
-				/>
-				<EntryButton
-					title="I want to be referred"
-					subtitle={
-						<span>
-							Get updates as the referral process progresses <AlertOutlined className="h2" style={{ color: '#f5222d' }} />.
-						</span>
-					}
-					href='./login'
-				/>
+			<div className="flex justify-center">
+				<div style={style.entryButtonCont} className="flex flex-row justify-center mt4">
+					<EntryButton
+						title="I can refer people"
+						subtitle={
+							<span>
+								Refer people without exposing your personal info <CheckOutlined className="h2" style={{ color: '#7cb305' }} />.
+							</span>
+						}
+						href="/login"
+					/>
+					<Divider type="vertical" style={{ height: '100%' }} />
+					<EntryButton
+						title="I want to be referred"
+						subtitle={
+							<span>
+								Get updates as the referral process progresses <AlertOutlined className="h2" style={{ color: '#f5222d' }} />.
+							</span>
+						}
+						href="/login"
+					/>
+				</div>
 			</div>
-			<Divider />
-			<div>{data.map((user) => user.name)}</div>
+			<Divider orientation="center">
+				<h3 className="center">Get inside contacts to:</h3>
+			</Divider>
+
+			<div style={style.companyLogos} className="flex justify-center flex-wrap">
+				{Companies.map((company) => (
+					<div className="p2">
+						<img style={style.logo} src={`/img/logos/${company}.png`} />
+					</div>
+				))}
+			</div>
 		</>
 	)
 }
