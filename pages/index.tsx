@@ -60,7 +60,6 @@ const Index = (props: { [key: string]: Array<any> }) => {
 		});
 	}, []);
 
-	/*
 	if (user == null) {
 		console.log('user: ', user);
 		const firebase = loadDB();
@@ -72,7 +71,6 @@ const Index = (props: { [key: string]: Array<any> }) => {
 			}
 		)
 	}
-	*/
 	
 	const { data } = props
 	return (
