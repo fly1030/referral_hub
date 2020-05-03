@@ -18,7 +18,7 @@ const style = {
 	},
 }
 
-const ReferrerEntryButton = (
+const ReferrerEntryButton = (props: {onClick: () => void}) => (
     <EntryButton
         title="I can refer people"
         subtitle={
@@ -26,11 +26,11 @@ const ReferrerEntryButton = (
                 Refer people without exposing your personal info <CheckOutlined className="h2" style={{ color: '#7cb305' }} />.
             </span>
         }
-        onClick = {() => {}}
+        onClick = {props.onClick}
     />
 );
 
-const CandidateEntryButton = (
+const CandidateEntryButton = (props: {onClick: () => void}) => (
     <EntryButton
         title="I want to be referred"
         subtitle={
@@ -38,19 +38,19 @@ const CandidateEntryButton = (
                 Get updates as the referral process progresses <AlertOutlined className="h2" style={{ color: '#f5222d' }} />.
             </span>
         }
-        onClick = {() => {}}
+        onClick = {props.onClick}
     />
 );
 
 
-function EntryButtonSection(props: {user: User | null}) {           
-    const {user} = props;
+function EntryButtonSection(props: {user: User | null, onLeftClick: () => void, onRightClick: () => void}) {           
+    const {user, onLeftClick, onRightClick} = props;
     return (
         <div className="flex justify-center">
             <div style={style.entryButtonCont} className="flex flex-row justify-center mt4">
-                {ReferrerEntryButton}
+                <ReferrerEntryButton onClick={onLeftClick} />
                 <Divider type="vertical" style={{ height: '100%' }} />
-                {CandidateEntryButton}
+                <CandidateEntryButton onClick={onRightClick} />
             </div>
         </div>
     );

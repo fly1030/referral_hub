@@ -12,7 +12,7 @@ const style = {
 function EntryButton(props: { title: string; subtitle: ReactNode; onClick: () => void }) {
 	props.onClick();
 	return (
-		<div className="flex flex-column items-center p1">
+		<div className="flex flex-column items-center p1" onClick={props.onClick}>
 			<Card hoverable style={style.entryButton}>
 				<h2 className="center nowrap">{props.title}</h2>
 			</Card>

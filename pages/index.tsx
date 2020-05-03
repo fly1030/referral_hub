@@ -6,6 +6,7 @@ import { GetServerSideProps } from 'next'
 import { useState, useEffect } from 'react'
 import { User } from 'firebase'
 import EntryButtonSection from './components/EntryButtonSection'
+import LoginModal from './components/LoginModal'
 
 const style = {
 	entryButtonCont: {
@@ -37,6 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const Index = (props: { [key: string]: Array<any> }) => {
 	const [user, setUser] = useState<User | null>(null);
+	const [loginModalVisible, setLoginModalVisible] = useState(false);
 
 	useEffect(() => {
         const firebase = loadDB();
@@ -47,20 +49,33 @@ const Index = (props: { [key: string]: Array<any> }) => {
 				setUser(null);
 			}
 		});
-		console.log('user changed 1111: ', user);
 	}, []);
+
+	const onLeftClick = user == null ? () => {
+		console.log('call: ', user);
+		setLoginModalVisible(true)
+	} : () => {};
+
+	const onRightClick = user == null ? () => {
+		setLoginModalVisible(true)
+	} : () => {};
 
 	return (
 		<>
 			<MainHead title="Yes Onward" />
-			<EntryButtonSection user={user}/>
+			<LoginModal 
+				visible={loginModalVisible} 
+				onConfirm={() => {setLoginModalVisible(false)}} 
+				onCancel={() => {setLoginModalVisible(false)}}
+			/>
+			<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick}/>
 			<Divider orientation="center">
 				<h3 className="center">Get inside contacts to:</h3>
 			</Divider>
 
 			<div style={style.companyLogos} className="flex justify-center flex-wrap">
-				{Companies.map((company) => (
-					<div className="p2">
+				{Companies.map((company, index) => (
+					<div className="p2" key={index}>
 						<img style={style.logo} src={`/img/logos/${company}.png`} />
 					</div>
 				))}
