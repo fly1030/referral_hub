@@ -6,7 +6,7 @@ const style = {
 }
 
 function EntryButton(props: { title: string; subtitle: ReactNode; onClick: () => void }) {
-	props.onClick();
+	// props.onClick();
 	return (
 		<div className="flex flex-column items-center p1" onClick={props.onClick}>
 			<Card hoverable style={style.entryButton}>
