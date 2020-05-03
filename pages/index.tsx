@@ -5,8 +5,9 @@ import { loadDB } from '../lib/db.js'
 import { GetServerSideProps } from 'next'
 import { useState, useEffect } from 'react'
 import { User } from 'firebase'
-import EntryButtonSection from './components/EntryButtonSection'
-import LoginModal from './components/LoginModal'
+import EntryButtonSection from '../components/EntryButtonSection'
+import LoginModal from '../components/LoginModal'
+import PageTopBar from '../components/PageTopBar'
 
 const style = {
 	entryButtonCont: {
@@ -63,6 +64,11 @@ const Index = (props: { [key: string]: Array<any> }) => {
 	return (
 		<>
 			<MainHead title="Yes Onward" />
+			<PageTopBar 
+				isLoggedIn={user != null} 
+				onLogout={() => {}} 
+				onLoginClicked={() => setLoginModalVisible(true)}
+			/>
 			<LoginModal 
 				visible={loginModalVisible} 
 				onConfirm={() => {setLoginModalVisible(false)}} 
