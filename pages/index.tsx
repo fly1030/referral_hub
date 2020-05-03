@@ -4,7 +4,8 @@ import { AlertOutlined, CheckOutlined } from '@ant-design/icons'
 
 import { loadDB } from '../lib/db.js'
 import { GetServerSideProps } from 'next'
-import { ReactNode } from 'react'
+import { ReactNode, useState, useEffect } from 'react'
+import { User } from 'firebase'
 
 const style = {
 	entryButton: { border: '2px solid lightblue', borderRadius: 10 },
@@ -32,6 +33,33 @@ function EntryButton(props: { title: string; subtitle: ReactNode; href: string }
 }
 
 const Index = (props: { [key: string]: Array<any> }) => {
+	const [user, setUser] = useState<User | null>(null);
+
+	useEffect(() => {
+        const firebase = loadDB();
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user != null) {
+				setUser(user);
+			} else {
+				setUser(null);
+			}
+		});
+	}, []);
+
+	/*
+	if (user == null) {
+		console.log('user: ', user);
+		const firebase = loadDB();
+		const provider = new firebase.auth.GoogleAuthProvider();
+		firebase.auth().signInWithPopup(provider).then(
+			result => {
+				const user = result.user;
+				setUser(user);
+			}
+		)
+	}
+	*/
+	
 	const { data } = props
 	return (
 		<>
@@ -53,7 +81,7 @@ const Index = (props: { [key: string]: Array<any> }) => {
 							Refer people without exposing your personal info <CheckOutlined className="h2" style={{ color: '#7cb305' }} />.
 						</span>
 					}
-					href="/login"
+					href='./login'
 				/>
 				<EntryButton
 					title="I want to be referred"
@@ -62,7 +90,7 @@ const Index = (props: { [key: string]: Array<any> }) => {
 							Get updates as the referral process progresses <AlertOutlined className="h2" style={{ color: '#f5222d' }} />.
 						</span>
 					}
-					href="/login"
+					href='./login'
 				/>
 			</div>
 			<Divider />
