@@ -3,10 +3,6 @@ import { Card } from 'antd';
 
 const style = {
 	entryButton: { border: '2px solid lightblue', borderRadius: 10, maxWidth: 300 },
-	companyLogos: {
-		display: 'flex',
-		width: '100%',
-	},
 }
 
 function EntryButton(props: { title: string; subtitle: ReactNode; onClick: () => void }) {

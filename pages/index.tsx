@@ -67,6 +67,10 @@ const Index = (props: { [key: string]: Array<any> }) => {
 				visible={loginModalVisible} 
 				onConfirm={() => {setLoginModalVisible(false)}} 
 				onCancel={() => {setLoginModalVisible(false)}}
+				onLoginSuccess={(user: User) => {
+					setUser(user);
+					setLoginModalVisible(false);
+				}}
 			/>
 			<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick}/>
 			<Divider orientation="center">
