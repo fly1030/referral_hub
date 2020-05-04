@@ -40,11 +40,11 @@ function ReferralDialog(props: { company: Company | null; onClose: () => void; o
 		>
 			<Form initialValues={formData} labelAlign="left" labelCol={{ span: 4, offset: 0 }}>
 				<Form.Item label="Positions" name="positions" rules={[{ required: true, message: 'Provide your desired positions' }]}>
-					<Select mode="multiple" placeholder="Please select" defaultValue={['a10', 'c12']} onChange={() => {}} style={{ width: '100%' }}></Select>
+					<Select mode="multiple" placeholder="Please select" onChange={() => {}} style={{ width: '100%' }}></Select>
 				</Form.Item>
 				<Form.Item label="Resume" name="resume" rules={[{ required: true, message: 'Enter a link to your resume' }]}>
 					<Input.Group compact>
-						<Select placeholder="Resume" value="Resume">
+						<Select placeholder="Resume" value="Resume" dropdownClassName="no-width-override">
 							<Select.Option value="Option1-1">Previous resume 1</Select.Option>
 							<Select.Option value="Option1-2">Previous resume 2</Select.Option>
 						</Select>
