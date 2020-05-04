@@ -9,6 +9,7 @@ import EntryButtonSection from '../components/EntryButtonSection'
 import LoginModal from '../components/LoginModal'
 import PageTopBar from '../components/PageTopBar'
 import { sendTestEmail } from './api/sendTestEmail'
+import { Companies } from 'lib/companies'
 
 const style = {
 	entryButtonCont: {
@@ -27,8 +28,6 @@ const style = {
 		// objectFit: 'cover' as const,
 	},
 }
-
-const Companies = ['fb', 'uber', 'twitter', 'microsoft', 'linkedin', 'apple', 'doordash', 'airbnb', 'google', 'netflix']
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const firebase = loadDB()
@@ -111,7 +110,7 @@ const Index = (props: { [key: string]: Array<any> }) => {
 			<div style={style.companyLogos} className="flex justify-center flex-wrap">
 				{Companies.map((company, index) => (
 					<div className="p2" key={index}>
-						<img style={style.logo} src={`/img/logos/${company}.png`} />
+						<img style={style.logo} src={`/img/logos/${company.key}.png`} />
 					</div>
 				))}
 			</div>
