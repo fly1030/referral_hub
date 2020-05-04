@@ -10,3 +10,5 @@ export const Companies = [
 	{ key: 'google', name: 'Google' },
 	{ key: 'netflix', name: 'Netflix' },
 ]
+export type Companies = typeof Companies
+export type Company = Companies[number]
