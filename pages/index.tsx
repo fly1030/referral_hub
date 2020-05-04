@@ -26,13 +26,6 @@ const style = {
 		marginBottom: 20,
 		// objectFit: 'cover' as const,
 	},
-	companyCard: {
-		display: 'flex',
-		justifyContent: 'center',
-		backgroundColor: 'lightgray',
-		borderRadius: 10,
-		margin: '10px',
-	},
 }
 
 const Companies = ['fb', 'uber', 'twitter', 'microsoft', 'linkedin', 'apple', 'doordash', 'airbnb', 'google', 'netflix']
@@ -117,11 +110,9 @@ const Index = (props: { [key: string]: Array<any> }) => {
 
 			<div style={style.companyLogos} className="flex justify-center flex-wrap">
 				{Companies.map((company, index) => (
-					<Col span={6}>
-						<div style={style.companyCard} className="p2" key={index}>
-							<img style={style.logo} src={`/img/logos/${company}.png`} />
-						</div>
-					</Col>
+					<div className="p2" key={index}>
+						<img style={style.logo} src={`/img/logos/${company}.png`} />
+					</div>
 				))}
 			</div>
 		</>
