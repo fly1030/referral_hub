@@ -54,18 +54,18 @@ const Index = (props: { [key: string]: Array<any> }) => {
 		})
 	}, [])
 
+	console.log('user: ', user);
 	const onLeftClick =
 		user == null
 			? () => {
-					console.log('call: ', user)
-					setLoginModalVisible(true)
+				setLoginModalVisible(true)
 			  }
 			: () => {}
 
 	const onRightClick =
 		user == null
 			? () => {
-					setLoginModalVisible(true)
+				setLoginModalVisible(true)
 			  }
 			: () => {}
 
