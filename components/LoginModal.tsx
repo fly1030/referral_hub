@@ -12,7 +12,6 @@ function LoginModal(props: {
     onLoginSuccess: (user: User | null) => void}) {
     const [shouldShowSignup, setShouldShowSignup] = useState(false);
 
-    console.log('shouldShowSignup: ', shouldShowSignup);
     const modalContent = shouldShowSignup ? 
         <SignupForm 
             onSignupSuccess={props.onLoginSuccess}

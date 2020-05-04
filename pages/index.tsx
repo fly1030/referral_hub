@@ -10,6 +10,7 @@ import LoginModal from '../components/LoginModal'
 import PageTopBar from '../components/PageTopBar'
 import { sendTestEmail } from './api/sendTestEmail'
 import { Companies } from 'lib/companies'
+import ReferrerInfoFormModal from '../components/ReferrerInfoFormModal'
 
 const style = {
 	entryButtonCont: {
@@ -42,6 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Index = (props: { [key: string]: Array<any> }) => {
 	const [user, setUser] = useState<User | null>(null)
 	const [loginModalVisible, setLoginModalVisible] = useState(false)
+	const [referrerInfoModalVisible, setReferrerInfoModalVisible] = useState(false)
 
 	useEffect(() => {
 		const firebase = loadDB()
@@ -60,7 +62,9 @@ const Index = (props: { [key: string]: Array<any> }) => {
 			? () => {
 				setLoginModalVisible(true)
 			  }
-			: () => {}
+			: () => {
+				setReferrerInfoModalVisible(true)
+			}
 
 	const onRightClick =
 		user == null
@@ -93,6 +97,16 @@ const Index = (props: { [key: string]: Array<any> }) => {
 					setUser(user)
 					setLoginModalVisible(false)
 				}}
+			/>
+			<ReferrerInfoFormModal
+				visible={referrerInfoModalVisible}
+				onConfirm={() => {
+					setReferrerInfoModalVisible(false)
+				}}
+				onCancel={() => {
+					setReferrerInfoModalVisible(false)
+				}}
+				onLoginSuccess={(user: User) => {}}
 			/>
 			<Button
 				size="large"
