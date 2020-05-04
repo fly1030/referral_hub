@@ -1,28 +1,21 @@
 import { Form, Input, Button, Divider } from 'antd';
 import {useState, ChangeEvent} from 'react';
 import { loadDB } from '../lib/db.js'
-import { GoogleOutlined } from '@ant-design/icons';
 import { User } from 'firebase';
 
-const layout = {
-    wrapperCol: { span: 24 },
-};
 const tailLayout = {
     wrapperCol: { offset: 4, span: 24 },
 };
 
 const style = {
-  confirmButton: { border: '2px solid lightblue', borderRadius: 10, width: '100%', maxWidth: 500},
-  emailInput: {marginLeft: 28, maxWidth: 385},
+    confirmButton: { border: '2px solid lightblue', borderRadius: 10, width: '100%', maxWidth: 500},
+    emailInput: {marginLeft: 28, maxWidth: 385},
 }
 
-const Login = (props: {
-    onLoginSuccess: (user: User | null) => void
-}) => {	
+const SignupForm = (props: {onSignupSuccess: (user: User | null) => void}) => {	
     const onFinishFailed = () => {};
     const [email, setEmail] = useState<string | null>(null);
     const [password, setPassword] = useState<string | null>(null); 
-    const {onLoginSuccess} = props;
     
     return (
         <Form
@@ -31,36 +24,12 @@ const Login = (props: {
           onFinish={() => {}}
           onFinishFailed={onFinishFailed}
         >
-          <Form.Item {...layout}>
-            <Button 
-              icon={<GoogleOutlined />}
-              type="primary" 
-              style={style.confirmButton} 
-              htmlType="submit" 
-              onClick={
-                () => {
-                  const firebase = loadDB();
-                  const provider = new firebase.auth.GoogleAuthProvider();
-                  firebase.auth().signInWithPopup(provider).then(
-                    result => {
-                      const user = result.user;
-                      onLoginSuccess(user);
-                    }
-                  )
-                }
-            }>
-              Sign in with Google
-            </Button>
-          </Form.Item>
-          <Form.Item {...layout}>
-            <Divider />
-          </Form.Item>
           <Form.Item
             label="Email"
             name="email"
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
-            <Input style={style.emailInput} onChange={(event: ChangeEvent<HTMLInputElement>) => {setEmail(event.currentTarget.value)} }/>
+            <Input onChange={(event: ChangeEvent<HTMLInputElement>) => {setEmail(event.currentTarget.value)} }/>
           </Form.Item>
     
           <Form.Item
@@ -68,7 +37,7 @@ const Login = (props: {
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password onChange={(event: ChangeEvent<HTMLInputElement>) => {setPassword(event.currentTarget.value)} }/>
+            <Input.Password style={style.emailInput} onChange={(event: ChangeEvent<HTMLInputElement>) => {setPassword(event.currentTarget.value)} }/>
           </Form.Item>
     
           <Form.Item {...tailLayout}>
@@ -78,7 +47,7 @@ const Login = (props: {
                     if (email == null || password == null) {
                         return;
                     }
-                    firebase.auth().signInWithEmailAndPassword(email, password).then((u)=>{
+                    firebase.auth().createUserWithEmailAndPassword(email, password).then((u)=>{
                         window.location.href="/";
                     }).catch((error) => {
                         console.log(error);
@@ -92,4 +61,4 @@ const Login = (props: {
       );
 }
 
-export default Login
+export default SignupForm
