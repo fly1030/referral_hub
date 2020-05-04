@@ -43,7 +43,14 @@ function ReferralDialog(props: { company: Company | null; onClose: () => void; o
 					<Select mode="multiple" placeholder="Please select" defaultValue={['a10', 'c12']} onChange={() => {}} style={{ width: '100%' }}></Select>
 				</Form.Item>
 				<Form.Item label="Resume" name="resume" rules={[{ required: true, message: 'Enter a link to your resume' }]}>
-					<Input />
+					<Input.Group compact>
+						<Select placeholder="Resume" value="Resume">
+							<Select.Option value="Option1-1">Previous resume 1</Select.Option>
+							<Select.Option value="Option1-2">Previous resume 2</Select.Option>
+						</Select>
+
+						<Input style={{ width: 300 }} placeholder="resume link.." />
+					</Input.Group>
 				</Form.Item>
 			</Form>
 		</Modal>
