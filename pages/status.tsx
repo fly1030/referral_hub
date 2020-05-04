@@ -2,6 +2,7 @@ import { List, Button, Modal, Form, Select, Input } from 'antd'
 import { Companies, Company } from 'lib/companies'
 import MainHead from 'components/MainHead'
 import { useState } from 'react'
+import { loadDB } from 'lib/db'
 
 const style = {
 	list: {
@@ -17,6 +18,33 @@ type ReferralData = {
 	positions: Array<string>
 	resume: string
 }
+
+function writeCasesData(
+	company: string, 
+	positions: Array<string>, 
+	resume: string,
+) {
+	const caseID = (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+	const firebase = loadDB();
+	const user = firebase.auth().currentUser;
+	if (user == null) {
+		console.log('no logged in user');
+		return;
+	}
+
+	const userEmail = user.email;
+	const firestore = firebase.firestore();
+	firestore.collection('cases').doc(caseID).set({
+	  caseID: caseID,
+	  candidateEmail: userEmail,
+	  company: company,
+	  positions : positions,
+	  caseStatus: 'requested',
+	  referrerEmail: '',
+	  resume: resume,
+	});
+  }
+
 function ReferralDialog(props: { company: Company | null; onClose: () => void; onSubmit: (data: ReferralData) => void }) {
 	const [formData, setFormData] = useState<ReferralData>(() => {
 		return {
@@ -34,7 +62,14 @@ function ReferralDialog(props: { company: Company | null; onClose: () => void; o
 			}
 			visible={props.company != null}
 			onOk={() => {
+				const companyName = props.company?.name;
+				if (companyName == null) {
+					console.log('Must provide company name');
+					return;
+				}
+				writeCasesData(companyName, formData.positions, formData.resume);
 				console.log('REFER')
+
 			}}
 			onCancel={props.onClose}
 		>
@@ -86,6 +121,7 @@ function Status() {
 					company={referCompany}
 					onClose={() => setReferCompany(null)}
 					onSubmit={() => {
+						
 						console.log('submit!')
 					}}
 				/>

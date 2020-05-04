@@ -71,7 +71,7 @@ const Index = (props: { [key: string]: Array<any> }) => {
 			? () => {
 				setLoginModalVisible(true)
 			  }
-			: () => {}
+			: () => {window.location.href="/status";}
 
 	return (
 		<>
