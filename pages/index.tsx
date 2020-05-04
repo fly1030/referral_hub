@@ -75,7 +75,9 @@ const Index = (props: { [key: string]: Array<any> }) => {
 			<PageTopBar
 				isLoggedIn={user != null}
 				onLogout={() => {
-					setUser(null)
+					const firebase = loadDB();
+					firebase.auth().signOut();
+					setUser(null);
 				}}
 				onLoginClicked={() => setLoginModalVisible(true)}
 			/>
