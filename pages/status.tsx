@@ -1,8 +1,9 @@
 import { List, Button, Modal, Form, Select, Input } from 'antd'
 import { Companies, Company } from 'lib/companies'
 import MainHead from 'components/MainHead'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { loadDB } from 'lib/db'
+import { GetServerSideProps } from 'next'
 
 const style = {
 	list: {
@@ -45,7 +46,25 @@ function writeCasesData(
 	});
   }
 
-function ReferralDialog(props: { company: Company | null; onClose: () => void; onSubmit: (data: ReferralData) => void }) {
+async function getCasesByCandidate() {
+	const firebase = loadDB();
+	const user = firebase.auth().currentUser;
+	const data: Array<any> = [];
+	if (user == null) {
+		return data;
+	}
+	const userEmail = user.email;
+	const firestore = firebase.firestore();
+	const snapshot = await firestore.collection('cases').get();
+	snapshot.forEach((doc) => data.push(doc.data()))
+	return data.filter(row => row.candidateEmail === userEmail);
+}
+
+function ReferralDialog(props: { 
+	company: Company | null,
+	onClose: () => void,
+	onSubmit: (data: ReferralData) => void,
+	}) {
 	const [formData, setFormData] = useState<ReferralData>(() => {
 		return {
 			positions: [],
@@ -91,8 +110,29 @@ function ReferralDialog(props: { company: Company | null; onClose: () => void; o
 		</Modal>
 	)
 }
+
+function getActionName(
+	item: Company, 
+	referredCases: Array<{[key: string]: any}>,
+): string {
+	referredCases.forEach((row) => {		
+		if (row.company === item.key) {
+		return 'Show Status';
+	}})
+	return 'Refer me';
+}
+
 function Status() {
 	const [referCompany, setReferCompany] = useState<Company | null>(null)
+	const [referredCases, setReferredCases] = useState<Array<any>>([]);
+
+	useEffect(() => {
+		async function getCases() {
+			const cases = await getCasesByCandidate();
+			setReferredCases(cases);
+		}
+		getCases();
+	}, [])
 	return (
 		<>
 			<MainHead title="Status" />
@@ -104,7 +144,7 @@ function Status() {
 					renderItem={(item) => {
 						const actions = [
 							<Button type="primary" onClick={() => setReferCompany(item)}>
-								Refer me
+								{getActionName(item, referredCases)}
 							</Button>,
 							<Button danger type="link">
 								Cancel
