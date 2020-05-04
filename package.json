@@ -12,10 +12,12 @@
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^4.9.12",
+    "@sendgrid/mail": "^7.1.0",
     "antd": "^4.2.0",
     "dotenv": "^8.2.0",
     "firebase": "^7.14.2",
     "next": "^9.3.6",
+    "next-rpc": "^2.0.9",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },

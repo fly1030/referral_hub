@@ -1,4 +1,6 @@
 /* next.config.js */
+const withRpc = require('next-rpc')()
 
-module.exports = {
-};
+module.exports = withRpc({
+	// your next.js config goes here
+})

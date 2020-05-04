@@ -1,5 +1,5 @@
 import MainHead from 'components/MainHead'
-import { Divider, Col } from 'antd'
+import { Divider, Col, Button } from 'antd'
 
 import { loadDB } from '../lib/db.js'
 import { GetServerSideProps } from 'next'
@@ -8,6 +8,7 @@ import { User } from 'firebase'
 import EntryButtonSection from '../components/EntryButtonSection'
 import LoginModal from '../components/LoginModal'
 import PageTopBar from '../components/PageTopBar'
+import { sendTestEmail } from './api/sendTestEmail'
 
 const style = {
 	entryButtonCont: {
@@ -31,7 +32,7 @@ const style = {
 		backgroundColor: 'lightgray',
 		borderRadius: 10,
 		margin: '10px',
-	}
+	},
 }
 
 const Companies = ['fb', 'uber', 'twitter', 'microsoft', 'linkedin', 'apple', 'doordash', 'airbnb', 'google', 'netflix']
@@ -47,47 +48,69 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const Index = (props: { [key: string]: Array<any> }) => {
-	const [user, setUser] = useState<User | null>(null);
-	const [loginModalVisible, setLoginModalVisible] = useState(false);
+	const [user, setUser] = useState<User | null>(null)
+	const [loginModalVisible, setLoginModalVisible] = useState(false)
 
 	useEffect(() => {
-        const firebase = loadDB();
+		const firebase = loadDB()
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user != null) {
-				setUser(user);
+				setUser(user)
 			} else {
-				setUser(null);
+				setUser(null)
 			}
-		});
-	}, []);
+		})
+	}, [])
 
-	const onLeftClick = user == null ? () => {
-		console.log('call: ', user);
-		setLoginModalVisible(true)
-	} : () => {};
+	const onLeftClick =
+		user == null
+			? () => {
+					console.log('call: ', user)
+					setLoginModalVisible(true)
+			  }
+			: () => {}
 
-	const onRightClick = user == null ? () => {
-		setLoginModalVisible(true)
-	} : () => {};
+	const onRightClick =
+		user == null
+			? () => {
+					setLoginModalVisible(true)
+			  }
+			: () => {}
 
 	return (
 		<>
 			<MainHead title="Yes Onward" />
-			<PageTopBar 
-				isLoggedIn={user != null} 
-				onLogout={() => {setUser(null)}} 
+			<PageTopBar
+				isLoggedIn={user != null}
+				onLogout={() => {
+					setUser(null)
+				}}
 				onLoginClicked={() => setLoginModalVisible(true)}
 			/>
-			<LoginModal 
-				visible={loginModalVisible} 
-				onConfirm={() => {setLoginModalVisible(false)}} 
-				onCancel={() => {setLoginModalVisible(false)}}
+			<LoginModal
+				visible={loginModalVisible}
+				onConfirm={() => {
+					setLoginModalVisible(false)
+				}}
+				onCancel={() => {
+					setLoginModalVisible(false)
+				}}
 				onLoginSuccess={(user: User) => {
-					setUser(user);
-					setLoginModalVisible(false);
+					setUser(user)
+					setLoginModalVisible(false)
 				}}
 			/>
-			<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick}/>
+			<Button
+				size="large"
+				style={{ position: 'absolute', right: 0 }}
+				onClick={async () => {
+					await sendTestEmail()
+					alert('sent??')
+				}}
+			>
+				send!
+			</Button>
+			<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
 			<Divider orientation="center">
 				<h3 className="center">Get inside contacts to:</h3>
 			</Divider>
