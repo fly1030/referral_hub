@@ -27,7 +27,6 @@ function writeCasesData(
 	positions: Array<string>, 
 	resume: string,
 ) {
-	const caseID = (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 	const firebase = loadDB();
 	const user = firebase.auth().currentUser;
 	if (user == null) {
@@ -36,13 +35,16 @@ function writeCasesData(
 	}
 
 	const userEmail = user.email;
+	const caseID = (((1+Math.random())*0x10000)|0).toString(16).substring(1) + (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 	const firestore = firebase.firestore();
+	const createTime = new Date().toDateString();
 	firestore.collection('cases').doc(caseID).set({
 	  caseID: caseID,
 	  candidateEmail: userEmail,
 	  company: company,
 	  positions : positions,
 	  caseStatus: 'requested',
+	  createTime: createTime,
 	  referrerEmail: '',
 	  resume: resume,
 	});
@@ -89,6 +91,7 @@ function ReferralDialog(props: {
 					return;
 				}
 				writeCasesData(companyName, formData.positions, formData.resume);
+				props.onClose();
 				console.log('REFER')
 
 			}}
@@ -146,7 +149,7 @@ function Status() {
 			setReferredCases(cases);
 		}
 		getCases();
-	}, [user])
+	}, [user, isReferralDialogVisible])
 
 	useEffect(() => {
 		const firebase = loadDB()

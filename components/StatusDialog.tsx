@@ -28,6 +28,9 @@ function StatusDialog(props: {
 				<Form.Item label="Case ID" name="caseID">
                     <Card bodyStyle={{paddingBottom: 0, paddingTop: 0}}>{filteredCase.caseID}</Card>
 				</Form.Item>
+                <Form.Item label="Created on" name="createTime">
+                    <Card bodyStyle={{paddingBottom: 0, paddingTop: 0}}>{filteredCase.createTime}</Card>
+				</Form.Item>
                 <Form.Item label="Company" name="company">
                     <Card bodyStyle={{paddingBottom: 0, paddingTop: 0}}>{filteredCase.company}</Card>
 				</Form.Item>
