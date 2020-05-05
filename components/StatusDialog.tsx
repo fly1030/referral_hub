@@ -1,4 +1,4 @@
-import { Modal, Form, Card, Steps } from "antd";
+import { Modal, Form, Card, Steps, Tooltip } from "antd";
 import { Company } from "lib/companies";
 const { Step } = Steps;
 import {ReferralSteps} from 'lib/ReferralSteps'
@@ -50,7 +50,9 @@ function StatusDialog(props: {
                     <Card bodyStyle={{paddingBottom: 0, paddingTop: 0}}>
                         {filteredCase.referrerEmail != null && filteredCase.referrerEmail.length > 0 ? 
                         filteredCase.referrerEmail : 
-                        'TBD'}
+                        <Tooltip title="Referrer's email will be available once the case is claimed">
+                            <span>TBD</span>
+                        </Tooltip>}
                     </Card>
 				</Form.Item>
 			</Form>

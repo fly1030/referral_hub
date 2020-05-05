@@ -23,7 +23,7 @@ function ReferrerInfoFormModal(props: {
                 <p>Thanks for your willingness to help!</p>
                 <p>Before we start to connect referrers with the candidates, we want to make sure that referrers are eligible to make referral.</p>
                 <p>So please send an email to <a>hello@yesonward.com</a> from you work email account</p>
-            </Card>,
+            </Card>
         </Modal>
     );
 }
