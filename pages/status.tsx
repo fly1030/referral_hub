@@ -3,6 +3,7 @@ import { Companies, Company } from 'lib/companies'
 import MainHead from 'components/MainHead'
 import { useState, useEffect } from 'react'
 import { loadDB } from 'lib/db'
+import StatusDialog from 'components/StatusDialog'
 
 const style = {
 	list: {
@@ -59,7 +60,8 @@ async function getCasesByCandidate() {
 	return data.filter(row => row.candidateEmail === userEmail);
 }
 
-function ReferralDialog(props: { 
+function ReferralDialog(props: {
+	visible: boolean, 
 	company: Company | null,
 	onClose: () => void,
 	onSubmit: (data: ReferralData) => void,
@@ -78,7 +80,7 @@ function ReferralDialog(props: {
 					<span>{props.company?.name}</span>
 				</div>
 			}
-			visible={props.company != null}
+			visible={props.visible}
 			onOk={() => {
 				const companyName = props.company?.name;
 				if (companyName == null) {
@@ -110,23 +112,31 @@ function ReferralDialog(props: {
 	)
 }
 
-function getActionName(
+function actionButton(
 	item: Company, 
 	referredCases: Array<{[key: string]: any}>,
-): string {
-	let actionName = 'Refer me';
+	onReferClick: (item: Company) => void,
+	onShowStatusClick: () => void,
+) {
+	let actionButton = <Button type="primary" onClick={() => onReferClick(item)}>
+		Refer me
+	</Button>;
 	referredCases.forEach((row) => {		
 		if (row.company === item.name) {
-			actionName = 'Show Status';
+			actionButton = <Button type="primary" onClick={() => onShowStatusClick()}>
+				Show Status
+			</Button>;
 			return;
 		}
 	})
-	return actionName;
+	return actionButton;
 }
 
 function Status() {
-	const [referCompany, setReferCompany] = useState<Company | null>(null)
+	const [referCompany, setReferCompany] = useState<Company | null>(null);
 	const [referredCases, setReferredCases] = useState<Array<any>>([]);
+	const [isStatusDialogVisible, setIsStatusDialogVisible] = useState<boolean>(false);
+	const [isReferralDialogVisible, setIsReferralDialogVisible] = useState<boolean>(false);
 
 	useEffect(() => {
 		async function getCases() {
@@ -137,7 +147,6 @@ function Status() {
 		getCases();
 	}, [])
 
-
 	return (
 		<>
 			<MainHead title="Status" />
@@ -147,11 +156,19 @@ function Status() {
 					itemLayout="horizontal"
 					dataSource={Companies}
 					renderItem={(item) => {
-						const actionName = getActionName(item, referredCases);
+						const dialogActionButton = actionButton(
+							item, 
+							referredCases, 
+							() => {
+								setReferCompany(item);
+								setIsReferralDialogVisible(true);
+							}, 
+							() => {
+								setReferCompany(item);
+								setIsStatusDialogVisible(true);
+							});
 						const actions = [
-							<Button type="primary" onClick={() => setReferCompany(item)}>
-								{actionName}
-							</Button>,
+							dialogActionButton,
 							<Button danger type="link">
 								Cancel
 							</Button>,
@@ -164,11 +181,18 @@ function Status() {
 					}}
 				/>
 				<ReferralDialog
+					visible={isReferralDialogVisible}
 					company={referCompany}
-					onClose={() => setReferCompany(null)}
+					onClose={() => setIsReferralDialogVisible(false)}
 					onSubmit={() => {
 						console.log('submit!')
 					}}
+				/>
+				<StatusDialog
+					visible={isStatusDialogVisible}
+					onClose={() => setIsStatusDialogVisible(false)}
+					company={referCompany}
+					referredCases={referredCases}
 				/>
 			</div>
 		</>
