@@ -3,7 +3,6 @@ import { Companies, Company } from 'lib/companies'
 import MainHead from 'components/MainHead'
 import { useState, useEffect } from 'react'
 import { loadDB } from 'lib/db'
-import { GetServerSideProps } from 'next'
 
 const style = {
 	list: {
@@ -115,11 +114,14 @@ function getActionName(
 	item: Company, 
 	referredCases: Array<{[key: string]: any}>,
 ): string {
+	let actionName = 'Refer me';
 	referredCases.forEach((row) => {		
-		if (row.company === item.key) {
-		return 'Show Status';
-	}})
-	return 'Refer me';
+		if (row.company === item.name) {
+			actionName = 'Show Status';
+			return;
+		}
+	})
+	return actionName;
 }
 
 function Status() {
@@ -129,10 +131,13 @@ function Status() {
 	useEffect(() => {
 		async function getCases() {
 			const cases = await getCasesByCandidate();
+			console.log('cases: ', cases);
 			setReferredCases(cases);
 		}
 		getCases();
 	}, [])
+
+
 	return (
 		<>
 			<MainHead title="Status" />
@@ -142,9 +147,10 @@ function Status() {
 					itemLayout="horizontal"
 					dataSource={Companies}
 					renderItem={(item) => {
+						const actionName = getActionName(item, referredCases);
 						const actions = [
 							<Button type="primary" onClick={() => setReferCompany(item)}>
-								{getActionName(item, referredCases)}
+								{actionName}
 							</Button>,
 							<Button danger type="link">
 								Cancel
@@ -161,7 +167,6 @@ function Status() {
 					company={referCompany}
 					onClose={() => setReferCompany(null)}
 					onSubmit={() => {
-						
 						console.log('submit!')
 					}}
 				/>
