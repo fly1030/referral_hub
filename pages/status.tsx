@@ -43,7 +43,7 @@ function writeCasesData(
 	  candidateEmail: userEmail,
 	  company: company,
 	  positions : positions,
-	  caseStatus: 'requested',
+	  caseStatus: 'Requested',
 	  createTime: createTime,
 	  referrerEmail: '',
 	  resume: resume,

@@ -1,5 +1,8 @@
-import { Modal, Form, Card } from "antd";
+import { Modal, Form, Card, Steps } from "antd";
 import { Company } from "lib/companies";
+const { Step } = Steps;
+import {ReferralSteps} from 'lib/ReferralSteps'
+
 
 function StatusDialog(props: { 
     visible: boolean,
@@ -17,6 +20,12 @@ function StatusDialog(props: {
         return null;
     }
     const filteredCase = filteredCases[0];
+    let stepNumber = undefined;
+    ReferralSteps.forEach(stepObject => {
+        if (stepObject.id === filteredCase.caseStatus) {
+            stepNumber = stepObject.number;
+        }
+    })
 	return (
 		<Modal
 			title={<h2>Case Status</h2>}
@@ -45,6 +54,12 @@ function StatusDialog(props: {
                     </Card>
 				</Form.Item>
 			</Form>
+            <Steps size="small" current={stepNumber}>
+                <Step title="Requested" />
+                <Step title="Claimed" />
+                <Step title="Confirmed" />
+                <Step title="Closed" />
+            </Steps>,
 		</Modal>
 	)
 }
