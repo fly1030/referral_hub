@@ -4,6 +4,8 @@ import MainHead from 'components/MainHead'
 import { useState, useEffect } from 'react'
 import { loadDB } from 'lib/db'
 import StatusDialog from 'components/StatusDialog'
+import { User } from 'firebase'
+import PageTopBar from '../components/PageTopBar'
 
 const style = {
 	list: {
@@ -46,9 +48,8 @@ function writeCasesData(
 	});
   }
 
-async function getCasesByCandidate() {
+async function getCasesByCandidate(user: User | null) {
 	const firebase = loadDB();
-	const user = firebase.auth().currentUser;
 	const data: Array<any> = [];
 	if (user == null) {
 		return data;
@@ -134,22 +135,43 @@ function actionButton(
 
 function Status() {
 	const [referCompany, setReferCompany] = useState<Company | null>(null);
+	const [user, setUser] = useState<User | null>(null)
 	const [referredCases, setReferredCases] = useState<Array<any>>([]);
 	const [isStatusDialogVisible, setIsStatusDialogVisible] = useState<boolean>(false);
 	const [isReferralDialogVisible, setIsReferralDialogVisible] = useState<boolean>(false);
 
 	useEffect(() => {
 		async function getCases() {
-			const cases = await getCasesByCandidate();
-			console.log('cases: ', cases);
+			const cases = await getCasesByCandidate(user);
 			setReferredCases(cases);
 		}
 		getCases();
+	}, [user])
+
+	useEffect(() => {
+		const firebase = loadDB()
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user != null) {
+				setUser(user)
+			} else {
+				setUser(null)
+			}
+		})
 	}, [])
 
 	return (
 		<>
 			<MainHead title="Status" />
+			<PageTopBar
+				isLoggedIn={user != null}
+				onLogout={() => {
+					const firebase = loadDB();
+					firebase.auth().signOut();
+					setUser(null);
+					window.location.href="/";
+				}}
+				onLoginClicked={() => {}}
+			/>
 			<div className="flex justify-center">
 				<List
 					style={style.list}

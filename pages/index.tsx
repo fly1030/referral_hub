@@ -56,7 +56,6 @@ const Index = (props: { [key: string]: Array<any> }) => {
 		})
 	}, [])
 
-	console.log('user: ', user);
 	const onLeftClick =
 		user == null
 			? () => {
