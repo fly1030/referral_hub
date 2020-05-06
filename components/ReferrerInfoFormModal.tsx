@@ -37,8 +37,8 @@ function ReferrerInfoFormModal(props: {
     const [currentComppany, setCurrentCompany] = useState<string | null>(null);
     const [companyEmail, setCompanyEmail] = useState<string | null>(null);
 
-    const companyList = Companies.map(company => <Option value={company.name}>{company.name}</Option>);
-    companyList.push(<Option value='Others'>{'Others'}</Option>);
+    const companyList = Companies.map(company => <Option value={company.name} key={company.name}>{company.name}</Option>);
+    companyList.push(<Option value='Others' key='Others'>{'Others'}</Option>);
      
     return (
         <Modal

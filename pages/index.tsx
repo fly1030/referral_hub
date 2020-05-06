@@ -65,7 +65,7 @@ const Index = (props: { [key: string]: Array<any> }) => {
 			  }
 			: () => {
 				if (verifiedReferrersEmail.includes(user.email)) {
-					window.location.href="/availableCases"
+					window.location.href="/AvailableCases"
 				} else {
 					setReferrerInfoModalVisible(true)
 				}
