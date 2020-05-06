@@ -33,7 +33,7 @@ const style = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const firebase = loadDB()
 	const db = firebase.firestore()
-	const snapshot = await db.collection('users').get()
+	const snapshot = await db.collection('referrers').get()
 	const data: Array<any> = []
 	snapshot.forEach((doc) => data.push(doc.data()))
 	// Pass data to the page via props
@@ -44,6 +44,8 @@ const Index = (props: { [key: string]: Array<any> }) => {
 	const [user, setUser] = useState<User | null>(null)
 	const [loginModalVisible, setLoginModalVisible] = useState(false)
 	const [referrerInfoModalVisible, setReferrerInfoModalVisible] = useState(false)
+	const verifiedReferrers = props.data;
+	const verifiedReferrersEmail = verifiedReferrers.map(referrer => referrer.loginEmail);
 
 	useEffect(() => {
 		const firebase = loadDB()
@@ -62,7 +64,11 @@ const Index = (props: { [key: string]: Array<any> }) => {
 				setLoginModalVisible(true)
 			  }
 			: () => {
-				setReferrerInfoModalVisible(true)
+				if (verifiedReferrersEmail.includes(user.email)) {
+					window.location.href="/availableCases"
+				} else {
+					setReferrerInfoModalVisible(true)
+				}
 			}
 
 	const onRightClick =
@@ -105,7 +111,6 @@ const Index = (props: { [key: string]: Array<any> }) => {
 				onCancel={() => {
 					setReferrerInfoModalVisible(false)
 				}}
-				onLoginSuccess={(user: User) => {}}
 			/>
 			<Button
 				size="large"
