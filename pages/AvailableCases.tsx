@@ -24,9 +24,33 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	return { props: {cases, referrersInfo} }
 }
 
-function getExtra() {
+async function onCaseClaimed(
+    availableCase: {[key: string]: any}, 
+    referrerEmail: string,
+) {
+	const firebase = loadDB();
+    const firestore = firebase.firestore();
+    const caseID = availableCase.caseID;
+    const caseDoc = await firestore.collection('cases').doc(caseID).get()
+    const caseDataFromDB = caseDoc.data()
+    const updatedData = {...caseDataFromDB, ...{
+        referrerEmail: referrerEmail,
+        caseStatus: 'Claimed',
+      }}
+	firestore.collection('cases').doc(caseID).set(updatedData);
+}
+
+function getExtra(
+    availableCase: {[key: string]: any}, 
+    referrerEmail: string,
+) {
     return  (
-        <Button type="primary" onClick={() => {}}>
+        <Button 
+        type="primary" 
+        onClick={(event) => {
+            onCaseClaimed(availableCase, referrerEmail);
+            event.stopPropagation();
+        }}>
             Claim
         </Button>
     )
@@ -66,16 +90,34 @@ function AvailableCases(props: { [key: string]: Array<{[key: string]: any}> }) {
 		})
 	}, [])
 
-    const avaliableCases = user == null ? [] : filterAvailableCasesByCompany(props.cases, props.referrersInfo, user);
+    const avaliableCases = 
+        user == null ? 
+            [] : 
+            filterAvailableCasesByCompany(props.cases, props.referrersInfo, user);
+    
+    let currentReferrer: {[key: string]: any} | null = null
+    props.referrersInfo.forEach((referrerInfo) => {
+        if (referrerInfo.loginEmail === user?.email) {
+            currentReferrer = referrerInfo;
+        }
+    })
+
+    if (currentReferrer == null) {
+        return <div/>;
+    }
 
 	return (
 		<>
             <MainHead title="Available Cases" />
-            <Collapse>
+            <Collapse style={{margin: '20px'}}>
                 {
                     avaliableCases.map((availableCase) => {
                         return (
-                            <Panel header={availableCase.candidateEmail} key={availableCase.caseID} extra={getExtra()}>
+                            <Panel 
+                                header={<b>{availableCase.candidateEmail}</b>} 
+                                key={availableCase.caseID} 
+                                extra={getExtra(availableCase, currentReferrer?.companyEmail)}
+                            >
                                 <p>Candidate Email: <b>{availableCase.candidateEmail}</b></p>
                                 <p>Case Status: <b>{availableCase.caseStatus}</b></p>
                                 <p>Applying to: <b>{availableCase.company}</b></p>
