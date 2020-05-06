@@ -28,6 +28,7 @@ function writeCasesData(
 	company: string, 
 	positions: Array<string>, 
 	resume: string,
+	comments: string,
 ) {
 	const firebase = loadDB();
 	const user = firebase.auth().currentUser;
@@ -49,6 +50,7 @@ function writeCasesData(
 	  createTime: createTime,
 	  referrerEmail: '',
 	  resume: resume,
+	  comments: comments,
 	});
   }
 
@@ -94,7 +96,7 @@ function ReferralDialog(props: {
 					console.log('Must provide company name');
 					return;
 				}
-				writeCasesData(companyName, positions, resume);
+				writeCasesData(companyName, positions, resume, comments);
 				props.onClose();
 				console.log('REFER')
 
@@ -114,12 +116,22 @@ function ReferralDialog(props: {
 				</Form.Item>
 				<Form.Item label="Resume" name="resume" rules={[{ required: true, message: 'Enter a link to your resume' }]}>
 					<Input.Group compact>
-						<Select placeholder="Resume" value="Resume" dropdownClassName="no-width-override">
-							<Select.Option value="Option1-1">Previous resume 1</Select.Option>
-							<Select.Option value="Option1-2">Previous resume 2</Select.Option>
-						</Select>
-
-						<Input style={{ width: 300 }} placeholder="resume link.." />
+						<Input 
+						 style={{ width: '100%' }} 
+						 placeholder="resume link.." 
+						 defaultValue=""
+						 onChange={(e) => {setResume(e.target.value)}}
+						/>
+					</Input.Group>
+				</Form.Item>
+				<Form.Item label="Comments" name="comments" rules={[{ required: false, message: 'Enter comments for your application' }]}>
+					<Input.Group compact>
+						<Input 
+						 style={{ width: '100%' }} 
+						 placeholder="Anythig else you want to add..." 
+						 defaultValue=""
+						 onChange={(e) => {setComments(e.target.value)}}
+						/>
 					</Input.Group>
 				</Form.Item>
 			</Form>
