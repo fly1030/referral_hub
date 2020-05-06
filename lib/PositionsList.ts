@@ -1,0 +1,15 @@
+export const PositionsList = [
+    'Business Development',
+    'Communications & Public Policy',
+    'Data & Analytics',
+    'Design & UX',
+    'Legal', 
+    'Finance', 
+    'Facilities Admin',
+    'Recruiting',
+    'Product Management',
+    'Sales & Marketing',
+    'Software Engineering',
+    'Technical Program Management',
+    'Hardware Engineering',
+];

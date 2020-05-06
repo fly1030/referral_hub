@@ -1,11 +1,13 @@
 import { List, Button, Modal, Form, Select, Input } from 'antd'
 import { Companies, Company } from 'lib/companies'
 import MainHead from 'components/MainHead'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ReactNode } from 'react'
 import { loadDB } from 'lib/db'
 import StatusDialog from 'components/StatusDialog'
 import { User } from 'firebase'
 import PageTopBar from '../components/PageTopBar'
+import { PositionsList } from 'lib/PositionsList'
+const { Option } = Select;
 
 const style = {
 	list: {
@@ -67,13 +69,15 @@ function ReferralDialog(props: {
 	visible: boolean, 
 	company: Company | null,
 	onClose: () => void,
-	onSubmit: (data: ReferralData) => void,
+	onSubmit: () => void,
 	}) {
-	const [formData, setFormData] = useState<ReferralData>(() => {
-		return {
-			positions: [],
-			resume: '',
-		}
+	const [positions, setPositions] = useState<Array<string>>([]);
+	const [resume, setResume] = useState<string>('');
+	const [comments, setComments] = useState<string>('');
+
+	const positionOptions: Array<ReactNode> = [];
+	PositionsList.forEach(position => {
+		positionOptions.push(<Option value={position} key={position}>{position}</Option>);
 	})
 	return (
 		<Modal
@@ -90,16 +94,23 @@ function ReferralDialog(props: {
 					console.log('Must provide company name');
 					return;
 				}
-				writeCasesData(companyName, formData.positions, formData.resume);
+				writeCasesData(companyName, positions, resume);
 				props.onClose();
 				console.log('REFER')
 
 			}}
 			onCancel={props.onClose}
 		>
-			<Form initialValues={formData} labelAlign="left" labelCol={{ span: 4, offset: 0 }}>
+			<Form initialValues={{positions: [], resume: ''}} labelAlign="left" labelCol={{ span: 4, offset: 0 }}>
 				<Form.Item label="Positions" name="positions" rules={[{ required: true, message: 'Provide your desired positions' }]}>
-					<Select mode="multiple" placeholder="Please select" onChange={() => {}} style={{ width: '100%' }}></Select>
+					<Select 
+						mode="multiple" 
+						placeholder="Please select" 
+						onChange={(value) => {setPositions(value)}} 
+						defaultValue={[]}
+						style={{ width: '100%' }}>
+						{positionOptions}
+					</Select>
 				</Form.Item>
 				<Form.Item label="Resume" name="resume" rules={[{ required: true, message: 'Enter a link to your resume' }]}>
 					<Input.Group compact>
