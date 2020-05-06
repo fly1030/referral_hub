@@ -4,6 +4,7 @@ import { loadDB } from 'lib/db';
 import { useState, useEffect } from 'react';
 import { User } from 'firebase';
 const { Panel } = Collapse;
+import MainHead from 'components/MainHead'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const firebase = loadDB()
@@ -68,24 +69,25 @@ function AvailableCases(props: { [key: string]: Array<{[key: string]: any}> }) {
     const avaliableCases = user == null ? [] : filterAvailableCasesByCompany(props.cases, props.referrersInfo, user);
 
 	return (
-		<div>
+		<>
+            <MainHead title="Available Cases" />
             <Collapse>
                 {
                     avaliableCases.map((availableCase) => {
                         return (
                             <Panel header={availableCase.candidateEmail} key={availableCase.caseID} extra={getExtra()}>
-                                <p>{availableCase.candidateEmail}</p>
-                                <p>{availableCase.caseStatus}</p>
-                                <p>{availableCase.company}</p>
-                                <p>{availableCase.positions}</p>
-                                <p>{availableCase.comments}</p>
-                                <p>{availableCase.createTime}</p>
+                                <p>Candidate Email: <b>{availableCase.candidateEmail}</b></p>
+                                <p>Case Status: <b>{availableCase.caseStatus}</b></p>
+                                <p>Applying to: <b>{availableCase.company}</b></p>
+                                <p>Interested Positions: <b>{availableCase.positions}</b></p>
+                                <p>Additional Info: <b>{availableCase.comments}</b></p>
+                                <p>Case Created on: <b>{availableCase.createTime}</b></p>
                             </Panel>)
                     })
                 }
 
             </Collapse>
-		</div>
+		</>
 	)
 }
 
