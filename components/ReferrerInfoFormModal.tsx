@@ -1,6 +1,5 @@
 
 import { Modal, Button, Select, Form, Input} from 'antd';
-import { User } from 'firebase';
 import { useState } from 'react';
 import { Companies } from 'lib/companies'
 import { loadDB } from 'lib/db';

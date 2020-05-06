@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { User } from 'firebase';
 const { Panel } = Collapse;
 import MainHead from 'components/MainHead'
+import PageTopBar from 'components/PageTopBar';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const firebase = loadDB()
@@ -50,7 +51,9 @@ function getExtra(
         onClick={(event) => {
             onCaseClaimed(availableCase, referrerEmail);
             event.stopPropagation();
-        }}>
+        }}
+        disabled={availableCase.caseStatus !== 'Requested'}
+        >
             Claim
         </Button>
     )
@@ -109,6 +112,16 @@ function AvailableCases(props: { [key: string]: Array<{[key: string]: any}> }) {
 	return (
 		<>
             <MainHead title="Available Cases" />
+            <PageTopBar
+				isLoggedIn={user != null}
+				onLogout={() => {
+					const firebase = loadDB();
+					firebase.auth().signOut();
+					setUser(null);
+					window.location.href="/";
+				}}
+				onLoginClicked={() => {}}
+			/>
             <Collapse style={{margin: '20px'}}>
                 {
                     avaliableCases.map((availableCase) => {

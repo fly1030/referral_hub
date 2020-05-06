@@ -23,7 +23,9 @@ function PageTopBar(props: {
     <div className="site-page-header-ghost-wrapper" style={style.topbar}>
         <PageHeader
             ghost={true}
-            title="YesOnward"
+            title={
+                <span style={{cursor: 'pointer'}} onClick={() => window.location.href="/"}>YesOnward</span>
+            }
             extra={secondaryButtonGroup}
         />
     </div>
