@@ -1,5 +1,5 @@
 import MainHead from 'components/MainHead'
-import { Divider, Col, Button } from 'antd'
+import { Divider, Button } from 'antd'
 
 import { loadDB } from '../lib/db.js'
 import { GetServerSideProps } from 'next'

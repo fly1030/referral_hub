@@ -6,6 +6,7 @@ import { User } from 'firebase';
 const { Panel } = Collapse;
 import MainHead from 'components/MainHead'
 import PageTopBar from 'components/PageTopBar';
+import { sendClaimedEmail } from 'pages/api/sendClaimedEmail';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const firebase = loadDB()
@@ -38,7 +39,8 @@ async function onCaseClaimed(
         referrerEmail: referrerEmail,
         caseStatus: 'Claimed',
       }}
-	firestore.collection('cases').doc(caseID).set(updatedData);
+    firestore.collection('cases').doc(caseID).set(updatedData);
+    sendClaimedEmail(availableCase, referrerEmail)
 }
 
 function getExtra(
