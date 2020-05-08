@@ -128,7 +128,7 @@ const Index = (props: { [key: string]: Array<any> }) => {
 			</div>
 			<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
 			<StatisticsSection />
-			<Divider className="mt3" orientation="center">
+			<Divider className="mt4" orientation="center" style={{marginTop: 40}}>
 				<p className="center" style={{marginTop: '16px'}}>Get inside contacts to:</p>
 			</Divider>
 

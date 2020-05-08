@@ -11,12 +11,19 @@ function PageTopBar(props: {
 }) {
     const {isLoggedIn, onLogout, onLoginClicked} = props;
     const secondaryButtonGroup = isLoggedIn ? [
-        <Button key={1} onClick={onLogout}>
-            Log out
+        <Button 
+            key={1} 
+            onClick={onLogout} 
+            style={{borderStyle: 'hidden', borderColor: 'lightblue', borderRadius: 10, backgroundColor: 'lightblue'}}>
+            <b>Log out</b>
         </Button>
     ] : [
-        <Button key={2} onClick={onLoginClicked}>
-            Log in
+        <Button 
+            key={2} 
+            onClick={onLoginClicked}
+            style={{borderStyle: 'hidden', borderColor: 'lightblue', borderRadius: 10, backgroundColor: 'lightblue'}}
+        >
+            <b>Log in</b>
         </Button>
     ]
     return (
