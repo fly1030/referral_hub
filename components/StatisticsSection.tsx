@@ -1,7 +1,7 @@
 import { Statistic, Row, Col } from 'antd';
 
 const style = {
-	entryButtonCont: {
+	statsSection: {
 		maxWidth: 1024,
 	},
 }
@@ -9,7 +9,7 @@ const style = {
 function StatisticsSection() {           
     return (
         <div className="flex justify-center">
-            <div style={style.entryButtonCont} className="flex flex-row justify-center mt2">
+            <div style={style.statsSection} className="flex flex-row justify-center mt2">
             <Row gutter={128}>
                 <Col>
                     <Statistic 

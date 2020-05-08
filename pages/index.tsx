@@ -12,6 +12,7 @@ import PageTopBar from '../components/PageTopBar'
 import { sendTestEmail } from './api/sendTestEmail'
 import { Companies } from 'lib/companies'
 import ReferrerInfoFormModal from '../components/ReferrerInfoFormModal'
+import HowtoSection from '../components/HowtoSection'
 
 const style = {
 	entryButton: { border: '2px solid lightblue', borderRadius: 10, maxWidth: 300 },
@@ -127,7 +128,7 @@ const Index = (props: { [key: string]: Array<any> }) => {
 			</div>
 			<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
 			<StatisticsSection />
-			<Divider className="mt3" orientation="center" style={{paddingLeft: 60, paddingRight: 60}}>
+			<Divider className="mt3" orientation="center">
 				<p className="center" style={{marginTop: '16px'}}>Get inside contacts to:</p>
 			</Divider>
 
@@ -138,6 +139,8 @@ const Index = (props: { [key: string]: Array<any> }) => {
 					</div>
 				))}
 			</div>
+			<Divider className="mt3" orientation="center" />
+			<HowtoSection />
 		</>
 	)
 }
