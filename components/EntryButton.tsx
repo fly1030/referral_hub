@@ -2,11 +2,10 @@ import { ReactNode } from 'react';
 import { Card } from 'antd';
 
 const style = {
-	entryButton: { border: '2px solid lightblue', borderRadius: 10, maxWidth: 300 },
+	entryButton: { border: '2px solid lightblue', borderRadius: 10, maxWidth: 300 , width: 300},
 }
 
 function EntryButton(props: { title: string; subtitle: ReactNode; onClick: () => void }) {
-	// props.onClick();
 	return (
 		<div className="flex flex-column items-center p1" onClick={props.onClick}>
 			<Card hoverable style={style.entryButton}>

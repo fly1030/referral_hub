@@ -6,6 +6,7 @@ import { GetServerSideProps } from 'next'
 import { useState, useEffect } from 'react'
 import { User } from 'firebase'
 import EntryButtonSection from '../components/EntryButtonSection'
+import StatisticsSection from '../components/StatisticsSection'
 import LoginModal from '../components/LoginModal'
 import PageTopBar from '../components/PageTopBar'
 import { sendTestEmail } from './api/sendTestEmail'
@@ -13,13 +14,12 @@ import { Companies } from 'lib/companies'
 import ReferrerInfoFormModal from '../components/ReferrerInfoFormModal'
 
 const style = {
-	entryButtonCont: {
-		maxWidth: 1024,
-	},
 	entryButton: { border: '2px solid lightblue', borderRadius: 10, maxWidth: 300 },
 	companyLogos: {
 		display: 'flex',
 		width: '100%',
+		paddingLeft: 60,
+		paddingRight: 60,
 	},
 	logo: {
 		width: 'auto',
@@ -122,9 +122,13 @@ const Index = (props: { [key: string]: Array<any> }) => {
 			>
 				send!
 			</Button>
+			<div className="flex justify-center" style ={{marginTop: '30px', fontSize: 20}}>
+				<h1>Get referred to multiple companies with just one click</h1>
+			</div>
 			<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
-			<Divider orientation="center">
-				<h3 className="center">Get inside contacts to:</h3>
+			<StatisticsSection />
+			<Divider className="mt3" orientation="center" style={{paddingLeft: 60, paddingRight: 60}}>
+				<p className="center" style={{marginTop: '16px'}}>Get inside contacts to:</p>
 			</Divider>
 
 			<div style={style.companyLogos} className="flex justify-center flex-wrap">
