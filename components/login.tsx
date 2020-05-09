@@ -46,6 +46,13 @@ const Login = (props: {
                       const user = result.user;
                       onLoginSuccess(user);
                     }
+                  ).catch(
+                    error => {
+                      const errorCode = error.code;
+                      console.log(errorCode);
+                      const errorMessage = error.message;
+                      console.log(errorMessage);
+                    }
                   )
                 }
             }>
