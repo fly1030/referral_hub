@@ -178,9 +178,7 @@ function MyCases(props: { [key: string]: Array<{[key: string]: any}> }) {
         user == null ? 
             [] : 
             filterCasesByReferrer(props.cases, props.referrersInfo, user);
-    
-    console.log('myReferrerCases: ', myReferrerCases);
-    
+        
     const myApplicantCases = user == null ? 
         [] : 
         filterCasesByApplicant(props.cases, user);

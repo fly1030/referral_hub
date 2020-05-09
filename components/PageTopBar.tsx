@@ -12,6 +12,12 @@ function PageTopBar(props: {
     const {isLoggedIn, onLogout, onLoginClicked} = props;
     const secondaryButtonGroup = isLoggedIn ? [
         <Button 
+            key={0} 
+            onClick={() => {window.location.href="/MyCases"}} 
+            style={{borderStyle: 'hidden', borderColor: 'lightblue', borderRadius: 10, backgroundColor: 'lightblue'}}>
+            <b>My Cases</b>
+        </Button>,
+        <Button 
             key={1} 
             onClick={onLogout} 
             style={{borderStyle: 'hidden', borderColor: 'lightblue', borderRadius: 10, backgroundColor: 'lightblue'}}>
