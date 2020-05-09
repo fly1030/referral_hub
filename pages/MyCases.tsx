@@ -7,6 +7,7 @@ const { Panel } = Collapse;
 import MainHead from 'components/MainHead'
 import PageTopBar from 'components/PageTopBar';
 import { sendClaimedEmail } from 'pages/api/sendClaimedEmail';
+import CaseCloseConfirmModal from 'components/CaseCloseConfirmModal';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const firebase = loadDB()
@@ -27,8 +28,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 async function onCaseClosed(
-    caseInfo: {[key: string]: any}, 
+    caseInfo: {[key: string]: any} | null, 
 ) {
+    if (caseInfo == null) {
+        return;
+    }
 	const firebase = loadDB();
     const firestore = firebase.firestore();
     const caseID = caseInfo.caseID;
@@ -42,16 +46,17 @@ async function onCaseClosed(
 }
 
 function getExtra(
-    claimedCase: {[key: string]: any}, 
+    claimedCase: {[key: string]: any},
+    onClicked: () => void
 ) {
     return  (
         <Button 
-        type="primary" 
-        onClick={(event) => {
-            onCaseClosed(claimedCase);
-            event.stopPropagation();
-        }}
-        disabled={claimedCase.caseStatus === 'Closed'}
+            type="primary" 
+            onClick={(event) => {
+                onClicked();
+                event.stopPropagation();
+            }}
+            disabled={claimedCase.caseStatus === 'Closed'}
         >
             Close
         </Button>
@@ -127,8 +132,11 @@ function MyCasesAsApplicant(
 }
 
 function MyCasesAsReferrer(
-    props: {referrerCases: Array<{[key: string]: any}>}, 
+    props: {referrerCases: Array<{[key: string]: any}>}
 ) {
+    const [confirmCloseDialogVisible, setConfirmCloseDialogVisible] = useState<boolean>(false)
+    const [currentCase, setCurrentCase] = useState<{[key: string]: any} | null>(null)
+
     return (
         <>
             <h1 style={{paddingLeft: 20, margin: 20}}>My cases as a referrer</h1>
@@ -144,8 +152,13 @@ function MyCasesAsReferrer(
                             <Panel 
                                 header={header} 
                                 key={caseInfo.caseID} 
-                                extra={getExtra(caseInfo)}
-                            >
+                                extra={getExtra(
+                                    caseInfo, 
+                                    () => {
+                                        setCurrentCase(caseInfo)
+                                        setConfirmCloseDialogVisible(true)
+                                    }
+                                )}>
                                 <p>Candidate Email: <b>{caseInfo.candidateEmail}</b></p>
                                 <p>Case Status: <b>{caseInfo.caseStatus}</b></p>
                                 <p>Applying to: <b>{caseInfo.company}</b></p>
@@ -156,6 +169,14 @@ function MyCasesAsReferrer(
                     })
                 }
             </Collapse>
+            <CaseCloseConfirmModal 
+                visible = {confirmCloseDialogVisible}
+                onConfirm={() => {
+                    onCaseClosed(currentCase);
+                    setConfirmCloseDialogVisible(false)
+                }}
+                onCancel={() => {setConfirmCloseDialogVisible(false)}} 
+            />
         </>
     )
 }
