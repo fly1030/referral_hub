@@ -13,23 +13,23 @@ export async function sendClaimedEmail(caseInfo: { [key: string]: any }, referre
 			<table>
 				<tr>
 					<td>Candidate Email:</td>
-					<td>${caseInfo.candidateEmail}</td>
+					<td>{caseInfo.candidateEmail}</td>
 				</tr>
 				<tr>
 					<td>Company interested:</td>
-					<td> ${caseInfo.company}</td>
+					<td>{caseInfo.company}</td>
 				</tr>
 				<tr>
 					<td>Positions interested:</td>
-					<td> ${caseInfo.positions}</td>
+					<td>{caseInfo.positions}</td>
 				</tr>
 				<tr>
 					<td>Resume link:</td>
-					<td> ${caseInfo.resume}</td>
+					<td>{caseInfo.resume}</td>
 				</tr>
 				<tr>
 					<td>Additional Info:</td>
-					<td> ${caseInfo.comments}</td>
+					<td>{caseInfo.comments}</td>
 				</tr>
 			</table>
 			<p>
