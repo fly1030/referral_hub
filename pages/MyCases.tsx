@@ -6,7 +6,7 @@ import { User } from 'firebase';
 const { Panel } = Collapse;
 import MainHead from 'components/MainHead'
 import PageTopBar from 'components/PageTopBar';
-import { sendClaimedEmail } from 'pages/api/sendClaimedEmail';
+import { sendCaseClosedEmail } from 'pages/api/sendCaseClosedEmail';
 import CaseCloseConfirmModal from 'components/CaseCloseConfirmModal';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -174,6 +174,9 @@ function MyCasesAsReferrer(
                 onConfirm={() => {
                     onCaseClosed(currentCase);
                     setConfirmCloseDialogVisible(false)
+                    if (currentCase != null) {
+                        sendCaseClosedEmail(currentCase)
+                    }
                 }}
                 onCancel={() => {setConfirmCloseDialogVisible(false)}} 
             />
@@ -218,7 +221,7 @@ function MyCases(props: { [key: string]: Array<{[key: string]: any}> }) {
 				onLoginClicked={() => {}}
 			/>
             <MyCasesAsApplicant applicantCases={myApplicantCases} />
-            <MyCasesAsReferrer referrerCases={myReferrerCases}/>
+            <MyCasesAsReferrer referrerCases={myReferrerCases} />
 		</>
 	)
 }
