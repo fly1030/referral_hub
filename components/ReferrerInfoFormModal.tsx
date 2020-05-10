@@ -50,7 +50,8 @@ function ReferrerInfoFormModal(props: {
                     if (currentComppany != null && companyEmail != null) {
                         writeReferrerData(currentComppany, companyEmail);
                     }
-                    props.onConfirm();
+					props.onConfirm();
+					window.location.href="/AvailableCases";
                 }}>
                     OK
                 </Button>,

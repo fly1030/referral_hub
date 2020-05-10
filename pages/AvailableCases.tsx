@@ -74,7 +74,7 @@ function filterAvailableCasesByCompany(
     })
     const filteredCases: Array<{[key: string]: any}> = []
     cases.forEach((caseInfo) => { 
-        if (caseInfo.company === targetedCompany) {
+        if (caseInfo.company === targetedCompany && caseInfo.caseStatus === 'Requested') {
             filteredCases.push(caseInfo)
         }
     })
