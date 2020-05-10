@@ -28,8 +28,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 async function onCaseClaimed(
     availableCase: {[key: string]: any}, 
-    referrerEmail: string,
+    referrerEmail?: string | null,
 ) {
+    if (referrerEmail == null) {
+        return
+    }
 	const firebase = loadDB();
     const firestore = firebase.firestore();
     const caseID = availableCase.caseID;
@@ -45,7 +48,7 @@ async function onCaseClaimed(
 
 function getExtra(
     availableCase: {[key: string]: any}, 
-    referrerEmail: string,
+    referrerEmail?: string | null,
 ) {
     return  (
         <Button 
@@ -54,7 +57,7 @@ function getExtra(
             onCaseClaimed(availableCase, referrerEmail);
             event.stopPropagation();
         }}
-        disabled={availableCase.caseStatus !== 'Requested'}
+        disabled={availableCase.caseStatus !== 'Requested' || referrerEmail == null}
         >
             Claim
         </Button>
@@ -131,7 +134,7 @@ function AvailableCases(props: { [key: string]: Array<{[key: string]: any}> }) {
                             <Panel 
                                 header={<b>{availableCase.candidateEmail}</b>} 
                                 key={availableCase.caseID} 
-                                extra={getExtra(availableCase, currentReferrer?.companyEmail)}
+                                extra={getExtra(availableCase, user?.email)}
                             >
                                 <p>Candidate Email: <b>{availableCase.candidateEmail}</b></p>
                                 <p>Case Status: <b>{availableCase.caseStatus}</b></p>
