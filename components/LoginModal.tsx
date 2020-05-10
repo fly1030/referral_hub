@@ -8,16 +8,24 @@ function LoginModal(props: { visible: boolean; onCancel: () => void; onConfirm: 
 	const [shouldShowSignup, setShouldShowSignup] = useState(false)
 	return (
 		<Modal
-			title="Log In"
+			title={shouldShowSignup ? "Sign up" : "Log In"}
 			visible={props.visible}
 			onOk={props.onConfirm}
 			onCancel={props.onCancel}
 			footer={
 				shouldShowSignup
 					? [
+							<Button
+								key="Login"
+								onClick={() => {
+									setShouldShowSignup(false)
+								}}
+							>	
+								Log in
+							</Button>,
 							<Button key="back" onClick={props.onCancel}>
 								Return
-							</Button>,
+							</Button>
 					  ]
 					: [
 							<Button

@@ -1,5 +1,4 @@
 import { email, sendEmail } from 'lib/email'
-import { renderToString } from 'react-dom/server'
 
 export const config = { rpc: true } // enable rpc on this API route
 // export a function that needs to be called from the server and the browser

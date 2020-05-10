@@ -3,7 +3,7 @@ import { useState, ChangeEvent } from 'react'
 import { loadDB } from '../lib/db.js'
 import { User } from 'firebase'
 const layout = {
-	labelCol: { span: 8 },
+	labelCol: { span: 4 },
 	wrapperCol: { span: 16 },
 }
 const tailLayout = {
@@ -12,7 +12,7 @@ const tailLayout = {
 
 const style = {
 	confirmButton: { border: '2px solid lightblue', borderRadius: 10, width: '100%', maxWidth: 500 },
-	emailInput: { marginLeft: 28, maxWidth: 385 },
+	emailInput: {maxWidth: 385 },
 }
 
 const SignupForm = (props: { onSignupSuccess: (user: User | null) => void }) => {
