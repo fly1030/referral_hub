@@ -76,7 +76,7 @@ function filterCasesByReferrer(
     })
     const filteredCases: Array<{[key: string]: any}> = []
     cases.forEach((caseInfo) => { 
-        if (caseInfo.referrerEmail === currentReferrer?.companyEmail) {
+        if (caseInfo.referrerEmail === user?.email) {
             filteredCases.push(caseInfo)
         }
     })
