@@ -13,6 +13,7 @@ import { sendTestEmail } from './api/sendTestEmail'
 import { Companies } from 'lib/companies'
 import ReferrerInfoFormModal from '../components/ReferrerInfoFormModal'
 import HowtoSection from '../components/HowtoSection'
+import router from 'next/router'
 
 const style = {
 	entryButton: { border: '2px solid lightblue', borderRadius: 10, maxWidth: 300 },
@@ -45,8 +46,8 @@ const Index = (props: { [key: string]: Array<any> }) => {
 	const [user, setUser] = useState<User | null>(null)
 	const [loginModalVisible, setLoginModalVisible] = useState(false)
 	const [referrerInfoModalVisible, setReferrerInfoModalVisible] = useState(false)
-	const verifiedReferrers = props.data;
-	const verifiedReferrersEmail = verifiedReferrers.map(referrer => referrer.loginEmail);
+	const verifiedReferrers = props.data
+	const verifiedReferrersEmail = verifiedReferrers.map((referrer) => referrer.loginEmail)
 
 	useEffect(() => {
 		const firebase = loadDB()
@@ -62,22 +63,24 @@ const Index = (props: { [key: string]: Array<any> }) => {
 	const onLeftClick =
 		user == null
 			? () => {
-				setLoginModalVisible(true)
+					setLoginModalVisible(true)
 			  }
 			: () => {
-				if (verifiedReferrersEmail.includes(user.email)) {
-					window.location.href="/AvailableCases"
-				} else {
-					setReferrerInfoModalVisible(true)
-				}
-			}
+					if (verifiedReferrersEmail.includes(user.email)) {
+						router.push('/referrals')
+					} else {
+						setReferrerInfoModalVisible(true)
+					}
+			  }
 
 	const onRightClick =
 		user == null
 			? () => {
-				setLoginModalVisible(true)
+					setLoginModalVisible(true)
 			  }
-			: () => {window.location.href="/status";}
+			: () => {
+					window.location.href = '/status'
+			  }
 
 	return (
 		<>
@@ -85,9 +88,9 @@ const Index = (props: { [key: string]: Array<any> }) => {
 			<PageTopBar
 				isLoggedIn={user != null}
 				onLogout={() => {
-					const firebase = loadDB();
-					firebase.auth().signOut();
-					setUser(null);
+					const firebase = loadDB()
+					firebase.auth().signOut()
+					setUser(null)
 				}}
 				onLoginClicked={() => setLoginModalVisible(true)}
 			/>
@@ -123,13 +126,15 @@ const Index = (props: { [key: string]: Array<any> }) => {
 			>
 				send!
 			</Button>
-			<div className="flex justify-center" style ={{marginTop: '30px', fontSize: 20}}>
+			<div className="flex justify-center" style={{ marginTop: '30px', fontSize: 20 }}>
 				<h1>Get referred to multiple companies with just one click</h1>
 			</div>
 			<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
 			<StatisticsSection />
-			<Divider className="mt4" orientation="center" style={{marginTop: 40}}>
-				<p className="center" style={{marginTop: '16px'}}>Get inside contacts to:</p>
+			<Divider className="mt4" orientation="center" style={{ marginTop: 40 }}>
+				<p className="center" style={{ marginTop: '16px' }}>
+					Get inside contacts to:
+				</p>
 			</Divider>
 
 			<div style={style.companyLogos} className="flex justify-center flex-wrap">

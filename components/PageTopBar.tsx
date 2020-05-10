@@ -1,48 +1,39 @@
-import { PageHeader, Button, Descriptions } from 'antd';
+import { PageHeader, Button, Descriptions } from 'antd'
+import { useRouter } from 'next/router'
 
 const style = {
-	topbar: { backgroundColor: 'lightblue'},
+	topbar: { backgroundColor: 'lightblue' },
 }
 
-function PageTopBar(props: {
-    isLoggedIn: boolean, 
-    onLogout: () => void, 
-    onLoginClicked: () => void,
-}) {
-    const {isLoggedIn, onLogout, onLoginClicked} = props;
-    const secondaryButtonGroup = isLoggedIn ? [
-        <Button 
-            key={0} 
-            onClick={() => {window.location.href="/MyCases"}} 
-            style={{borderStyle: 'hidden', borderColor: 'lightblue', borderRadius: 10, backgroundColor: 'lightblue'}}>
-            <b>My Cases</b>
-        </Button>,
-        <Button 
-            key={1} 
-            onClick={onLogout} 
-            style={{borderStyle: 'hidden', borderColor: 'lightblue', borderRadius: 10, backgroundColor: 'lightblue'}}>
-            <b>Log out</b>
-        </Button>
-    ] : [
-        <Button 
-            key={2} 
-            onClick={onLoginClicked}
-            style={{borderStyle: 'hidden', borderColor: 'lightblue', borderRadius: 10, backgroundColor: 'lightblue'}}
-        >
-            <b>Log in</b>
-        </Button>
-    ]
-    return (
-    <div className="site-page-header-ghost-wrapper" style={style.topbar}>
-        <PageHeader
-            ghost={true}
-            title={
-                <span style={{cursor: 'pointer'}} onClick={() => window.location.href="/"}>YesOnward</span>
-            }
-            extra={secondaryButtonGroup}
-        />
-    </div>
-  );
+function PageTopBar(props: { isLoggedIn: boolean; onLogout: () => void; onLoginClicked: () => void }) {
+	const { isLoggedIn, onLogout, onLoginClicked } = props
+	const secondaryButtonGroup = isLoggedIn ? (
+		<>
+			<a href="/cases">
+				<b>My Cases</b>
+			</a>
+			<a onClick={onLogout}>
+				<b>Log out</b>
+			</a>
+		</>
+	) : (
+		<a onClick={onLoginClicked}>
+			<b>Log in</b>
+		</a>
+	)
+	return (
+		<div className="site-page-header-ghost-wrapper" style={style.topbar}>
+			<PageHeader
+				ghost={true}
+				title={
+					<span style={{ cursor: 'pointer' }} onClick={() => (window.location.href = '/')}>
+						YesOnward
+					</span>
+				}
+				extra={secondaryButtonGroup}
+			/>
+		</div>
+	)
 }
 
 export default PageTopBar
