@@ -1,5 +1,5 @@
 import MainHead from 'components/MainHead'
-import { Divider, Button } from 'antd'
+import { Divider } from 'antd'
 
 import { loadDB } from '../lib/db.js'
 import { GetServerSideProps } from 'next'
@@ -9,7 +9,6 @@ import EntryButtonSection from '../components/EntryButtonSection'
 import StatisticsSection from '../components/StatisticsSection'
 import LoginModal from '../components/LoginModal'
 import PageTopBar from '../components/PageTopBar'
-import { sendTestEmail } from './api/sendTestEmail'
 import { Companies } from 'lib/companies'
 import ReferrerInfoFormModal from '../components/ReferrerInfoFormModal'
 import HowtoSection from '../components/HowtoSection'
@@ -116,16 +115,6 @@ const Index = (props: { [key: string]: Array<any> }) => {
 					setReferrerInfoModalVisible(false)
 				}}
 			/>
-			<Button
-				size="large"
-				style={{ position: 'absolute', right: 0 }}
-				onClick={async () => {
-					await sendTestEmail()
-					alert('sent??')
-				}}
-			>
-				send!
-			</Button>
 			<div className="flex justify-center" style={{ marginTop: '30px', fontSize: 20 }}>
 				<h1>Get referred to multiple companies with just one click</h1>
 			</div>

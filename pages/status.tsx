@@ -7,7 +7,7 @@ import StatusDialog from 'components/StatusDialog'
 import { User } from 'firebase'
 import PageTopBar from '../components/PageTopBar'
 import { PositionsList } from 'lib/PositionsList'
-const { Option } = Select;
+const { Option } = Select
 
 const style = {
 	list: {
@@ -24,62 +24,56 @@ type ReferralData = {
 	resume: string
 }
 
-function writeCasesData(
-	company: string, 
-	positions: Array<string>, 
-	resume: string,
-	comments: string,
-) {
-	const firebase = loadDB();
-	const user = firebase.auth().currentUser;
+function writeCasesData(company: string, positions: Array<string>, resume: string, comments: string) {
+	const firebase = loadDB()
+	const user = firebase.auth().currentUser
 	if (user == null) {
-		console.log('no logged in user');
-		return;
+		console.log('no logged in user')
+		return
 	}
 
-	const userEmail = user.email;
-	const caseID = (((1+Math.random())*0x10000)|0).toString(16).substring(1) + (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-	const firestore = firebase.firestore();
-	const createTime = new Date().toDateString();
+	const candidateEmail = user.email
+	const caseID = (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1) + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+	const firestore = firebase.firestore()
+	const createTime = new Date().toDateString()
 	firestore.collection('cases').doc(caseID).set({
-	  caseID: caseID,
-	  candidateEmail: userEmail,
-	  company: company,
-	  positions : positions,
-	  caseStatus: 'Requested',
-	  createTime: createTime,
-	  referrerEmail: '',
-	  resume: resume,
-	  comments: comments,
-	});
-  }
-
-async function getCasesByCandidate(user: User | null) {
-	const firebase = loadDB();
-	const data: Array<any> = [];
-	if (user == null) {
-		return data;
-	}
-	const userEmail = user.email;
-	const firestore = firebase.firestore();
-	const snapshot = await firestore.collection('cases').get();
-	snapshot.forEach((doc) => data.push(doc.data()))
-	return data.filter(row => row.candidateEmail === userEmail);
+		caseID,
+		candidateEmail,
+		company,
+		positions,
+		caseStatus: 'Requested',
+		createTime,
+		referrerEmail: '',
+		resume,
+		comments,
+	})
 }
 
-function ReferralDialog(props: {
-	visible: boolean, 
-	company: Company | null,
-	onClose: () => void,
-	onSubmit: () => void,
-	}) {
-	const [positions, setPositions] = useState<Array<string>>([]);
-	const [resume, setResume] = useState<string>('');
-	const [comments, setComments] = useState<string>('');
+async function getCasesByCandidate(user: User | null) {
+	const firebase = loadDB()
+	const data: Array<any> = []
+	if (user == null) {
+		return data
+	}
+	const userEmail = user.email
+	const firestore = firebase.firestore()
+	const snapshot = await firestore.collection('cases').get()
+	snapshot.forEach((doc) => data.push(doc.data()))
+	return data.filter((row) => row.candidateEmail === userEmail)
+}
 
-	const positionOptions: Array<ReactNode> = [];
-	PositionsList.forEach(position => {
-		positionOptions.push(<Option value={position} key={position}>{position}</Option>);
+function ReferralDialog(props: { visible: boolean; company: Company | null; onClose: () => void; onSubmit: () => void }) {
+	const [positions, setPositions] = useState<Array<string>>([])
+	const [resume, setResume] = useState<string>('')
+	const [comments, setComments] = useState<string>('')
+
+	const positionOptions: Array<ReactNode> = []
+	PositionsList.forEach((position) => {
+		positionOptions.push(
+			<Option value={position} key={position}>
+				{position}
+			</Option>,
+		)
 	})
 	return (
 		<Modal
@@ -91,46 +85,52 @@ function ReferralDialog(props: {
 			}
 			visible={props.visible}
 			onOk={() => {
-				const companyName = props.company?.name;
+				const companyName = props.company?.name
 				if (companyName == null) {
-					console.log('Must provide company name');
-					return;
+					console.log('Must provide company name')
+					return
 				}
-				writeCasesData(companyName, positions, resume, comments);
-				props.onClose();
+				writeCasesData(companyName, positions, resume, comments)
+				props.onClose()
 				console.log('REFER')
-
 			}}
 			onCancel={props.onClose}
 		>
-			<Form initialValues={{positions: [], resume: ''}} labelAlign="left" labelCol={{ span: 4, offset: 0 }}>
+			<Form initialValues={{ positions: [], resume: '' }} labelAlign="left" labelCol={{ span: 4, offset: 0 }}>
 				<Form.Item label="Positions" name="positions" rules={[{ required: true, message: 'Provide your desired positions' }]}>
-					<Select 
-						mode="multiple" 
-						placeholder="Please select" 
-						onChange={(value) => {setPositions(value)}} 
+					<Select
+						mode="multiple"
+						placeholder="Please select"
+						onChange={(value) => {
+							setPositions(value)
+						}}
 						defaultValue={[]}
-						style={{ width: '100%' }}>
+						style={{ width: '100%' }}
+					>
 						{positionOptions}
 					</Select>
 				</Form.Item>
 				<Form.Item label="Resume" name="resume" rules={[{ required: true, message: 'Enter a link to your resume' }]}>
 					<Input.Group compact>
-						<Input 
-						 style={{ width: '100%' }} 
-						 placeholder="resume link.." 
-						 defaultValue=""
-						 onChange={(e) => {setResume(e.target.value)}}
+						<Input
+							style={{ width: '100%' }}
+							placeholder="resume link.."
+							defaultValue=""
+							onChange={(e) => {
+								setResume(e.target.value)
+							}}
 						/>
 					</Input.Group>
 				</Form.Item>
 				<Form.Item label="Comments" name="comments" rules={[{ required: false, message: 'Enter comments for your application' }]}>
 					<Input.Group compact>
-						<Input 
-						 style={{ width: '100%' }} 
-						 placeholder="Anythig else you want to add..." 
-						 defaultValue=""
-						 onChange={(e) => {setComments(e.target.value)}}
+						<Input
+							style={{ width: '100%' }}
+							placeholder="Anythig else you want to add..."
+							defaultValue=""
+							onChange={(e) => {
+								setComments(e.target.value)
+							}}
 						/>
 					</Input.Group>
 				</Form.Item>
@@ -139,39 +139,38 @@ function ReferralDialog(props: {
 	)
 }
 
-function actionButton(
-	item: Company, 
-	referredCases: Array<{[key: string]: any}>,
-	onReferClick: (item: Company) => void,
-	onShowStatusClick: () => void,
-) {
-	let actionButton = <Button type="primary" onClick={() => onReferClick(item)}>
-		Refer me
-	</Button>;
-	referredCases.forEach((row) => {		
+function actionButton(item: Company, referredCases: Array<{ [key: string]: any }>, onReferClick: (item: Company) => void, onShowStatusClick: () => void) {
+	let actionButton = (
+		<Button type="primary" onClick={() => onReferClick(item)}>
+			Refer me
+		</Button>
+	)
+	referredCases.forEach((row) => {
 		if (row.company === item.name) {
-			actionButton = <Button type="primary" onClick={() => onShowStatusClick()}>
-				Show Status
-			</Button>;
-			return;
+			actionButton = (
+				<Button type="primary" onClick={() => onShowStatusClick()}>
+					Show Status
+				</Button>
+			)
+			return
 		}
 	})
-	return actionButton;
+	return actionButton
 }
 
 function Status() {
-	const [referCompany, setReferCompany] = useState<Company | null>(null);
+	const [referCompany, setReferCompany] = useState<Company | null>(null)
 	const [user, setUser] = useState<User | null>(null)
-	const [referredCases, setReferredCases] = useState<Array<any>>([]);
-	const [isStatusDialogVisible, setIsStatusDialogVisible] = useState<boolean>(false);
-	const [isReferralDialogVisible, setIsReferralDialogVisible] = useState<boolean>(false);
+	const [referredCases, setReferredCases] = useState<Array<any>>([])
+	const [isStatusDialogVisible, setIsStatusDialogVisible] = useState<boolean>(false)
+	const [isReferralDialogVisible, setIsReferralDialogVisible] = useState<boolean>(false)
 
 	useEffect(() => {
 		async function getCases() {
-			const cases = await getCasesByCandidate(user);
-			setReferredCases(cases);
+			const cases = await getCasesByCandidate(user)
+			setReferredCases(cases)
 		}
-		getCases();
+		getCases()
 	}, [user, isReferralDialogVisible])
 
 	useEffect(() => {
@@ -191,10 +190,10 @@ function Status() {
 			<PageTopBar
 				isLoggedIn={user != null}
 				onLogout={() => {
-					const firebase = loadDB();
-					firebase.auth().signOut();
-					setUser(null);
-					window.location.href="/";
+					const firebase = loadDB()
+					firebase.auth().signOut()
+					setUser(null)
+					window.location.href = '/'
 				}}
 				onLoginClicked={() => {}}
 			/>
@@ -205,16 +204,17 @@ function Status() {
 					dataSource={Companies}
 					renderItem={(item) => {
 						const dialogActionButton = actionButton(
-							item, 
-							referredCases, 
+							item,
+							referredCases,
 							() => {
-								setReferCompany(item);
-								setIsReferralDialogVisible(true);
-							}, 
+								setReferCompany(item)
+								setIsReferralDialogVisible(true)
+							},
 							() => {
-								setReferCompany(item);
-								setIsStatusDialogVisible(true);
-							});
+								setReferCompany(item)
+								setIsStatusDialogVisible(true)
+							},
+						)
 						const actions = [
 							dialogActionButton,
 							<Button danger type="link">
@@ -236,12 +236,7 @@ function Status() {
 						console.log('submit!')
 					}}
 				/>
-				<StatusDialog
-					visible={isStatusDialogVisible}
-					onClose={() => setIsStatusDialogVisible(false)}
-					company={referCompany}
-					referredCases={referredCases}
-				/>
+				<StatusDialog visible={isStatusDialogVisible} onClose={() => setIsStatusDialogVisible(false)} company={referCompany} referredCases={referredCases} />
 			</div>
 		</>
 	)
