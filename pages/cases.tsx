@@ -210,7 +210,7 @@ function MyCases(props: { [key: string]: Array<{[key: string]: any}> }) {
     if (user == null) {
 		return (
 			<>
-				<MainHead title="Available Cases" />
+				<MainHead title="Yes Onward" />
 				<PageTopBar
 					isLoggedIn={user != null}
 					onLogout={() => {

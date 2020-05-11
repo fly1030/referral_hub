@@ -141,7 +141,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 	if (currentReferrer == null) {
 		return (
 			<>
-				<MainHead title="Available Cases" />
+				<MainHead title="Yes Onward" />
 				<PageTopBar
 					isLoggedIn={user != null}
 					onLogout={() => {
@@ -198,7 +198,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 	// 	<h1 style={{paddingLeft: 20, margin: 20}}>{`Available cases for ${currentReferrer?.company}`}</h1>
 	return (
 		<>
-			<MainHead title="Available Cases" />
+			<MainHead title="Yes Onward" />
 			<PageTopBar
 				isLoggedIn={user != null}
 				onLogout={() => {

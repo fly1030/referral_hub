@@ -187,7 +187,7 @@ function Status() {
 	if (user == null) {
 		return (
 			<>
-				<MainHead title="Available Cases" />
+				<MainHead title="Yes Onward" />
 				<PageTopBar
 					isLoggedIn={user != null}
 					onLogout={() => {
@@ -206,7 +206,7 @@ function Status() {
 
 	return (
 		<>
-			<MainHead title="Status" />
+			<MainHead title="Yes Onward" />
 			<PageTopBar
 				isLoggedIn={user != null}
 				onLogout={() => {
