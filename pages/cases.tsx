@@ -69,6 +69,7 @@ function filterCasesByReferrer(
     referrers: Array<{[key: string]: any}>, 
     user: User | null,
 ): Array<{[key: string]: any}> {
+    let currentReferrer: {[key: string]: any} | null = null
     referrers.forEach((referrerInfo) => {
         if (referrerInfo.loginEmail === user?.email) {
             currentReferrer = referrerInfo;
