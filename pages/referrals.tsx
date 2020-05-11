@@ -1,4 +1,4 @@
-import { Collapse, Button } from 'antd'
+import { Collapse, Button, Empty } from 'antd'
 import { GetServerSideProps } from 'next'
 import { loadDB } from 'lib/db'
 import { useState, useEffect } from 'react'
@@ -50,8 +50,10 @@ async function onCaseClaimed(availableCase: { [key: string]: any } | null, refer
 function getExtra(
 	availableCase: { [key: string]: any },
 	onButtonClicked: () => void,
+	isClaimed: boolean,
 	referrerEmail?: string | null,
 	) {
+	console.log('isClaimed: ', isClaimed);
 	return (
 		<Button
 			type="primary"
@@ -59,9 +61,9 @@ function getExtra(
 				onButtonClicked()
 				event.stopPropagation()
 			}}
-			disabled={availableCase.caseStatus !== 'Requested' || referrerEmail == null}
+			disabled={availableCase.caseStatus !== 'Requested' || isClaimed || referrerEmail == null}
 		>
-			Claim
+			{isClaimed ? 'Claimed' : 'Claim'}
 		</Button>
 	)
 }
@@ -90,6 +92,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 	const [user, setUser] = useState<User | null>(null)
 	const [confirmClaimDialogVisible, setConfirmClaimDialogVisible] = useState<boolean>(false)
 	const [currentCase, setCurrentCase] = useState<{ [key: string]: any } | null>(null)
+	const [claimedCases, setClaimedCases] = useState<Array<string>>([])
 
 	useEffect(() => {
 		const firebase = loadDB()
@@ -115,6 +118,36 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 		return <div />
 	}
 
+	if (avaliableCases.length === 0) {
+		return (
+			<>
+				<MainHead title="Available Cases" />
+				<PageTopBar
+					isLoggedIn={user != null}
+					onLogout={() => {
+						const firebase = loadDB()
+						firebase.auth().signOut()
+						setUser(null)
+						window.location.href = '/'
+					}}
+					onLoginClicked={() => {}}
+				/>
+				<Empty
+					image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+					imageStyle={{
+					height: 60,
+					}}
+					description={
+					<span>
+						There is no active referral requestes currently
+					</span>
+					}
+				/>
+			</>
+		)
+	}
+
+	// 	<h1 style={{paddingLeft: 20, margin: 20}}>{`Available cases for ${currentReferrer?.company}`}</h1>
 	return (
 		<>
 			<MainHead title="Available Cases" />
@@ -130,9 +163,13 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 			/>
 			<Collapse style={{ margin: '20px' }}>
 				{avaliableCases.map((availableCase) => {
+					let caseStatus = availableCase.caseStatus
+					if (claimedCases.includes(availableCase.caseID)) {
+						caseStatus = 'Claimed'
+					}
 					return (
 						<Panel 
-							header={<b>{availableCase.candidateEmail}</b>} 
+							header={<b>{`Candidate: ${availableCase.candidateEmail}`}</b>} 
 							key={availableCase.caseID} 
 							extra={getExtra(
 								availableCase,
@@ -140,13 +177,14 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 									setConfirmClaimDialogVisible(true)
 									setCurrentCase(availableCase)
 								},
-								user?.email,
+								claimedCases.includes(availableCase.caseID),
+								user?.email
 							)}>
 							<p>
 								Candidate Email: <b>{availableCase.candidateEmail}</b>
 							</p>
 							<p>
-								Case Status: <b>{availableCase.caseStatus}</b>
+								Case Status: <b>{caseStatus}</b>
 							</p>
 							<p>
 								Applying to: <b>{availableCase.company}</b>
@@ -168,7 +206,11 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
                 visible = {confirmClaimDialogVisible}
                 onConfirm={() => {
 					onCaseClaimed(currentCase, user?.email)
-                    setConfirmClaimDialogVisible(false)
+					setConfirmClaimDialogVisible(false)
+					if (currentCase != null) {
+						const updatedClaimedCases = [...claimedCases, currentCase.caseID]
+						setClaimedCases(updatedClaimedCases)
+					}
                 }}
                 onCancel={() => {setConfirmClaimDialogVisible(false)}} 
             />
