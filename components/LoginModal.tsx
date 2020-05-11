@@ -4,7 +4,12 @@ import { User } from 'firebase'
 import { useState } from 'react'
 import SignupForm from './SignupForm'
 
-function LoginModal(props: { visible: boolean; onCancel: () => void; onConfirm: () => void; onLoginSuccess: (user: User | null) => void }) {
+function LoginModal(props: { 
+	visible: boolean; 
+	onCancel: () => void; 
+	onConfirm: () => void; 
+	onLoginSuccess: (user: User | null) => void 
+}) {
 	const [shouldShowSignup, setShouldShowSignup] = useState(false)
 	return (
 		<Modal
@@ -42,7 +47,9 @@ function LoginModal(props: { visible: boolean; onCancel: () => void; onConfirm: 
 					  ]
 			}
 		>
-			{shouldShowSignup ? <SignupForm onSignupSuccess={props.onLoginSuccess} /> : <Login onLoginSuccess={props.onLoginSuccess} />}
+			{shouldShowSignup ? 
+			<SignupForm onSignupSuccess={props.onLoginSuccess} /> : 
+			<Login onLoginSuccess={props.onLoginSuccess} />}
 		</Modal>
 	)
 }

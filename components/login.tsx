@@ -80,7 +80,11 @@ const Login = (props: { onLoginSuccess: (user: User | null) => void }) => {
 								.auth()
 								.signInWithEmailAndPassword(email, password)
 								.then((u) => {
-									window.location.href = '/'
+									const user = u.user
+									onLoginSuccess(user)
+									if (onLoginSuccess == null) {
+										window.location.href = '/'
+									}
 								})
 								.catch((error) => {
 									console.log(error)

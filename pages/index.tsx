@@ -27,7 +27,6 @@ const style = {
 		height: 32,
 		marginTop: 20,
 		marginBottom: 20,
-		// objectFit: 'cover' as const,
 	},
 }
 
@@ -45,6 +44,8 @@ const Index = (props: { [key: string]: Array<any> }) => {
 	const [user, setUser] = useState<User | null>(null)
 	const [loginModalVisible, setLoginModalVisible] = useState(false)
 	const [referrerInfoModalVisible, setReferrerInfoModalVisible] = useState(false)
+	const [isReferralButtonClicked, setIsReferralButtonClicked] = useState(false)
+	const [isCandidateButtonClicked, setIsCandidateButtonClicked] = useState(false)
 	const verifiedReferrers = props.data
 	const verifiedReferrersEmail = verifiedReferrers.map((referrer) => referrer.loginEmail)
 
@@ -63,6 +64,7 @@ const Index = (props: { [key: string]: Array<any> }) => {
 		user == null
 			? () => {
 					setLoginModalVisible(true)
+					setIsReferralButtonClicked(true)
 			  }
 			: () => {
 					if (verifiedReferrersEmail.includes(user.email)) {
@@ -76,6 +78,7 @@ const Index = (props: { [key: string]: Array<any> }) => {
 		user == null
 			? () => {
 					setLoginModalVisible(true)
+					setIsCandidateButtonClicked(true)
 			  }
 			: () => {
 					window.location.href = '/status'
@@ -104,6 +107,15 @@ const Index = (props: { [key: string]: Array<any> }) => {
 				onLoginSuccess={(user: User) => {
 					setUser(user)
 					setLoginModalVisible(false)
+					if (isReferralButtonClicked) {
+						if (verifiedReferrersEmail.includes(user.email)) {
+							router.push('/referrals')
+						} else {
+							setReferrerInfoModalVisible(true)
+						}
+					} else if (isCandidateButtonClicked) {
+						router.push('/status')
+					}
 				}}
 			/>
 			<ReferrerInfoFormModal

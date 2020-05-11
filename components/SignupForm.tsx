@@ -19,6 +19,7 @@ const SignupForm = (props: { onSignupSuccess: (user: User | null) => void }) => 
 	const onFinishFailed = () => {}
 	const [email, setEmail] = useState<string | null>(null)
 	const [password, setPassword] = useState<string | null>(null)
+	const {onSignupSuccess} = props
 
 	return (
 		<Form {...layout} name="basic" initialValues={{ remember: true }} onFinish={() => {}} onFinishFailed={onFinishFailed}>
@@ -52,7 +53,11 @@ const SignupForm = (props: { onSignupSuccess: (user: User | null) => void }) => 
 							.auth()
 							.createUserWithEmailAndPassword(email, password)
 							.then((u) => {
-								window.location.href = '/'
+								const user = u.user
+								onSignupSuccess(user)
+								if (onSignupSuccess == null) {
+									window.location.href = '/'
+								}
 							})
 							.catch((error) => {
 								console.log(error)
