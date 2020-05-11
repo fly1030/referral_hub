@@ -29,24 +29,11 @@ const style = {
 	},
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	const firebase = loadDB()
-	const db = firebase.firestore()
-	const snapshot = await db.collection('referrers').get()
-	const data: Array<any> = []
-	snapshot.forEach((doc) => data.push(doc.data()))
-	// Pass data to the page via props
-	return { props: { data } }
-}
-
-const Index = (props: { [key: string]: Array<any> }) => {
+const Index = () => {
 	const [user, setUser] = useState<User | null>(null)
 	const [loginModalVisible, setLoginModalVisible] = useState(false)
-	const [referrerInfoModalVisible, setReferrerInfoModalVisible] = useState(false)
 	const [isReferralButtonClicked, setIsReferralButtonClicked] = useState(false)
 	const [isCandidateButtonClicked, setIsCandidateButtonClicked] = useState(false)
-	const verifiedReferrers = props.data
-	const verifiedReferrersEmail = verifiedReferrers.map((referrer) => referrer.loginEmail)
 
 	useEffect(() => {
 		const firebase = loadDB()

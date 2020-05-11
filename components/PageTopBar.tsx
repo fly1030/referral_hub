@@ -1,5 +1,6 @@
 import { PageHeader, Button, Descriptions } from 'antd'
 import { useRouter } from 'next/router'
+import { UpCircleTwoTone, UpCircleOutlined, ArrowUpOutlined, RiseOutlined, UpSquareFilled } from '@ant-design/icons'
 
 const style = {
 	topbar: { backgroundColor: 'lightblue' },
@@ -25,10 +26,12 @@ function PageTopBar(props: { isLoggedIn: boolean; onLogout: () => void; onLoginC
 		<div className="site-page-header-ghost-wrapper" style={style.topbar}>
 			<PageHeader
 				ghost={true}
-				title={
-					<span style={{ cursor: 'pointer' }} onClick={() => (window.location.href = '/')}>
+				title={<>
+					<UpSquareFilled />
+					<span style={{ cursor: 'pointer', paddingLeft: 4 }} onClick={() => (window.location.href = '/')}>
 						YesOnward
 					</span>
+					</>
 				}
 				extra={secondaryButtonGroup}
 			/>
