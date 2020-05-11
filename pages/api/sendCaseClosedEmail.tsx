@@ -8,12 +8,12 @@ export async function sendCaseClosedEmail(caseInfo: { [key: string]: any }) {
 		`Your referral to ${caseInfo.company} has been submitted successfully`,
 		<>
 			<h2>Congratulations</h2>
-			<p>Your referrer submitted your referreal to {caseInfo.company}</p>
-			<p>Expect the offcial referral confirmaion email from {caseInfo.company}</p>
+			<p>You have been referred to {caseInfo.company}</p>
+			<p>Expect the offcial referral confirmation email from {caseInfo.company}</p>
 			<p>
 				If you don't get them within three days or want to get referred to more companies, visit
-				<a href="https://yesonward.com">YesOnward</a>
+				 <a href="https://yesonward.com">YesOnward</a>
 			</p>
-		</>,
+		</>
 	)
 }
