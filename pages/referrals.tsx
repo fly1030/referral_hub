@@ -7,6 +7,7 @@ const { Panel } = Collapse
 import MainHead from 'components/MainHead'
 import PageTopBar from 'components/PageTopBar'
 import { sendClaimedEmail } from 'pages/api/sendClaimedEmail'
+import CaseClaimedConfirmModal from 'components/CaseClaimedConfirmModal'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const firebase = loadDB()
@@ -26,8 +27,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	return { props: { cases, referrersInfo } }
 }
 
-async function onCaseClaimed(availableCase: { [key: string]: any }, referrerEmail?: string | null) {
-	if (referrerEmail == null) {
+async function onCaseClaimed(availableCase: { [key: string]: any } | null, referrerEmail?: string | null) {
+	if (referrerEmail == null || availableCase == null) {
 		return
 	}
 	const firebase = loadDB()
@@ -46,12 +47,16 @@ async function onCaseClaimed(availableCase: { [key: string]: any }, referrerEmai
 	sendClaimedEmail(availableCase, referrerEmail)
 }
 
-function getExtra(availableCase: { [key: string]: any }, referrerEmail?: string | null) {
+function getExtra(
+	availableCase: { [key: string]: any },
+	onButtonClicked: () => void,
+	referrerEmail?: string | null,
+	) {
 	return (
 		<Button
 			type="primary"
 			onClick={(event) => {
-				onCaseClaimed(availableCase, referrerEmail)
+				onButtonClicked()
 				event.stopPropagation()
 			}}
 			disabled={availableCase.caseStatus !== 'Requested' || referrerEmail == null}
@@ -83,6 +88,8 @@ function filterAvailableCasesByCompany(
 
 function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> }) {
 	const [user, setUser] = useState<User | null>(null)
+	const [confirmClaimDialogVisible, setConfirmClaimDialogVisible] = useState<boolean>(false)
+	const [currentCase, setCurrentCase] = useState<{ [key: string]: any } | null>(null)
 
 	useEffect(() => {
 		const firebase = loadDB()
@@ -124,7 +131,17 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 			<Collapse style={{ margin: '20px' }}>
 				{avaliableCases.map((availableCase) => {
 					return (
-						<Panel header={<b>{availableCase.candidateEmail}</b>} key={availableCase.caseID} extra={getExtra(availableCase, user?.email)}>
+						<Panel 
+							header={<b>{availableCase.candidateEmail}</b>} 
+							key={availableCase.caseID} 
+							extra={getExtra(
+								availableCase,
+								() => {
+									setConfirmClaimDialogVisible(true)
+									setCurrentCase(availableCase)
+								},
+								user?.email,
+							)}>
 							<p>
 								Candidate Email: <b>{availableCase.candidateEmail}</b>
 							</p>
@@ -147,6 +164,14 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 					)
 				})}
 			</Collapse>
+			<CaseClaimedConfirmModal 
+                visible = {confirmClaimDialogVisible}
+                onConfirm={() => {
+					onCaseClaimed(currentCase, user?.email)
+                    setConfirmClaimDialogVisible(false)
+                }}
+                onCancel={() => {setConfirmClaimDialogVisible(false)}} 
+            />
 		</>
 	)
 }
