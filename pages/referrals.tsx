@@ -53,7 +53,6 @@ function getExtra(
 	isClaimed: boolean,
 	referrerEmail?: string | null,
 	) {
-	console.log('isClaimed: ', isClaimed);
 	return (
 		<Button
 			type="primary"
@@ -63,7 +62,7 @@ function getExtra(
 			}}
 			disabled={availableCase.caseStatus !== 'Requested' || isClaimed || referrerEmail == null}
 		>
-			{isClaimed ? 'Claimed' : 'Claim'}
+			{'Claim'}
 		</Button>
 	)
 }

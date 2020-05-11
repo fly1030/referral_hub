@@ -47,7 +47,8 @@ async function onCaseClosed(
 
 function getExtra(
     claimedCase: {[key: string]: any},
-    onClicked: () => void
+    onClicked: () => void,
+    isCaseClosed: boolean,
 ) {
     return  (
         <Button 
@@ -56,7 +57,7 @@ function getExtra(
                 onClicked();
                 event.stopPropagation();
             }}
-            disabled={claimedCase.caseStatus === 'Closed'}
+            disabled={isCaseClosed || claimedCase.caseStatus === 'Closed'}
         >
             Close
         </Button>
@@ -136,6 +137,7 @@ function MyCasesAsReferrer(
 ) {
     const [confirmCloseDialogVisible, setConfirmCloseDialogVisible] = useState<boolean>(false)
     const [currentCase, setCurrentCase] = useState<{[key: string]: any} | null>(null)
+    const [closedCases, setClosedCases] = useState<Array<string>>([])
 
     return (
         <>
@@ -143,10 +145,14 @@ function MyCasesAsReferrer(
             <Collapse style={{margin: 20}}>
                 {
                     props.referrerCases.map((caseInfo) => {
+                        let caseStatus = caseInfo.caseStatus
+                        if (closedCases.includes(caseInfo.caseID)) {
+                            caseStatus = 'Closed'
+                        }
                         const header = (<>
                             <b>{caseInfo.candidateEmail}</b>
                             <Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
-                            <span>{caseInfo.caseStatus}</span>
+                            <span>{caseStatus}</span>
                         </>)
                         return (
                             <Panel 
@@ -157,10 +163,11 @@ function MyCasesAsReferrer(
                                     () => {
                                         setCurrentCase(caseInfo)
                                         setConfirmCloseDialogVisible(true)
-                                    }
+                                    },
+                                    closedCases.includes(caseInfo.caseID),
                                 )}>
                                 <p>Candidate Email: <b>{caseInfo.candidateEmail}</b></p>
-                                <p>Case Status: <b>{caseInfo.caseStatus}</b></p>
+                                <p>Case Status: <b>{caseStatus}</b></p>
                                 <p>Applying to: <b>{caseInfo.company}</b></p>
                                 <p>Interested Positions: <b>{caseInfo.positions}</b></p>
                                 <p>Additional Info: <b>{caseInfo.comments}</b></p>
@@ -175,6 +182,8 @@ function MyCasesAsReferrer(
                     onCaseClosed(currentCase);
                     setConfirmCloseDialogVisible(false)
                     if (currentCase != null) {
+                        const updatedClosedCases = [...closedCases, currentCase.caseID]
+                        setClosedCases(updatedClosedCases)
                         sendCaseClosedEmail(currentCase)
                     }
                 }}
