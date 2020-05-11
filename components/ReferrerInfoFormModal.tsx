@@ -26,7 +26,11 @@ function writeReferrerData(currentComppany: string, companyEmail: string) {
 	})
 }
 
-function ReferrerInfoFormModal(props: { visible: boolean; onCancel: () => void; onConfirm: () => void }) {
+function ReferrerInfoFormModal(props: { 
+	visible: boolean 
+	onCancel: () => void 
+	onConfirm: (company: string | null, companyEmail: string | null) => void 
+}) {
 	const [currentComppany, setCurrentCompany] = useState<string | null>(null)
 	const [companyEmail, setCompanyEmail] = useState<string | null>(null)
 
@@ -45,7 +49,7 @@ function ReferrerInfoFormModal(props: { visible: boolean; onCancel: () => void; 
 		<Modal
 			title="Tell us more about you"
 			visible={props.visible}
-			onOk={props.onConfirm}
+			onOk={() => {}}
 			onCancel={props.onCancel}
 			footer={[
 				<Button
@@ -54,7 +58,7 @@ function ReferrerInfoFormModal(props: { visible: boolean; onCancel: () => void; 
 						if (currentComppany != null && companyEmail != null) {
 							writeReferrerData(currentComppany, companyEmail)
 						}
-						props.onConfirm()
+						props.onConfirm(currentComppany, companyEmail)
 						router.push('/referrals')
 					}}
 				>

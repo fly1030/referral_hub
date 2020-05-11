@@ -1,4 +1,4 @@
-import { List, Button, Modal, Form, Select, Input } from 'antd'
+import { List, Button, Modal, Form, Select, Input, Spin } from 'antd'
 import { Companies, Company } from 'lib/companies'
 import MainHead from 'components/MainHead'
 import { useState, useEffect, ReactNode } from 'react'
@@ -183,6 +183,26 @@ function Status() {
 			}
 		})
 	}, [])
+
+	if (user == null) {
+		return (
+			<>
+				<MainHead title="Available Cases" />
+				<PageTopBar
+					isLoggedIn={user != null}
+					onLogout={() => {
+						const firebase = loadDB()
+						firebase.auth().signOut()
+						setUser(null)
+						window.location.href = '/'
+					}}
+					onLoginClicked={() => {}}
+				/>
+				<div style={{textAlign: "center", paddingTop: 20}}><Spin size="large" /></div>
+			</>
+		)
+	}
+
 
 	return (
 		<>

@@ -10,7 +10,6 @@ import StatisticsSection from '../components/StatisticsSection'
 import LoginModal from '../components/LoginModal'
 import PageTopBar from '../components/PageTopBar'
 import { Companies } from 'lib/companies'
-import ReferrerInfoFormModal from '../components/ReferrerInfoFormModal'
 import HowtoSection from '../components/HowtoSection'
 import router from 'next/router'
 
@@ -67,11 +66,7 @@ const Index = (props: { [key: string]: Array<any> }) => {
 					setIsReferralButtonClicked(true)
 			  }
 			: () => {
-					if (verifiedReferrersEmail.includes(user.email)) {
-						router.push('/referrals')
-					} else {
-						setReferrerInfoModalVisible(true)
-					}
+				router.push('/referrals')
 			  }
 
 	const onRightClick =
@@ -108,23 +103,10 @@ const Index = (props: { [key: string]: Array<any> }) => {
 					setUser(user)
 					setLoginModalVisible(false)
 					if (isReferralButtonClicked) {
-						if (verifiedReferrersEmail.includes(user.email)) {
-							router.push('/referrals')
-						} else {
-							setReferrerInfoModalVisible(true)
-						}
+						router.push('/referrals')
 					} else if (isCandidateButtonClicked) {
 						router.push('/status')
 					}
-				}}
-			/>
-			<ReferrerInfoFormModal
-				visible={referrerInfoModalVisible}
-				onConfirm={() => {
-					setReferrerInfoModalVisible(false)
-				}}
-				onCancel={() => {
-					setReferrerInfoModalVisible(false)
 				}}
 			/>
 			<div className="flex justify-center" style={{ marginTop: '30px', fontSize: 20 }}>

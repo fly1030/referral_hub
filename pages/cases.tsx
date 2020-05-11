@@ -1,4 +1,4 @@
-import { Collapse, Button, Divider } from 'antd';
+import { Collapse, Button, Divider, Spin } from 'antd';
 import { GetServerSideProps } from 'next';
 import { loadDB } from 'lib/db';
 import { useState, useEffect } from 'react';
@@ -205,7 +205,27 @@ function MyCases(props: { [key: string]: Array<{[key: string]: any}> }) {
 				setUser(null)
 			}
 		})
-	}, [])
+    }, [])
+    
+    if (user == null) {
+		return (
+			<>
+				<MainHead title="Available Cases" />
+				<PageTopBar
+					isLoggedIn={user != null}
+					onLogout={() => {
+						const firebase = loadDB()
+						firebase.auth().signOut()
+						setUser(null)
+						window.location.href = '/'
+					}}
+					onLoginClicked={() => {}}
+				/>
+				<div style={{textAlign: "center", paddingTop: 20}}><Spin size="large" /></div>
+			</>
+		)
+	}
+
 
     const myReferrerCases = 
         user == null ? 
