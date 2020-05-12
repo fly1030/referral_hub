@@ -1,8 +1,7 @@
 import MainHead from 'components/MainHead'
-import { Divider } from 'antd'
+import { Divider, Row, Col } from 'antd'
 
 import { loadDB } from '../lib/db.js'
-import { GetServerSideProps } from 'next'
 import { useState, useEffect } from 'react'
 import { User } from 'firebase'
 import EntryButtonSection from '../components/EntryButtonSection'
@@ -11,7 +10,6 @@ import LoginModal from '../components/LoginModal'
 import PageTopBar from '../components/PageTopBar'
 import { Companies } from 'lib/companies'
 import HowtoSection from '../components/HowtoSection'
-import router from 'next/router'
 
 const style = {
 	entryButton: { border: '2px solid lightblue', borderRadius: 10, maxWidth: 300 },
@@ -26,6 +24,10 @@ const style = {
 		height: 32,
 		marginTop: 20,
 		marginBottom: 20,
+	},
+	banner: {
+		width: '100%',
+		height: 'auto',
 	},
 }
 
@@ -53,7 +55,7 @@ const Index = () => {
 					setIsReferralButtonClicked(true)
 			  }
 			: () => {
-				router.push('/referrals')
+				window.location.href = '/referrals'
 			  }
 
 	const onRightClick =
@@ -63,7 +65,7 @@ const Index = () => {
 					setIsCandidateButtonClicked(true)
 			  }
 			: () => {
-					window.location.href = '/status'
+				window.location.href = '/status'
 			  }
 
 	return (
@@ -90,16 +92,25 @@ const Index = () => {
 					setUser(user)
 					setLoginModalVisible(false)
 					if (isReferralButtonClicked) {
-						router.push('/referrals')
+						window.location.href = '/referrals'
 					} else if (isCandidateButtonClicked) {
-						router.push('/status')
+						window.location.href = '/status'
 					}
 				}}
 			/>
-			<div className="flex justify-center" style={{ marginTop: '30px', fontSize: 20 }}>
-				<h1>Get referred to multiple companies with just one click</h1>
-			</div>
-			<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
+			<Row style={{marginTop: 30, paddingLeft: 20}}>
+				<Col span={12} style={{display: 'flex', alignItems: 'center', paddingRight: 20}}>
+					<div>
+						<div className="flex justify-center" style={{ marginTop: '30px', fontSize: 20 }}>
+							<h1>Get referred to multiple companies with just one click</h1>
+						</div>
+						<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
+					</div>
+				</Col>
+				<Col span={12}>
+					<img style={style.banner} src={`/img/logos/undraw_through_the_park_lxnl.svg`} />
+				</Col>
+			</Row>
 			<StatisticsSection />
 			<Divider className="mt4" orientation="center" style={{ marginTop: 40 }}>
 				<p className="center" style={{ marginTop: '16px' }}>

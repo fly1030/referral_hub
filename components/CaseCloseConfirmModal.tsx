@@ -8,8 +8,9 @@ function CaseCloseConfirmModal(props: {
 }) {
     const modalContent = 
         <>
-            <b>Thanks! Can you confirm if the referral has been made? </b>
-            <p>Once confirmed we'll send an email notice to the applicant to let them know!</p>
+            <b>Thanks! Can you confirm if the referral has been submitted? </b>
+            <p> </p>
+            <p>Once confirmed we'll send an email notification to the applicant!</p>
         </>
     const footerButtonGroup = 
         [

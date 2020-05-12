@@ -1,6 +1,5 @@
-import { PageHeader, Button, Descriptions } from 'antd'
-import { useRouter } from 'next/router'
-import { UpCircleTwoTone, UpCircleOutlined, ArrowUpOutlined, RiseOutlined, UpSquareFilled } from '@ant-design/icons'
+import { PageHeader } from 'antd'
+import { UpSquareFilled } from '@ant-design/icons'
 
 const style = {
 	topbar: { backgroundColor: 'lightblue' },
