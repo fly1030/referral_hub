@@ -36,13 +36,14 @@ const CandidateEntryButton = (props: {onClick: () => void}) => (
 
 
 function EntryButtonSection(props: {user: User | null, onLeftClick: () => void, onRightClick: () => void}) {           
-    const {user, onLeftClick, onRightClick} = props;
+    const {onLeftClick, onRightClick} = props;
     return (
         <div className="flex justify-center">
             <div style={style.entryButtonCont} className="flex flex-row justify-center mt2">
                 <Tooltip title='Get referred to your dream companies with just one click.'>
                     <CandidateEntryButton onClick={onRightClick} />
                 </Tooltip>
+                <Divider type="vertical" style={{height: '100%'}}/>
                 <Tooltip title='Refer people without exposing your personal info.'>
                     <ReferrerEntryButton onClick={onLeftClick} />
                 </Tooltip>

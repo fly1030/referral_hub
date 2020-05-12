@@ -99,15 +99,39 @@ const Index = () => {
 				}}
 			/>
 			<Row style={{marginTop: 30, paddingLeft: 20}}>
-				<Col span={12} style={{display: 'flex', alignItems: 'center', paddingRight: 20}}>
+				<Col span={12} style={{
+					display: 'flex', 
+					alignItems: 'center', 
+					paddingRight: 20, 
+					paddingLeft: 20, 
+					maxWidth: 600
+				}}>
 					<div>
-						<div className="flex justify-center" style={{ marginTop: '30px', fontSize: 20 }}>
-							<h1>Get referred to multiple companies with just one click</h1>
+						<div style={{ 
+							display: 'flex', 
+							justifyContent: 'center', 
+							marginTop: '30px', 
+							fontSize: 20,
+							paddingLeft: 20,
+						}}>
+							<h1>Redefine referral experiences</h1>
 						</div>
+						<div style={{
+							display: 'flex', 
+							justifyContent: 'center', 
+							fontSize: 20 , 
+							paddingLeft: 40,
+						}}>
+							<p>
+								Candidates will get referred to multiple companies with just one click
+								while referrers get access to large pool of talents while not exposing their contact information
+							</p>
+						</div>
+						
 						<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
 					</div>
 				</Col>
-				<Col span={12}>
+				<Col span={12} style={{paddingRight: 20}}>
 					<img style={style.banner} src={`/img/logos/undraw_through_the_park_lxnl.svg`} />
 				</Col>
 			</Row>
