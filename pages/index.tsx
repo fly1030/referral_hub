@@ -55,7 +55,7 @@ const Index = () => {
 					setIsReferralButtonClicked(true)
 			  }
 			: () => {
-				window.location.href = '/referrals'
+					window.location.href = '/referrals'
 			  }
 
 	const onRightClick =
@@ -65,7 +65,7 @@ const Index = () => {
 					setIsCandidateButtonClicked(true)
 			  }
 			: () => {
-				window.location.href = '/status'
+					window.location.href = '/status'
 			  }
 
 	return (
@@ -98,43 +98,51 @@ const Index = () => {
 					}
 				}}
 			/>
-			<Row style={{paddingLeft: 20}}>
-				<Col flex="1 1 50%" style={{
-					display: 'flex', 
-					alignItems: 'center', 
-					paddingRight: 20, 
-					paddingLeft: 20, 
-					maxWidth: 600,
-					marginTop: 30,
-				}}>
-					<div>
-						<div style={{ 
-							display: 'flex', 
-							justifyContent: 'start', 
-							marginTop: '30px', 
-							fontSize: 20,
-						}}>
-							<h1>Redefine referral experiences</h1>
+			<div className="px1 flex items-center content-center flex-wrap">
+				<Col
+					flex="1 1 50%"
+					className="flex items-center"
+					style={{
+						paddingRight: 20,
+						paddingLeft: 20,
+						width: '100%',
+					}}
+				>
+					<div className="flex flex-column justify-center items-center" style={{ minWidth: '43em', flexGrow: 1 }}>
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'center',
+								fontSize: 20,
+							}}
+						>
+							<h1>Redefine referral experience</h1>
 						</div>
-						<div style={{
-							display: 'flex', 
-							justifyContent: 'start', 
-							fontSize: 20 , 
-						}}>
-							<p>
-								Candidates will get referred to multiple companies with just one click
-								while referrers get access to large pool of talents while not exposing their contact information
-							</p>
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'start',
+								fontSize: 20,
+							}}
+						>
+							<div>
+								<div>
+									<b style={{ color: 'black' }}>Job seekers:</b> Put your resume directly into the internal hiring teams.
+								</div>
+								<div>
+									<b style={{ color: 'black' }}>Referrers:</b> Get more referral leads without exposing your personal info.
+								</div>
+							</div>
 						</div>
-						
 						<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
+						<Divider />
+						<StatisticsSection />
 					</div>
 				</Col>
-				<Col flex="1 1 50%" style={{paddingRight: 20, marginTop: 30}}>
+				<Col flex="1 1 50%" style={{ maxWidth: '70em', minWidth: '43em' }}>
 					<img style={style.banner} src={`/img/logos/undraw_through_the_park_lxnl.svg`} />
 				</Col>
-			</Row>
-			<StatisticsSection />
+			</div>
 			<Divider className="mt4" orientation="center" style={{ marginTop: 40 }}>
 				<p className="center" style={{ marginTop: '16px' }}>
 					Get inside contacts to:
