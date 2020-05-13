@@ -121,6 +121,7 @@ function MyCasesAsApplicant(
                                 <p>Case Status: <b>{caseInfo.caseStatus}</b></p>
                                 <p>Applying to: <b>{caseInfo.company}</b></p>
                                 <p>Interested Positions: <b>{caseInfo.positions}</b></p>
+                                <p>Resume Link: <b>{caseInfo.resume}</b></p>
                                 <p>Additional Info: <b>{caseInfo.comments}</b></p>
                                 <p>Case Created on: <b>{caseInfo.createTime}</b></p>
                             </Panel>)
@@ -169,6 +170,7 @@ function MyCasesAsReferrer(
                                 <p>Case Status: <b>{caseStatus}</b></p>
                                 <p>Applying to: <b>{caseInfo.company}</b></p>
                                 <p>Interested Positions: <b>{caseInfo.positions}</b></p>
+                                <p>Resume Link: <b>{caseInfo.resume}</b></p>
                                 <p>Additional Info: <b>{caseInfo.comments}</b></p>
                                 <p>Case Created on: <b>{caseInfo.createTime}</b></p>
                             </Panel>)

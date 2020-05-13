@@ -240,6 +240,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 							<p>
 								Interested Positions: <b>{availableCase.positions}</b>
 							</p>
+							<p>Resume Link: <b>{availableCase.resume}</b></p>
 							<p>
 								Additional Info: <b>{availableCase.comments}</b>
 							</p>
