@@ -100,6 +100,7 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 				</div>
 			}
 			visible={props.visible}
+			okButtonProps={{ disabled: !positions || !resume }}
 			onOk={() => {
 				const companyName = props.company?.name
 				if (companyName == null) {
