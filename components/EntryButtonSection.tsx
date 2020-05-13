@@ -1,6 +1,5 @@
 import EntryButton from './EntryButton';
-import { AlertOutlined, CheckOutlined } from '@ant-design/icons'
-import { Divider, Tooltip } from 'antd'
+import { Divider, Tooltip, Row, Col } from 'antd'
 import { User } from 'firebase';
 
 const style = {
@@ -39,15 +38,18 @@ function EntryButtonSection(props: {user: User | null, onLeftClick: () => void, 
     const {onLeftClick, onRightClick} = props;
     return (
         <div className="flex justify-center">
-            <div style={style.entryButtonCont} className="flex flex-row justify-center mt2">
-                <Tooltip title='Get referred to your dream companies with just one click.'>
-                    <CandidateEntryButton onClick={onRightClick} />
-                </Tooltip>
-                <Divider type="vertical" style={{height: '100%'}}/>
+            <Row style={style.entryButtonCont} className="flex flex-row mt2">
+                <Col style={{paddingRight: 10}}>
+                    <Tooltip title='Get referred to your dream companies with just one click.'>
+                        <CandidateEntryButton onClick={onRightClick} />
+                    </Tooltip>
+                </Col>
+                <Col>
                 <Tooltip title='Refer people without exposing your personal info.'>
                     <ReferrerEntryButton onClick={onLeftClick} />
                 </Tooltip>
-            </div>
+                </Col>
+            </Row>
         </div>
     );
 }

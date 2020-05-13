@@ -98,29 +98,28 @@ const Index = () => {
 					}
 				}}
 			/>
-			<Row style={{marginTop: 30, paddingLeft: 20}}>
-				<Col span={12} style={{
+			<Row style={{paddingLeft: 20}}>
+				<Col flex="1 1 50%" style={{
 					display: 'flex', 
 					alignItems: 'center', 
 					paddingRight: 20, 
 					paddingLeft: 20, 
-					maxWidth: 600
+					maxWidth: 600,
+					marginTop: 30,
 				}}>
 					<div>
 						<div style={{ 
 							display: 'flex', 
-							justifyContent: 'center', 
+							justifyContent: 'start', 
 							marginTop: '30px', 
 							fontSize: 20,
-							paddingLeft: 20,
 						}}>
 							<h1>Redefine referral experiences</h1>
 						</div>
 						<div style={{
 							display: 'flex', 
-							justifyContent: 'center', 
+							justifyContent: 'start', 
 							fontSize: 20 , 
-							paddingLeft: 40,
 						}}>
 							<p>
 								Candidates will get referred to multiple companies with just one click
@@ -131,7 +130,7 @@ const Index = () => {
 						<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
 					</div>
 				</Col>
-				<Col span={12} style={{paddingRight: 20}}>
+				<Col flex="1 1 50%" style={{paddingRight: 20, marginTop: 30}}>
 					<img style={style.banner} src={`/img/logos/undraw_through_the_park_lxnl.svg`} />
 				</Col>
 			</Row>

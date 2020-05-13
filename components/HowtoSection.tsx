@@ -6,7 +6,7 @@ function HowtoSection() {
         <div style={{paddingLeft: 60, paddingRight: 60}}>
             <h2 style={{fontSize: 30}}>How does it work: </h2>
             <Row>
-                <Col flex={1}>
+                <Col flex="1 1 50%">
                     <Card title="For Candidates:" bordered={false}>
                         <Steps direction="vertical">
                             <Step title="Choose companies" description="Select Compaies you're interested in"/>
@@ -15,7 +15,7 @@ function HowtoSection() {
                         </Steps>
                     </Card>
                 </Col>
-                <Col flex={1} style={{paddingLeft: 30}}>
+                <Col flex="1 1 50%">
                     <Card title="For Referrers:" bordered={false}>
                         <Steps direction="vertical">
                             <Step title="Claim cases" description="Case pages will show you all available cases, claim them!"/>
