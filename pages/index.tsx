@@ -10,6 +10,7 @@ import LoginModal from '../components/LoginModal'
 import PageTopBar from '../components/PageTopBar'
 import { Companies } from 'lib/companies'
 import HowtoSection from '../components/HowtoSection'
+import { GetServerSideProps } from 'next'
 
 const style = {
 	entryButton: { border: '2px solid lightblue', borderRadius: 10, maxWidth: 300 },
@@ -31,11 +32,29 @@ const style = {
 	},
 }
 
-const Index = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const firebase = loadDB()
+    const db = firebase.firestore()
+    const referrers = await db.collection('referrers').get()
+	const referrersCount = referrers.size;
+	
+	const snapshot = await db.collection('cases').get()
+	let closedCasesCount = 0
+	snapshot.forEach((data) => { 
+		const casesFromCollection = data.data();
+		if (casesFromCollection.caseStatus === 'Closed') {
+			closedCasesCount += 1
+		}
+    })
+	return { props: {closedCasesCount, referrersCount} }
+}
+
+const Index = (props: { [key: string]: number }) => {
 	const [user, setUser] = useState<User | null>(null)
 	const [loginModalVisible, setLoginModalVisible] = useState(false)
 	const [isReferralButtonClicked, setIsReferralButtonClicked] = useState(false)
 	const [isCandidateButtonClicked, setIsCandidateButtonClicked] = useState(false)
+	const {closedCasesCount, referrersCount} = props
 
 	useEffect(() => {
 		const firebase = loadDB()
@@ -136,7 +155,11 @@ const Index = () => {
 						</div>
 						<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
 						<Divider />
-						<StatisticsSection />
+						<StatisticsSection 
+							closedCasesCount={closedCasesCount} 
+							referrersCount={referrersCount} 
+							companiesCount={Companies.length}
+						/>
 					</div>
 				</Col>
 				<Col flex="1 1 50%" style={{ maxWidth: '70em', minWidth: '43em' }}>
