@@ -12,6 +12,10 @@ export async function sendClaimedEmail(caseInfo: { [key: string]: any }, referre
 			<p>Below are some details about the case,</p>
 			<table>
 				<tr>
+					<td>Candidate Name:</td>
+					<td>{caseInfo.candidateName}</td>
+				</tr>
+				<tr>
 					<td>Candidate Email:</td>
 					<td>{caseInfo.candidateEmail}</td>
 				</tr>
@@ -33,8 +37,7 @@ export async function sendClaimedEmail(caseInfo: { [key: string]: any }, referre
 				</tr>
 			</table>
 			<p>
-				Please try make the referral in three business days and mark the case closed at
-				 <a href="https://yesonward.com/cases">your cases page</a>
+				Please try make the referral in three business days and mark the case closed <a href="https://yesonward.com/cases">here</a>
 			</p>
 			<p>
 				To see all your cases, visit <a href="https://yesonward.com/cases">YesOnward</a>
