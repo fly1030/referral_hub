@@ -35,12 +35,14 @@ function writeCasesData(company: string, positions: Array<string>, resume: strin
 	}
 
 	const candidateEmail = user.email
+	const name = user.displayName
 	const caseID = (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1) + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
 	const firestore = firebase.firestore()
 	const createTime = new Date().toDateString()
 	firestore.collection('cases').doc(caseID).set({
 		caseID,
 		candidateEmail,
+		candidateName: name,
 		company,
 		positions,
 		caseStatus: 'Requested',

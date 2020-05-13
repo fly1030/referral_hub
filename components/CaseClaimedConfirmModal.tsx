@@ -8,9 +8,9 @@ function CaseClaimedConfirmModal(props: {
 }) {
     const modalContent = 
         <>
-            <b>Thanksfor offering help! Once you claim the case please make the referral within three days </b>
+            <b>Thanks for offering help! Once you claim the case please make the referral within three days </b>
             <p> </p>
-            <p>We'll send an email notice to you with case details, you can also expand the collapsed section to see more!</p>
+            <p>We'll send an email notice to you with application details, you can also expand the collapsed section to see more!</p>
         </>
     const footerButtonGroup = 
         [

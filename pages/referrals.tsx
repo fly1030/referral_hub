@@ -122,7 +122,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 	if (user == null) {
 		return (
 			<>
-				<MainHead title="Available Cases" />
+				<MainHead title="Yes Onward" />
 				<PageTopBar
 					isLoggedIn={user != null}
 					onLogout={() => {
@@ -217,7 +217,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 					}
 					return (
 						<Panel 
-							header={<b>{`Candidate: ${availableCase.candidateEmail}`}</b>} 
+							header={<b>{`Candidate: ${availableCase.candidateName}`}</b>} 
 							key={availableCase.caseID} 
 							extra={getExtra(
 								availableCase,
@@ -228,6 +228,9 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 								claimedCases.includes(availableCase.caseID),
 								user?.email
 							)}>
+							<p>
+								Candidate Name: <b>{availableCase.candidateName}</b>
+							</p>
 							<p>
 								Candidate Email: <b>{availableCase.candidateEmail}</b>
 							</p>

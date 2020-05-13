@@ -108,15 +108,19 @@ function MyCasesAsApplicant(
                         const header = (<>
                             <b>{caseInfo.company}</b>
                             <Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
-                            <span>{caseInfo.caseStatus}</span>
-                            <Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
-                            <span>{caseInfo.referrerEmail}</span>
+                            <span>{caseInfo.caseStatus} by {caseInfo.referrerEmail}</span>
                         </>)
                         return (
                             <Panel 
                                 header={header} 
                                 key={caseInfo.caseID} 
                             >
+                                <p>
+                                    Referrer: <b style={{color: '#148EFB'}}>{caseInfo.referrerEmail}</b>
+                                </p>
+                                <p>
+								    Candidate Name: <b>{caseInfo.candidateName}</b>
+							    </p>
                                 <p>Candidate Email: <b>{caseInfo.candidateEmail}</b></p>
                                 <p>Case Status: <b>{caseInfo.caseStatus}</b></p>
                                 <p>Applying to: <b>{caseInfo.company}</b></p>
@@ -150,9 +154,9 @@ function MyCasesAsReferrer(
                             caseStatus = 'Closed'
                         }
                         const header = (<>
-                            <b>{caseInfo.candidateEmail}</b>
+                            <span> Candidate: <b>{caseInfo.candidateName}</b></span>
                             <Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
-                            <span>{caseStatus}</span>
+                            <span>Status: <b>{caseStatus}</b></span>
                         </>)
                         return (
                             <Panel 
@@ -166,6 +170,9 @@ function MyCasesAsReferrer(
                                     },
                                     closedCases.includes(caseInfo.caseID),
                                 )}>
+                                 <p>
+								    Candidate Name: <b>{caseInfo.candidateName}</b>
+							    </p>
                                 <p>Candidate Email: <b>{caseInfo.candidateEmail}</b></p>
                                 <p>Case Status: <b>{caseStatus}</b></p>
                                 <p>Applying to: <b>{caseInfo.company}</b></p>
