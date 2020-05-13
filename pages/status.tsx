@@ -7,6 +7,7 @@ import StatusDialog from 'components/StatusDialog'
 import { User } from 'firebase'
 import PageTopBar from '../components/PageTopBar'
 import { PositionsList } from 'lib/PositionsList'
+import CaseCancelConfirmModal from 'components/CaseCancelConfirmationModal'
 const { Option } = Select
 
 const style = {
@@ -18,10 +19,10 @@ const style = {
 		width: 'auto',
 		height: 32,
 	},
-}
-type ReferralData = {
-	positions: Array<string>
-	resume: string
+	statusButtonStyle: {
+		marginTop: 4,
+		width: 100,
+	}
 }
 
 function writeCasesData(company: string, positions: Array<string>, resume: string, comments: string) {
@@ -47,6 +48,18 @@ function writeCasesData(company: string, positions: Array<string>, resume: strin
 		resume,
 		comments,
 	})
+}
+
+async function cancelCases(caseID: string) {
+	const firebase = loadDB()
+	const user = firebase.auth().currentUser
+	if (user == null) {
+		console.log('no logged in user')
+		return
+	}
+
+	const firestore = firebase.firestore()
+    firestore.collection('cases').doc(caseID).delete();
 }
 
 async function getCasesByCandidate(user: User | null) {
@@ -92,7 +105,6 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 				}
 				writeCasesData(companyName, positions, resume, comments)
 				props.onClose()
-				console.log('REFER')
 			}}
 			onCancel={props.onClose}
 		>
@@ -139,19 +151,36 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 	)
 }
 
-function actionButton(item: Company, referredCases: Array<{ [key: string]: any }>, onReferClick: (item: Company) => void, onShowStatusClick: () => void) {
-	let actionButton = (
-		<Button type="primary" onClick={() => onReferClick(item)} style={{marginTop: 4}}>
+function actionButton(
+	item: Company, 
+	referredCases: Array<{ [key: string]: any }>, 
+	onReferClick: (item: Company) => void, 
+	onShowStatusClick: () => void,
+	onCancelClick: (item: Company) => void
+) {
+	let actionButton = [
+		<Button type="primary" onClick={() => onReferClick(item)} style={style.statusButtonStyle}>
 			Refer me
-		</Button>
-	)
+		</Button>,
+		<Button danger 
+			type="link" 
+			disabled={true}
+			onClick={() => onCancelClick(item)}>
+			Cancel
+		</Button>,
+	]
 	referredCases.forEach((row) => {
 		if (row.company === item.name) {
-			actionButton = (
-				<Button type="primary" onClick={() => onShowStatusClick()} style={{marginTop: 4}}>
-					Show Status
-				</Button>
-			)
+			actionButton = [
+				<Button type="primary" onClick={() => onShowStatusClick()} style={style.statusButtonStyle}>
+					Status
+				</Button>,
+				<Button danger 
+					type="link" 
+					onClick={() => onCancelClick(item)}>
+					Cancel
+				</Button>,
+			]
 			return
 		}
 	})
@@ -164,6 +193,7 @@ function Status() {
 	const [referredCases, setReferredCases] = useState<Array<any>>([])
 	const [isStatusDialogVisible, setIsStatusDialogVisible] = useState<boolean>(false)
 	const [isReferralDialogVisible, setIsReferralDialogVisible] = useState<boolean>(false)
+	const [isCancellationDialogVisible, setIsCancellationDialogVisible] = useState<boolean>(false)
 
 	useEffect(() => {
 		async function getCases() {
@@ -171,7 +201,7 @@ function Status() {
 			setReferredCases(cases)
 		}
 		getCases()
-	}, [user, isReferralDialogVisible])
+	}, [user, isReferralDialogVisible, isCancellationDialogVisible])
 
 	useEffect(() => {
 		const firebase = loadDB()
@@ -203,7 +233,6 @@ function Status() {
 		)
 	}
 
-
 	return (
 		<>
 			<MainHead title="Yes Onward" />
@@ -234,16 +263,17 @@ function Status() {
 								setReferCompany(item)
 								setIsStatusDialogVisible(true)
 							},
+							() => {
+								setReferCompany(item)
+								setIsCancellationDialogVisible(true)
+							},
 						)
-						const actions = [
-							dialogActionButton,
-							<Button danger type="link">
-								Cancel
-							</Button>,
-						]
 						return (
-							<List.Item actions={actions}>
-								<List.Item.Meta avatar={<img style={style.logo} src={`/img/logos/${item.key}.png`} />} description={item.name} />
+							<List.Item actions={dialogActionButton}>
+								<List.Item.Meta 
+									avatar={<img style={style.logo} src={`/img/logos/${item.key}.png`} />} 
+									description={item.name} 
+								/>
 							</List.Item>
 						)
 					}}
@@ -256,7 +286,21 @@ function Status() {
 						console.log('submit!')
 					}}
 				/>
-				<StatusDialog visible={isStatusDialogVisible} onClose={() => setIsStatusDialogVisible(false)} company={referCompany} referredCases={referredCases} />
+				<CaseCancelConfirmModal
+					visible={isCancellationDialogVisible}
+					company={referCompany} 
+					referredCases={referredCases}
+					onCancel={() => setIsCancellationDialogVisible(false)}
+					onConfirm={async (caseID: string) => {
+						await cancelCases(caseID)
+						setIsCancellationDialogVisible(false)
+					}}
+				/>
+				<StatusDialog 
+					visible={isStatusDialogVisible} 
+					onClose={() => setIsStatusDialogVisible(false)} 
+					company={referCompany} 
+					referredCases={referredCases} />
 			</div>
 		</>
 	)
