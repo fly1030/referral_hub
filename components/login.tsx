@@ -17,9 +17,6 @@ const style = {
 }
 
 const Login = (props: { onLoginSuccess: (user: User | null) => void }) => {
-	const onFinishFailed = () => {}
-	const [email, setEmail] = useState<string | null>(null)
-	const [password, setPassword] = useState<string | null>(null)
 	const { onLoginSuccess } = props
 
 	return (
@@ -48,6 +45,15 @@ const Login = (props: { onLoginSuccess: (user: User | null) => void }) => {
 						})
 				}}
 			/>
+
+		</>
+	)
+}
+
+export default Login
+
+
+/*
 			<Divider>Or</Divider>
 			<Form name="basic" initialValues={{ remember: true }} onFinish={() => {}} onFinishFailed={onFinishFailed}>
 				<Form.Item label="Email" name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
@@ -95,8 +101,4 @@ const Login = (props: { onLoginSuccess: (user: User | null) => void }) => {
 					</Button>
 				</Form.Item>
 			</Form>
-		</>
-	)
-}
-
-export default Login
+*/

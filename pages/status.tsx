@@ -141,14 +141,14 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 
 function actionButton(item: Company, referredCases: Array<{ [key: string]: any }>, onReferClick: (item: Company) => void, onShowStatusClick: () => void) {
 	let actionButton = (
-		<Button type="primary" onClick={() => onReferClick(item)}>
+		<Button type="primary" onClick={() => onReferClick(item)} style={{marginTop: 4}}>
 			Refer me
 		</Button>
 	)
 	referredCases.forEach((row) => {
 		if (row.company === item.name) {
 			actionButton = (
-				<Button type="primary" onClick={() => onShowStatusClick()}>
+				<Button type="primary" onClick={() => onShowStatusClick()} style={{marginTop: 4}}>
 					Show Status
 				</Button>
 			)
