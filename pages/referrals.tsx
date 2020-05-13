@@ -187,7 +187,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 					}}
 					description={
 					<span>
-						There is no active referral requestes currently
+						There is no active referral requests currently
 					</span>
 					}
 				/>
