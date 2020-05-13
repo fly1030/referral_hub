@@ -183,7 +183,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 				<Empty
 					image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
 					imageStyle={{
-					height: 60,
+						height: 200,
 					}}
 					description={
 					<span>
