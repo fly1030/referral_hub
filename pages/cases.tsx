@@ -42,7 +42,6 @@ async function onCaseClosed(
         caseStatus: 'Closed',
       }}
     firestore.collection('cases').doc(caseID).set(updatedData);
-    // sendClaimedEmail(caseInfo, referrerEmail)
 }
 
 function getExtra(
