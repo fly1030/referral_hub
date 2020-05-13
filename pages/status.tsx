@@ -8,6 +8,7 @@ import { User } from 'firebase'
 import PageTopBar from '../components/PageTopBar'
 import { PositionsList } from 'lib/PositionsList'
 import CaseCancelConfirmModal from 'components/CaseCancelConfirmationModal'
+import { CloseCircleOutlined } from '@ant-design/icons'
 const { Option } = Select
 
 const style = {
@@ -166,7 +167,7 @@ function actionButton(
 			type="link" 
 			disabled={true}
 			onClick={() => onCancelClick(item)}>
-			Cancel
+			<CloseCircleOutlined />
 		</Button>,
 	]
 	referredCases.forEach((row) => {
@@ -178,7 +179,7 @@ function actionButton(
 				<Button danger 
 					type="link" 
 					onClick={() => onCancelClick(item)}>
-					Cancel
+					<CloseCircleOutlined />
 				</Button>,
 			]
 			return
