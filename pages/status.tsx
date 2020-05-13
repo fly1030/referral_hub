@@ -1,4 +1,4 @@
-import { List, Button, Modal, Form, Select, Input, Spin } from 'antd'
+import { List, Button, Modal, Form, Select, Input, Spin, Tooltip } from 'antd'
 import { Companies, Company } from 'lib/companies'
 import MainHead from 'components/MainHead'
 import { useState, useEffect, ReactNode } from 'react'
@@ -271,10 +271,11 @@ function Status() {
 						)
 						return (
 							<List.Item actions={dialogActionButton}>
-								<List.Item.Meta 
-									avatar={<img style={style.logo} src={`/img/logos/${item.key}.png`} />} 
-									description={item.name} 
-								/>
+								<Tooltip placement="topLeft" title={item.name}>
+									<List.Item.Meta 
+										avatar={<img style={style.logo} src={`/img/logos/${item.key}.png`} />} 
+									/>
+								</Tooltip>
 							</List.Item>
 						)
 					}}
