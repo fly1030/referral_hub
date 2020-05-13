@@ -1,7 +1,7 @@
 import { Form, Input, Button, Divider } from 'antd'
 import { useState, ChangeEvent } from 'react'
 import { loadDB } from '../lib/db.js'
-import { GoogleOutlined } from '@ant-design/icons'
+import { GoogleOutlined, FacebookOutlined } from '@ant-design/icons'
 import { User } from 'firebase'
 
 const layout = {
@@ -12,7 +12,7 @@ const tailLayout = {
 }
 
 const style = {
-	confirmButton: { border: '2px solid lightblue', borderRadius: 10, width: '100%', maxWidth: 500 },
+	confirmButton: { borderRadius: 10, width: '100%', maxWidth: 500, marginTop: 5 },
 	emailInput: { marginLeft: 28, maxWidth: 385 },
 }
 
@@ -22,7 +22,7 @@ const Login = (props: { onLoginSuccess: (user: User | null) => void }) => {
 	return (
 		<>
 			<Button
-				shape="circle"
+				style={style.confirmButton}
 				icon={<GoogleOutlined />}
 				type="primary"
 				size="large"
@@ -44,8 +44,35 @@ const Login = (props: { onLoginSuccess: (user: User | null) => void }) => {
 							console.log(errorMessage)
 						})
 				}}
-			/>
-
+			>
+				Sign in with Google
+			</Button>
+			<Button
+				style={style.confirmButton}
+				icon={<FacebookOutlined />}
+				type="primary"
+				size="large"
+				htmlType="submit"
+				onClick={() => {
+					const firebase = loadDB()
+					const provider = new firebase.auth.FacebookAuthProvider()
+					firebase
+						.auth()
+						.signInWithPopup(provider)
+						.then((result) => {
+							const user = result.user
+							onLoginSuccess(user)
+						})
+						.catch((error) => {
+							const errorCode = error.code
+							console.log(errorCode)
+							const errorMessage = error.message
+							console.log(errorMessage)
+						})
+				}}
+			>
+				Sign in with Facebook
+			</Button>
 		</>
 	)
 }
