@@ -126,7 +126,7 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 					<Input.Group compact>
 						<Input
 							style={{ width: '100%' }}
-							placeholder="resume link.."
+							placeholder="Link to your resume, google drive, dropbox, etc.."
 							defaultValue=""
 							onChange={(e) => {
 								setResume(e.target.value)

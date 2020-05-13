@@ -12,12 +12,13 @@ const style = {
 		verticalAlign: 'center',
 		borderRadius: 7,
 		paddingTop: 12,
+		cursor: 'pointer',
 	}
 }
 
 function pageLogo() {
 	return (
-		<div style={style.topbar}>
+		<div style={style.topbar} onClick={() => (window.location.href = '/')}>
 			<div style={{color: '#FFFFFF', fontSize: 40, fontStyle: 'bold'}}>^</div>
 		</div>
 	)
