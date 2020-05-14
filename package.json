@@ -1,33 +1,33 @@
 {
-  "name": "referral_hub",
-  "version": "1.0.0",
-  "description": "referral hub with next.js",
-  "main": "index.js",
-  "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start"
-  },
-  "author": "Fang Li",
-  "license": "MIT",
-  "dependencies": {
-    "@sendgrid/mail": "^7.1.0",
-    "antd": "^4.2.0",
-    "dotenv": "^8.2.0",
-    "firebase": "^7.14.2",
-    "next": "^9.3.6",
-    "next-rpc": "^2.0.9",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "sendgrid": "^5.2.3"
-  },
-  "devDependencies": {
-    "@ant-design/icons": "^4.1.0",
-    "@types/node": "^13.13.4",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.7",
-    "@types/uuid": "^7.0.3",
-    "prettier": "^2.0.5",
-    "typescript": "^3.8.3"
-  }
+	"name": "referral_hub",
+	"version": "1.0.0",
+	"description": "referral hub with next.js",
+	"main": "index.js",
+	"scripts": {
+		"dev": "source .env && next",
+		"build": "next build",
+		"start": "next start"
+	},
+	"author": "Fang Li",
+	"license": "MIT",
+	"dependencies": {
+		"@sendgrid/mail": "^7.1.0",
+		"antd": "^4.2.0",
+		"dotenv": "^8.2.0",
+		"firebase": "^7.14.2",
+		"next": "^9.3.6",
+		"next-rpc": "^2.0.9",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
+		"sendgrid": "^5.2.3"
+	},
+	"devDependencies": {
+		"@ant-design/icons": "^4.1.0",
+		"@types/node": "^13.13.4",
+		"@types/react": "^16.9.34",
+		"@types/react-dom": "^16.9.7",
+		"@types/uuid": "^7.0.3",
+		"prettier": "^2.0.5",
+		"typescript": "^3.8.3"
+	}
 }
