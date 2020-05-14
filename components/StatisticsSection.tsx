@@ -40,7 +40,7 @@ function StatisticsSection(props: {
 						title="Companies Represented" 
 						style={{ flex: '1 1 33%' }} 
 						valueStyle={{ fontSize: 40, fontWeight: 'bold' }} 
-						value={companiesCount} 
+						value={10 + companiesCount} 
 						suffix="+" />
 				</Col>
 			</Row>
