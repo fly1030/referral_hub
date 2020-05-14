@@ -1,6 +1,8 @@
 import PageLogo from "./PageLogo";
 
 function PageFooter() {
+    const tosLink = <a style = {{paddingLeft: 4, paddingRight: 4}} href="https://yesonward.com/privacy">Terms</a>
+    const privacyLink = <a style = {{paddingLeft: 4, paddingRight: 4}} href="https://yesonward.com/privacy"> Privacy</a>
     return (
         <div style={{padding: 40, backgroundColor: '#363636', display: 'flex', justifyContent: 'space-between'}}>
             <PageLogo textStyle = {{ cursor: 'pointer', paddingLeft: 8, fontSize: 25,  color: '#FFFFFF'}}/>
@@ -9,7 +11,7 @@ function PageFooter() {
                 display: 'flex', 
                 alignItems: 'center',
             }}>
-                @2020 Yes Onward. Terms and <a href="https://yesonward.com/privacy"> Privacy</a>
+                @2020 Yes Onward. {tosLink} and {privacyLink}
             </div>
         </div>
   );
