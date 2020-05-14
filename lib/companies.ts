@@ -9,6 +9,7 @@ export const Companies = [
 	{ key: 'airbnb', name: 'AirBnB' },
 	{ key: 'google', name: 'Google' },
 	{ key: 'netflix', name: 'Netflix' },
+	{ key: 'amazon', name: 'Amazon' },
 ]
 export type Companies = typeof Companies
 export type Company = Companies[number]
