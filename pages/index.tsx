@@ -89,7 +89,7 @@ const Index = (props: { [key: string]: number }) => {
 			  }
 
 	return (
-		<>
+		<div style={{display: 'inline-grid'}}>
 			<MainHead title="Yes Onward" />
 			<PageTopBar
 				isLoggedIn={user != null}
@@ -183,7 +183,7 @@ const Index = (props: { [key: string]: number }) => {
 			<Divider className="mt3" orientation="center" />
 			<HowtoSection />
 			<PageFooter />
-		</>
+		</div>
 	)
 }
 
