@@ -1,4 +1,4 @@
-import { Modal, Button, Select, Form, Input } from 'antd'
+import { Modal, Button, Select, Form, Input, Alert } from 'antd'
 import { useState } from 'react'
 import { Companies } from 'lib/companies'
 import { loadDB } from 'lib/db'
@@ -54,6 +54,7 @@ function ReferrerInfoFormModal(props: {
 			footer={[
 				<Button
 					key="back"
+					disabled={!currentComppany || !companyEmail}
 					onClick={() => {
 						if (currentComppany != null && companyEmail != null) {
 							writeReferrerData(currentComppany, companyEmail)
@@ -90,6 +91,13 @@ function ReferrerInfoFormModal(props: {
 							}}
 						/>
 					</Input.Group>
+				</Form.Item>
+				<Form.Item label="" name="notice">
+					<Alert
+						message="Your information is safe with us"
+						description="We only use company email to verify your eligibility as a referrer before we can expose candidates information"
+						type="success"
+					/>
 				</Form.Item>
 			</Form>
 		</Modal>
