@@ -26,7 +26,13 @@ const style = {
 	}
 }
 
-function writeCasesData(company: string, positions: Array<string>, resume: string, comments: string) {
+function writeCasesData(
+	company: string, 
+	positions: Array<string>, 
+	resume: string,
+	yoe: number, 
+	comments: string
+	) {
 	const firebase = loadDB()
 	const user = firebase.auth().currentUser
 	if (user == null) {
@@ -43,6 +49,7 @@ function writeCasesData(company: string, positions: Array<string>, resume: strin
 		caseID,
 		candidateEmail,
 		candidateName: name,
+		yoe,
 		company,
 		positions,
 		caseStatus: 'Requested',
@@ -82,6 +89,7 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 	const [positions, setPositions] = useState<Array<string>>([])
 	const [resume, setResume] = useState<string>('')
 	const [comments, setComments] = useState<string>('')
+	const [yoe, setYoe] = useState<number | null>(null)
 
 	const positionOptions: Array<ReactNode> = []
 	PositionsList.forEach((position) => {
@@ -91,6 +99,14 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 			</Option>,
 		)
 	})
+	const YoEOptions: Array<ReactNode> = []
+	for (let i = 0; i < 30; i++) {
+		YoEOptions.push(
+			<Option value={i} key={i}>
+				{i}
+			</Option>,
+		)
+	}
 	return (
 		<Modal
 			title={
@@ -100,14 +116,14 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 				</div>
 			}
 			visible={props.visible}
-			okButtonProps={{ disabled: !positions || !resume }}
+			okButtonProps={{ disabled: !positions || !resume || !yoe}}
 			onOk={() => {
 				const companyName = props.company?.name
 				if (companyName == null) {
 					console.log('Must provide company name')
 					return
 				}
-				writeCasesData(companyName, positions, resume, comments)
+				writeCasesData(companyName, positions, resume, yoe ?? 0, comments)
 				props.onClose()
 			}}
 			onCancel={props.onClose}
@@ -136,6 +152,19 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 								setResume(e.target.value)
 							}}
 						/>
+					</Input.Group>
+				</Form.Item>
+				<Form.Item label="YoE" name="yoe" rules={[{ required: true, message: 'Years of experiences' }]}>
+					<Input.Group compact>
+						<Select
+							placeholder="Years of experiences..."
+							onChange={(value: number) => {
+								setYoe(value)
+							}}
+							style={{ width: '100%' }}
+						>
+							{YoEOptions}
+						</Select>
 					</Input.Group>
 				</Form.Item>
 				<Form.Item label="Comments" name="comments" rules={[{ required: false, message: 'Enter comments for your application' }]}>

@@ -1,4 +1,4 @@
-import { Collapse, Button, Empty, Spin } from 'antd'
+import { Collapse, Button, Empty, Spin, Divider } from 'antd'
 import { GetServerSideProps } from 'next'
 import { loadDB } from 'lib/db'
 import { useState, useEffect } from 'react'
@@ -217,7 +217,13 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 					}
 					return (
 						<Panel 
-							header={<b>{`Candidate: ${availableCase.candidateName}`}</b>} 
+							header={
+								<>
+									<b>{`Candidate: ${availableCase.candidateName}`}</b>
+									<Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
+									<b>{`YoE: ${availableCase.yoe}`}</b>
+								</>
+							} 
 							key={availableCase.caseID} 
 							extra={getExtra(
 								availableCase,

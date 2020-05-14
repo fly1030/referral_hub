@@ -108,7 +108,11 @@ function MyCasesAsApplicant(
                         const header = (<>
                             <b>{caseInfo.company}</b>
                             <Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
-                            <span>{caseInfo.caseStatus} by {caseInfo.referrerEmail}</span>
+                            <span>{
+                                caseInfo.referrerEmail != null && caseInfo.referrerEmail.length != 0 ? 
+                                `${caseInfo.caseStatus} by ${caseInfo.referrerEmail}`: 
+                                caseInfo.caseStatus
+                            }</span>
                         </>)
                         return (
                             <Panel 
