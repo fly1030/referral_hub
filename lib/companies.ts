@@ -10,6 +10,7 @@ export const Companies = [
 	{ key: 'google', name: 'Google', careerPage: 'https://careers.google.com/jobs/results/?company=Google'},
 	{ key: 'netflix', name: 'Netflix', careerPage: 'https://jobs.netflix.com/'},
 	{ key: 'amazon', name: 'Amazon', careerPage: 'https://www.amazon.jobs/en/'},
+	{ key: 'vmware', name: 'Vmware', careerPage: 'https://careers.vmware.com/main/'},
 ]
 export type Companies = typeof Companies
 export type Company = Companies[number]
