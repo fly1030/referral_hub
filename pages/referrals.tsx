@@ -246,9 +246,22 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 							<p>
 								Applying to: <b>{availableCase.company}</b>
 							</p>
-							<p>
-								Interested Positions: <b>{availableCase.positions}</b>
-							</p>
+							<p>Interested Positions: {
+                                    availableCase.positions.map((position: string, index: number) =>
+                                        <>
+                                            <b>{position}</b>
+                                            <span>; </span>
+                                        </>
+                                    )}
+                                </p>
+                                {availableCase.jobIDs != null ? <p> Interested Jobs: {
+                                    availableCase.jobIDs.map((jobID: string, index: number) => 
+                                        <>
+                                            <b>{jobID}</b>
+                                            <span>; </span>
+                                        </>
+                                    )}
+                                </p> : null }
 							<p>Resume Link: <b>{availableCase.resume}</b></p>
 							<p>
 								Additional Info: <b>{availableCase.comments}</b>

@@ -128,7 +128,22 @@ function MyCasesAsApplicant(
                                 <p>Candidate Email: <b>{caseInfo.candidateEmail}</b></p>
                                 <p>Case Status: <b>{caseInfo.caseStatus}</b></p>
                                 <p>Applying to: <b>{caseInfo.company}</b></p>
-                                <p>Interested Positions: <b>{caseInfo.positions}</b></p>
+                                <p>Interested Positions: {
+                                    caseInfo.positions.map((position: string, index: number) =>
+                                        <>
+                                            <b>{position}</b>
+                                            <span>; </span>
+                                        </>
+                                    )}
+                                </p>
+                                {caseInfo.jobIDs != null ? <p> Interested Jobs: {
+                                    caseInfo.jobIDs.map((jobID: string, index: number) => 
+                                        <>
+                                            <b>{jobID}</b>
+                                            <span>; </span>
+                                        </>
+                                    )}
+                                </p> : null }
                                 <p>Resume Link: <b>{caseInfo.resume}</b></p>
                                 <p>Additional Info: <b>{caseInfo.comments}</b></p>
                                 <p>Case Created on: <b>{caseInfo.createTime}</b></p>
@@ -180,7 +195,22 @@ function MyCasesAsReferrer(
                                 <p>Candidate Email: <b>{caseInfo.candidateEmail}</b></p>
                                 <p>Case Status: <b>{caseStatus}</b></p>
                                 <p>Applying to: <b>{caseInfo.company}</b></p>
-                                <p>Interested Positions: <b>{caseInfo.positions}</b></p>
+                                <p>Interested Positions: {
+                                    caseInfo.positions.map((position: string, index: number) =>
+                                        <>
+                                            <b>{position}</b>
+                                            <span>; </span>
+                                        </>
+                                    )}
+                                </p>
+                                {caseInfo.jobIDs != null ? <p> Interested Jobs: {
+                                    caseInfo.jobIDs.map((jobID: string, index: number) => 
+                                        <>
+                                            <b>{jobID}</b>
+                                            <span>; </span>
+                                        </>
+                                    )}
+                                </p> : null }
                                 <p>Resume Link: <b>{caseInfo.resume}</b></p>
                                 <p>Additional Info: <b>{caseInfo.comments}</b></p>
                                 <p>Case Created on: <b>{caseInfo.createTime}</b></p>

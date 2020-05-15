@@ -9,6 +9,8 @@ import PageTopBar from '../components/PageTopBar'
 import { PositionsList } from 'lib/PositionsList'
 import CaseCancelConfirmModal from 'components/CaseCancelConfirmationModal'
 import { CloseCircleOutlined } from '@ant-design/icons'
+import EditableTagGroup from 'components/JobIDSelector'
+import JobIDSelector from 'components/JobIDSelector'
 const { Option } = Select
 
 const style = {
@@ -31,7 +33,8 @@ function writeCasesData(
 	positions: Array<string>, 
 	resume: string,
 	yoe: number, 
-	comments: string
+	comments: string,
+	jobIDs: Array<string>
 	) {
 	const firebase = loadDB()
 	const user = firebase.auth().currentUser
@@ -52,6 +55,7 @@ function writeCasesData(
 		yoe,
 		company,
 		positions,
+		jobIDs,
 		caseStatus: 'Requested',
 		createTime,
 		referrerEmail: '',
@@ -90,6 +94,8 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 	const [resume, setResume] = useState<string>('')
 	const [comments, setComments] = useState<string>('')
 	const [yoe, setYoe] = useState<number | null>(null)
+	const [jobIDs, setJobIDs] = useState<Array<string>>([])
+
 
 	const positionOptions: Array<ReactNode> = []
 	PositionsList.forEach((position) => {
@@ -116,14 +122,21 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 				</div>
 			}
 			visible={props.visible}
-			okButtonProps={{ disabled: !positions || positions.length === 0 || !resume || !yoe}}
+			okButtonProps={{ 
+				disabled: !positions || 
+				positions.length === 0 || 
+				!resume || 
+				!yoe || 
+				!jobIDs || 
+				jobIDs.length === 0
+			}}
 			onOk={() => {
 				const companyName = props.company?.name
 				if (companyName == null) {
 					console.log('Must provide company name')
 					return
 				}
-				writeCasesData(companyName, positions, resume, yoe ?? 0, comments)
+				writeCasesData(companyName, positions, resume, yoe ?? 0, comments, jobIDs)
 				props.onClose()
 			}}
 			onCancel={props.onClose}
@@ -141,6 +154,15 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 					>
 						{positionOptions}
 					</Select>
+				</Form.Item>
+				<Form.Item label="JobIDs" name="jobIDs" rules={[{ required: true, message: 'Enter interested job IDs' }]}>
+					<JobIDSelector 
+						onSelectorChange={
+							(value: Array<string>) => {
+								setJobIDs(value)
+							}
+						}
+					/>
 				</Form.Item>
 				<Form.Item label="Resume" name="resume" rules={[{ required: true, message: 'Enter a link to your resume' }]}>
 					<Input.Group compact>
