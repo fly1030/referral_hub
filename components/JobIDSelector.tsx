@@ -36,12 +36,13 @@ function JobIDSelector(props: {
                 onChange={event => {
                     setName(event.target.value)
                 }} />
-              <a
+              <Button
+                type="link"
                 style={{ flex: 'none', padding: '8px', display: 'block', cursor: 'pointer' }}
                 onClick={addItem}
               >
                 <PlusOutlined /> Add Job ID
-              </a>
+              </Button>
             </div>
           </div>
         )}

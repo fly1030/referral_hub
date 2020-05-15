@@ -159,7 +159,11 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 					<JobIDSelector 
 						onSelectorChange={
 							(value: Array<string>) => {
-								setJobIDs(value)
+								if (value.length <= 3) {
+									setJobIDs(value)
+								} else {
+									setJobIDs(value.slice(0, 3))
+								}
 							}
 						}
 						careerPage={props.company?.careerPage}
