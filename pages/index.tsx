@@ -56,7 +56,7 @@ const Index = (props: { [key: string]: number }) => {
 	const [isReferralButtonClicked, setIsReferralButtonClicked] = useState(false)
 	const [isCandidateButtonClicked, setIsCandidateButtonClicked] = useState(false)
 	const { closedCasesCount, referrersCount } = props
-	console.log('let us try again 12')
+	console.log('let us try again 123')
 	useEffect(() => {
 		const firebase = loadDB()
 		firebase.auth().onAuthStateChanged((user) => {
