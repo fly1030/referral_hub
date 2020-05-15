@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "source .env && next",
-		"push-prod": "git checkout prod && git merge master && git push && git checkout master",
+		"push-prod": "git checkout prod && git merge master && git push origin prod && git checkout master",
 		"build": "next build",
 		"start": "next start"
 	},
