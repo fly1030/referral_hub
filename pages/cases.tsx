@@ -132,7 +132,7 @@ function MyCasesAsApplicant(
                                     caseInfo.positions.map((position: string, index: number) =>
                                         <>
                                             <b>{position}</b>
-                                            <span>; </span>
+                                            <Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
                                         </>
                                     )}
                                 </p>
@@ -140,7 +140,7 @@ function MyCasesAsApplicant(
                                     caseInfo.jobIDs.map((jobID: string, index: number) => 
                                         <>
                                             <b>{jobID}</b>
-                                            <span>; </span>
+                                            <Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
                                         </>
                                     )}
                                 </p> : null }
@@ -199,7 +199,7 @@ function MyCasesAsReferrer(
                                     caseInfo.positions.map((position: string, index: number) =>
                                         <>
                                             <b>{position}</b>
-                                            <span>; </span>
+                                            <Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
                                         </>
                                     )}
                                 </p>
@@ -207,7 +207,7 @@ function MyCasesAsReferrer(
                                     caseInfo.jobIDs.map((jobID: string, index: number) => 
                                         <>
                                             <b>{jobID}</b>
-                                            <span>; </span>
+                                            <Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
                                         </>
                                     )}
                                 </p> : null }

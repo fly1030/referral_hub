@@ -250,7 +250,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
                                     availableCase.positions.map((position: string, index: number) =>
                                         <>
                                             <b>{position}</b>
-                                            <span>; </span>
+											<Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
                                         </>
                                     )}
                                 </p>
@@ -258,7 +258,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
                                     availableCase.jobIDs.map((jobID: string, index: number) => 
                                         <>
                                             <b>{jobID}</b>
-                                            <span>; </span>
+											<Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
                                         </>
                                     )}
                                 </p> : null }
