@@ -35,27 +35,28 @@ const style = {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const firebase = loadDB()
-    const db = firebase.firestore()
-    const referrers = await db.collection('referrers').get()
-	const referrersCount = referrers.size;
-	
+	const db = firebase.firestore()
+	const referrers = await db.collection('referrers').get()
+	const referrersCount = referrers.size
+
 	const snapshot = await db.collection('cases').get()
 	let closedCasesCount = 0
-	snapshot.forEach((data) => { 
-		const casesFromCollection = data.data();
+	snapshot.forEach((data) => {
+		const casesFromCollection = data.data()
 		if (casesFromCollection.caseStatus === 'Closed') {
 			closedCasesCount += 1
 		}
-    })
-	return { props: {closedCasesCount, referrersCount} }
+	})
+	return { props: { closedCasesCount, referrersCount } }
 }
 
 const Index = (props: { [key: string]: number }) => {
+	console.log('THIS IS NEW')
 	const [user, setUser] = useState<User | null>(null)
 	const [loginModalVisible, setLoginModalVisible] = useState(false)
 	const [isReferralButtonClicked, setIsReferralButtonClicked] = useState(false)
 	const [isCandidateButtonClicked, setIsCandidateButtonClicked] = useState(false)
-	const {closedCasesCount, referrersCount} = props
+	const { closedCasesCount, referrersCount } = props
 
 	useEffect(() => {
 		const firebase = loadDB()
@@ -89,7 +90,7 @@ const Index = (props: { [key: string]: number }) => {
 			  }
 
 	return (
-		<div style={{display: 'inline-grid'}}>
+		<div style={{ display: 'inline-grid' }}>
 			<MainHead title="Yes Onward" />
 			<PageTopBar
 				isLoggedIn={user != null}
@@ -156,11 +157,7 @@ const Index = (props: { [key: string]: number }) => {
 						</div>
 						<EntryButtonSection user={user} onLeftClick={onLeftClick} onRightClick={onRightClick} />
 						<Divider />
-						<StatisticsSection 
-							closedCasesCount={closedCasesCount} 
-							referrersCount={referrersCount} 
-							companiesCount={Companies.length}
-						/>
+						<StatisticsSection closedCasesCount={closedCasesCount} referrersCount={referrersCount} companiesCount={Companies.length} />
 					</div>
 				</Col>
 				<Col flex="1 1 50%" style={{ maxWidth: '70em', minWidth: '43em' }}>
