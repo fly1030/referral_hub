@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const Index = (props: { [key: string]: number }) => {
-	console.log('THIS IS bla')
+	console.log('starting witj stsaging')
 	const [user, setUser] = useState<User | null>(null)
 	const [loginModalVisible, setLoginModalVisible] = useState(false)
 	const [isReferralButtonClicked, setIsReferralButtonClicked] = useState(false)
