@@ -51,13 +51,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 const Index = (props: { [key: string]: number }) => {
-	console.log('starting witj stsaging')
 	const [user, setUser] = useState<User | null>(null)
 	const [loginModalVisible, setLoginModalVisible] = useState(false)
 	const [isReferralButtonClicked, setIsReferralButtonClicked] = useState(false)
 	const [isCandidateButtonClicked, setIsCandidateButtonClicked] = useState(false)
 	const { closedCasesCount, referrersCount } = props
-
+	console.log('let us try again')
 	useEffect(() => {
 		const firebase = loadDB()
 		firebase.auth().onAuthStateChanged((user) => {
