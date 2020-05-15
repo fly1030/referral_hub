@@ -162,6 +162,7 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 								setJobIDs(value)
 							}
 						}
+						careerPage={props.company?.careerPage}
 					/>
 				</Form.Item>
 				<Form.Item label="Resume" name="resume" rules={[{ required: true, message: 'Enter a link to your resume' }]}>
