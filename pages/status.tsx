@@ -9,7 +9,6 @@ import PageTopBar from '../components/PageTopBar'
 import { PositionsList } from 'lib/PositionsList'
 import CaseCancelConfirmModal from 'components/CaseCancelConfirmationModal'
 import { CloseCircleOutlined } from '@ant-design/icons'
-import EditableTagGroup from 'components/JobIDSelector'
 import JobIDSelector from 'components/JobIDSelector'
 const { Option } = Select
 
@@ -142,7 +141,7 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 			onCancel={props.onClose}
 		>
 			<Form initialValues={{ positions: [], resume: '' }} labelAlign="left" labelCol={{ span: 4, offset: 0 }}>
-				<Form.Item label="Positions" name="positions" rules={[{ required: true, message: 'Provide your desired positions' }]}>
+				<Form.Item label="Category" name="positions" rules={[{ required: true, message: 'Provide your desired positions' }]}>
 					<Select
 						mode="multiple"
 						placeholder="Please select"
