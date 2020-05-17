@@ -7,7 +7,7 @@ function JobIDSelector(props: { jobIDs: Array<string>; onSelectorChange: (value:
 				value={props.jobIDs}
 				dropdownClassName="display-none"
 				mode="tags"
-				placeholder="Job IDs or names you're interested"
+				placeholder="Job links"
 				onChange={(jobIDs: Array<string>) => {
 					if (jobIDs.length <= MAX_COUNT) {
 						props.onSelectorChange(jobIDs)
