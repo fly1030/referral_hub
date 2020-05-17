@@ -1,4 +1,4 @@
-import { Collapse, Button, Empty, Spin, Divider } from 'antd'
+import { Collapse, Button, Empty, Spin, Divider, Modal } from 'antd'
 import { GetServerSideProps } from 'next'
 import { loadDB } from 'lib/db'
 import { useState, useEffect } from 'react'
@@ -28,32 +28,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	return { props: { cases, referrersInfo } }
 }
 
-async function onCaseClaimed(availableCase: { [key: string]: any } | null, referrerEmail?: string | null) {
+async function onCaseClaimed(availableCase: { [key: string]: any } | null, referrerEmail?: string | null): Promise<'success' | 'already-claimed' | null> {
 	if (referrerEmail == null || availableCase == null) {
-		return
+		return null
 	}
 	const firebase = loadDB()
 	const firestore = firebase.firestore()
 	const caseID = availableCase.caseID
 	const caseDoc = await firestore.collection('cases').doc(caseID).get()
 	const caseDataFromDB = caseDoc.data()
-	const updatedData = {
-		...caseDataFromDB,
-		...{
+
+	if (caseDataFromDB?.caseStatus !== 'Claimed') {
+		firestore.collection('cases').doc(caseID).update({
 			referrerEmail: referrerEmail,
 			caseStatus: 'Claimed',
-		},
+		})
+		sendClaimedEmail(availableCase, referrerEmail)
+		return 'success'
 	}
-	firestore.collection('cases').doc(caseID).set(updatedData)
-	sendClaimedEmail(availableCase, referrerEmail)
+	return 'already-claimed'
 }
 
-function getExtra(
-	availableCase: { [key: string]: any },
-	onButtonClicked: () => void,
-	isClaimed: boolean,
-	referrerEmail?: string | null,
-	) {
+function getExtra(availableCase: { [key: string]: any }, onButtonClicked: () => void, isClaimed: boolean, referrerEmail?: string | null) {
 	return (
 		<Button
 			type="primary"
@@ -68,10 +64,7 @@ function getExtra(
 	)
 }
 
-function filterAvailableCasesByCompany(
-	cases: Array<{ [key: string]: any }>,
-	referrer: { [key: string]: any } | null,
-): Array<{ [key: string]: any }> {
+function filterAvailableCasesByCompany(cases: Array<{ [key: string]: any }>, referrer: { [key: string]: any } | null): Array<{ [key: string]: any }> {
 	if (referrer == null) {
 		return []
 	}
@@ -87,19 +80,13 @@ function filterAvailableCasesByCompany(
 
 function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> }) {
 	const [user, setUser] = useState<User | null>(null)
-	const [confirmClaimDialogVisible, setConfirmClaimDialogVisible] = useState<boolean>(false)
+	const [modal, setModal] = useState<'confirm' | null>(null)
 	const [currentCase, setCurrentCase] = useState<{ [key: string]: any } | null>(null)
 	const [claimedCases, setClaimedCases] = useState<Array<string>>([])
-	const [referrerInfoModalVisible, setReferrerInfoModalVisible] = useState(true)
-
-	let initialReferrerInfo = null
-	props.referrersInfo.forEach((referrerInfo) => {
-		if (referrerInfo.loginEmail === user?.email) {
-			initialReferrerInfo = referrerInfo
-		}
+	const [currentReferrer, setCurrentReferrer] = useState<{ [key: string]: any } | null>(() => {
+		return props.referrersInfo.filter((referrerInfo) => referrerInfo.loginEmail === user?.email)
 	})
-	const [currentReferrer, setCurrentReferrer] = useState<{ [key: string]: any } | null>(initialReferrerInfo)
-
+	const [availableCases, setAvailableCases] = useState<Array<{ [key: string]: any }>>([])
 	useEffect(() => {
 		const firebase = loadDB()
 		firebase.auth().onAuthStateChanged((user) => {
@@ -116,13 +103,14 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 			}
 		})
 	}, [])
-
-	const avaliableCases = user == null ? [] : filterAvailableCasesByCompany(props.cases, currentReferrer)
+	useEffect(() => {
+		setAvailableCases(user == null ? [] : filterAvailableCasesByCompany(props.cases, currentReferrer))
+	}, [user])
 
 	if (user == null) {
 		return (
 			<>
-				<MainHead title="Yes Onward" />
+				<MainHead title="YesOnward" />
 				<PageTopBar
 					isLoggedIn={user != null}
 					onLogout={() => {
@@ -133,7 +121,9 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 					}}
 					onLoginClicked={() => {}}
 				/>
-				<div style={{textAlign: "center", paddingTop: 20}}><Spin size="large" /></div>
+				<div style={{ textAlign: 'center', paddingTop: 20 }}>
+					<Spin size="large" />
+				</div>
 			</>
 		)
 	}
@@ -141,7 +131,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 	if (currentReferrer == null) {
 		return (
 			<>
-				<MainHead title="Yes Onward" />
+				<MainHead title="YesOnward" />
 				<PageTopBar
 					isLoggedIn={user != null}
 					onLogout={() => {
@@ -153,20 +143,19 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 					onLoginClicked={() => {}}
 				/>
 				<ReferrerInfoFormModal
-					visible={referrerInfoModalVisible}
+					visible={true}
 					onConfirm={(company: string, companyEmail: string) => {
-						setReferrerInfoModalVisible(false)
-						setCurrentReferrer({company, companyEmail, loginEmail: user?.email})
+						setCurrentReferrer({ company, companyEmail, loginEmail: user?.email })
 					}}
 					onCancel={() => {
-						setReferrerInfoModalVisible(false)
+						window.location.href = '/'
 					}}
 				/>
 			</>
 		)
 	}
 
-	if (avaliableCases.length === 0) {
+	if (availableCases.length === 0) {
 		return (
 			<>
 				<MainHead title="Available Cases" />
@@ -185,11 +174,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 					imageStyle={{
 						height: 200,
 					}}
-					description={
-					<span>
-						There is no active referral requests currently
-					</span>
-					}
+					description={<span>There is no active referral requests currently</span>}
 				/>
 			</>
 		)
@@ -198,7 +183,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 	// 	<h1 style={{paddingLeft: 20, margin: 20}}>{`Available cases for ${currentReferrer?.company}`}</h1>
 	return (
 		<>
-			<MainHead title="Yes Onward" />
+			<MainHead title="YesOnward" />
 			<PageTopBar
 				isLoggedIn={user != null}
 				onLogout={() => {
@@ -210,30 +195,31 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 				onLoginClicked={() => {}}
 			/>
 			<Collapse style={{ margin: '20px' }}>
-				{avaliableCases.map((availableCase) => {
+				{availableCases.map((availableCase) => {
 					let caseStatus = availableCase.caseStatus
 					if (claimedCases.includes(availableCase.caseID)) {
 						caseStatus = 'Claimed'
 					}
 					return (
-						<Panel 
+						<Panel
 							header={
 								<>
 									<b>{`Candidate: ${availableCase.candidateName}`}</b>
-									<Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
+									<Divider type="vertical" style={{ fontStyle: 'bold' }} plain={true} />
 									<b>{`YoE: ${availableCase.yoe}`}</b>
 								</>
-							} 
-							key={availableCase.caseID} 
+							}
+							key={availableCase.caseID}
 							extra={getExtra(
 								availableCase,
 								() => {
-									setConfirmClaimDialogVisible(true)
+									setModal(null)
 									setCurrentCase(availableCase)
 								},
 								claimedCases.includes(availableCase.caseID),
-								user?.email
-							)}>
+								user?.email,
+							)}
+						>
 							<p>
 								Candidate Name: <b>{availableCase.candidateName}</b>
 							</p>
@@ -246,23 +232,29 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 							<p>
 								Applying to: <b>{availableCase.company}</b>
 							</p>
-							<p>Interested Positions: {
-                                    availableCase.positions.map((position: string, index: number) =>
-                                        <>
-                                            <b>{position}</b>
-											<Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
-                                        </>
-                                    )}
-                                </p>
-                                {availableCase.jobIDs != null ? <p> Interested Jobs: {
-                                    availableCase.jobIDs.map((jobID: string, index: number) => 
-                                        <>
-                                            <b>{jobID}</b>
-											<Divider type="vertical" style={{fontStyle: 'bold'}} plain={true}/>
-                                        </>
-                                    )}
-                                </p> : null }
-							<p>Resume Link: <b>{availableCase.resume}</b></p>
+							<p>
+								Interested Positions:{' '}
+								{availableCase.positions.map((position: string, index: number) => (
+									<>
+										<b>{position}</b>
+										<Divider type="vertical" style={{ fontStyle: 'bold' }} plain={true} />
+									</>
+								))}
+							</p>
+							{availableCase.jobIDs != null ? (
+								<p>
+									Interested Jobs:{' '}
+									{availableCase.jobIDs.map((jobID: string, index: number) => (
+										<>
+											<b>{jobID}</b>
+											<Divider type="vertical" style={{ fontStyle: 'bold' }} plain={true} />
+										</>
+									))}
+								</p>
+							) : null}
+							<p>
+								Resume Link: <b>{availableCase.resume}</b>
+							</p>
 							<p>
 								Additional Info: <b>{availableCase.comments}</b>
 							</p>
@@ -273,18 +265,31 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 					)
 				})}
 			</Collapse>
-			<CaseClaimedConfirmModal 
-                visible = {confirmClaimDialogVisible}
-                onConfirm={() => {
-					onCaseClaimed(currentCase, user?.email)
-					setConfirmClaimDialogVisible(false)
-					if (currentCase != null) {
-						const updatedClaimedCases = [...claimedCases, currentCase.caseID]
-						setClaimedCases(updatedClaimedCases)
+			<CaseClaimedConfirmModal
+				visible={modal === 'confirm'}
+				onConfirm={async () => {
+					const result = await onCaseClaimed(currentCase, user?.email)
+					switch (result) {
+						case 'success':
+							if (currentCase != null) {
+								const updatedClaimedCases = [...claimedCases, currentCase.caseID]
+								setClaimedCases(updatedClaimedCases)
+							}
+							break
+						case 'already-claimed':
+							Modal.error({
+								title: 'Unable to claim',
+								content: 'This candidate has been claimed by someone else',
+							})
+							setAvailableCases(filterAvailableCasesByCompany(props.cases, currentReferrer))
+							break
 					}
-                }}
-                onCancel={() => {setConfirmClaimDialogVisible(false)}} 
-            />
+					setModal(null)
+				}}
+				onCancel={() => {
+					setModal(null)
+				}}
+			/>
 		</>
 	)
 }
