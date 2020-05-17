@@ -105,7 +105,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 	}, [])
 	useEffect(() => {
 		setAvailableCases(user == null ? [] : filterAvailableCasesByCompany(props.cases, currentReferrer))
-	}, [user])
+	}, [user, currentReferrer])
 
 	if (user == null) {
 		return (
