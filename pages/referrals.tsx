@@ -281,7 +281,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 								title: 'Unable to claim',
 								content: 'This candidate has been claimed by someone else',
 							})
-							setAvailableCases(filterAvailableCasesByCompany(props.cases, currentReferrer))
+							window.location.reload()
 							break
 					}
 					setModal(null)
