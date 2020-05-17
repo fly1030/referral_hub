@@ -8,7 +8,7 @@ import { User } from 'firebase'
 import PageTopBar from '../components/PageTopBar'
 import { PositionsList } from 'lib/PositionsList'
 import CaseCancelConfirmModal from 'components/CaseCancelConfirmationModal'
-import { CloseCircleOutlined } from '@ant-design/icons'
+import { CloseCircleOutlined, FireTwoTone } from '@ant-design/icons'
 import JobIDSelector from 'components/JobIDSelector'
 const { Option } = Select
 
@@ -308,9 +308,16 @@ function Status() {
 						)
 						return (
 							<List.Item actions={dialogActionButton}>
-								<Tooltip placement="topLeft" title={item.name}>
-									<List.Item.Meta avatar={<img style={style.logo} src={`/img/logos/${item.key}.png`} />} />
-								</Tooltip>
+								<List.Item.Meta 
+									avatar={
+										<Tooltip placement="topLeft" title={item.name}>
+											<img 
+												style={style.logo} 
+												src={`/img/logos/${item.key}.png`} 
+											/>
+										</Tooltip>
+									}
+								/>
 							</List.Item>
 						)
 					}}
