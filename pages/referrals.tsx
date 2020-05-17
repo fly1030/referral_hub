@@ -174,7 +174,11 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 					imageStyle={{
 						height: 200,
 					}}
-					description={<span>There is no active referral requests currently</span>}
+					description={
+						<span>
+							There is no active referral requests for {currentReferrer.company} currently. 
+							We will reach out when cases are avaliable.
+						</span>}
 				/>
 			</>
 		)
