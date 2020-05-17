@@ -25,17 +25,10 @@ const style = {
 	statusButtonStyle: {
 		marginTop: 4,
 		width: 100,
-	}
+	},
 }
 
-function writeCasesData(
-	company: string, 
-	positions: Array<string>, 
-	resume: string,
-	yoe: number, 
-	comments: string,
-	jobIDs: Array<string>
-	) {
+function writeCasesData(company: string, positions: Array<string>, resume: string, yoe: number, comments: string, jobIDs: Array<string>) {
 	const firebase = loadDB()
 	const user = firebase.auth().currentUser
 	if (user == null) {
@@ -73,7 +66,7 @@ async function cancelCases(caseID: string) {
 	}
 
 	const firestore = firebase.firestore()
-    firestore.collection('cases').doc(caseID).delete();
+	firestore.collection('cases').doc(caseID).delete()
 }
 
 async function getCasesByCandidate(user: User | null) {
@@ -95,7 +88,6 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 	const [comments, setComments] = useState<string>('')
 	const [yoe, setYoe] = useState<number | null>(null)
 	const [jobIDs, setJobIDs] = useState<Array<string>>([])
-
 
 	const positionOptions: Array<ReactNode> = []
 	PositionsList.forEach((position) => {
@@ -122,13 +114,8 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 				</div>
 			}
 			visible={props.visible}
-			okButtonProps={{ 
-				disabled: !positions || 
-				positions.length === 0 || 
-				!resume || 
-				!yoe || 
-				!jobIDs || 
-				jobIDs.length === 0
+			okButtonProps={{
+				disabled: !positions || positions.length === 0 || !resume || !yoe || !jobIDs || jobIDs.length === 0,
 			}}
 			onOk={() => {
 				const companyName = props.company?.name
@@ -156,16 +143,11 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 					</Select>
 				</Form.Item>
 				<Form.Item label="JobIDs" name="jobIDs" rules={[{ required: true, message: 'Enter interested job IDs' }]}>
-					<JobIDSelector 
-						onSelectorChange={
-							(value: Array<string>) => {
-								if (value.length <= 3) {
-									setJobIDs(value)
-								} else {
-									setJobIDs(value.slice(0, 3))
-								}
-							}
-						}
+					<JobIDSelector
+						jobIDs={jobIDs}
+						onSelectorChange={(value: Array<string>) => {
+							setJobIDs(value)
+						}}
 						careerPage={props.company?.careerPage}
 					/>
 				</Form.Item>
@@ -212,20 +194,17 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 }
 
 function actionButton(
-	item: Company, 
-	referredCases: Array<{ [key: string]: any }>, 
-	onReferClick: (item: Company) => void, 
+	item: Company,
+	referredCases: Array<{ [key: string]: any }>,
+	onReferClick: (item: Company) => void,
 	onShowStatusClick: () => void,
-	onCancelClick: (item: Company) => void
+	onCancelClick: (item: Company) => void,
 ) {
 	let actionButton = [
 		<Button type="primary" onClick={() => onReferClick(item)} style={style.statusButtonStyle}>
 			Refer me
 		</Button>,
-		<Button danger 
-			type="link" 
-			disabled={true}
-			onClick={() => onCancelClick(item)}>
+		<Button danger type="link" disabled={true} onClick={() => onCancelClick(item)}>
 			<CloseCircleOutlined />
 		</Button>,
 	]
@@ -235,9 +214,7 @@ function actionButton(
 				<Button type="primary" onClick={() => onShowStatusClick()} style={style.statusButtonStyle}>
 					Status
 				</Button>,
-				<Button danger 
-					type="link" 
-					onClick={() => onCancelClick(item)}>
+				<Button danger type="link" onClick={() => onCancelClick(item)}>
 					<CloseCircleOutlined />
 				</Button>,
 			]
@@ -288,7 +265,9 @@ function Status() {
 					}}
 					onLoginClicked={() => {}}
 				/>
-				<div style={{textAlign: "center", paddingTop: 20}}><Spin size="large" /></div>
+				<div style={{ textAlign: 'center', paddingTop: 20 }}>
+					<Spin size="large" />
+				</div>
 			</>
 		)
 	}
@@ -331,9 +310,7 @@ function Status() {
 						return (
 							<List.Item actions={dialogActionButton}>
 								<Tooltip placement="topLeft" title={item.name}>
-									<List.Item.Meta 
-										avatar={<img style={style.logo} src={`/img/logos/${item.key}.png`} />} 
-									/>
+									<List.Item.Meta avatar={<img style={style.logo} src={`/img/logos/${item.key}.png`} />} />
 								</Tooltip>
 							</List.Item>
 						)
@@ -349,7 +326,7 @@ function Status() {
 				/>
 				<CaseCancelConfirmModal
 					visible={isCancellationDialogVisible}
-					company={referCompany} 
+					company={referCompany}
 					referredCases={referredCases}
 					onCancel={() => setIsCancellationDialogVisible(false)}
 					onConfirm={async (caseID: string) => {
@@ -357,11 +334,7 @@ function Status() {
 						setIsCancellationDialogVisible(false)
 					}}
 				/>
-				<StatusDialog 
-					visible={isStatusDialogVisible} 
-					onClose={() => setIsStatusDialogVisible(false)} 
-					company={referCompany} 
-					referredCases={referredCases} />
+				<StatusDialog visible={isStatusDialogVisible} onClose={() => setIsStatusDialogVisible(false)} company={referCompany} referredCases={referredCases} />
 			</div>
 		</>
 	)

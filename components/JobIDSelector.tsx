@@ -1,64 +1,26 @@
-import { Select, Divider, Input, Button } from 'antd';
-import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
-import { useState } from 'react';
-
-const { Option } = Select;
-
-function JobIDSelector(props: {
-  onSelectorChange: (value: Array<string>) => void,
-  careerPage?: string,
-}) {
-  const [items, setItems] = useState<Array<string>>([])
-  const [name, setName] =  useState<string>('')
-
-  const addItem = () => {
-    if (name == null || name.length === 0) {
-      return
-    }
-    setItems([...items, name])
-    setName('')
-  };
-
-  return (
-    <div style={{display: 'flex', width: '100' }}>
-      <Select
-        mode="multiple"
-        placeholder="Job IDs or names you're interested"
-        onChange={props.onSelectorChange}
-        dropdownRender={menu => (
-          <div>
-            {menu}
-            <Divider style={{ margin: '4px 0' }} />
-            <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}>
-              <Input 
-                style={{ flex: 'auto' }} 
-                value={name} 
-                onChange={event => {
-                    setName(event.target.value)
-                }} />
-              <Button
-                type="link"
-                style={{ flex: 'none', padding: '8px', display: 'block', cursor: 'pointer' }}
-                onClick={addItem}
-              >
-                <PlusOutlined /> Add Job ID
-              </Button>
-            </div>
-          </div>
-        )}
-      >
-        {items.map(item => (
-          <Option key={item} value={item}>{item}</Option>
-        ))}
-      </Select>
-      <Button
-        style={{marginLeft: 2}}
-        type="primary" 
-        onClick={() => props.careerPage && window.open(props.careerPage)}>
-          <SearchOutlined />
-      </Button>
-    </div>
-  );
+import { Select } from 'antd'
+const MAX_COUNT = 3
+function JobIDSelector(props: { jobIDs: Array<string>; onSelectorChange: (value: Array<string>) => void; careerPage?: string }) {
+	return (
+		<div className="flex flex-column">
+			<Select
+				value={props.jobIDs}
+				dropdownClassName="display-none"
+				mode="tags"
+				placeholder="Job IDs or names you're interested"
+				onChange={(jobIDs: Array<string>) => {
+					if (jobIDs.length <= MAX_COUNT) {
+						props.onSelectorChange(jobIDs)
+					}
+				}}
+			></Select>
+			{props.careerPage && (
+				<a href={props.careerPage} target="_blank">
+					Company's Jobs Board
+				</a>
+			)}
+		</div>
+	)
 }
 
 export default JobIDSelector
