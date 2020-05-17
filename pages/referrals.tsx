@@ -59,7 +59,7 @@ function getExtra(availableCase: { [key: string]: any }, onButtonClicked: () => 
 			}}
 			disabled={availableCase.caseStatus !== 'Requested' || isClaimed || referrerEmail == null}
 		>
-			{'Claim'}
+			Claim
 		</Button>
 	)
 }
@@ -195,7 +195,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 				onLoginClicked={() => {}}
 			/>
 			<Collapse style={{ margin: '20px' }}>
-				{availableCases.map((availableCase) => {
+				{availableCases.map((availableCase, index) => {
 					let caseStatus = availableCase.caseStatus
 					if (claimedCases.includes(availableCase.caseID)) {
 						caseStatus = 'Claimed'
@@ -213,7 +213,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 							extra={getExtra(
 								availableCase,
 								() => {
-									setModal(null)
+									setModal('confirm')
 									setCurrentCase(availableCase)
 								},
 								claimedCases.includes(availableCase.caseID),
