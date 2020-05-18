@@ -1,8 +1,9 @@
-import { Modal, Button, Select, Form, Input, Alert } from 'antd'
-import { useState } from 'react'
+import { Modal, Button, Select, Form, Input, Alert, Divider } from 'antd'
+import { useState, ReactNode } from 'react'
 import { Companies } from 'lib/companies'
 import { loadDB } from 'lib/db'
 import router from 'next/router'
+import { PlusOutlined } from '@ant-design/icons'
 const { Option } = Select
 
 function writeReferrerData(currentComppany: string, companyEmail: string) {
@@ -33,17 +34,19 @@ function ReferrerInfoFormModal(props: {
 }) {
 	const [currentComppany, setCurrentCompany] = useState<string | null>(null)
 	const [companyEmail, setCompanyEmail] = useState<string | null>(null)
-
-	const companyList = Companies.map((company) => (
+	const [companyName, setCompanyName] = useState<string | null>(null)
+	const [companyList, setCompanyList] = useState<Array<ReactNode>>(Companies.map((company) => (
 		<Option value={company.name} key={company.name}>
 			{company.name}
 		</Option>
-	))
-	companyList.push(
-		<Option value="Other" key="Other">
-			{'New Company'}
-		</Option>,
-	)
+	)))
+	
+	const addItem = () => {
+		if (companyName !== null) {
+			setCompanyList([...companyList, <Option value={companyName} key={companyName}>{companyName}</Option>])
+			setCompanyName(null)
+		}
+	  };
 
 	return (
 		<Modal
@@ -76,6 +79,27 @@ function ReferrerInfoFormModal(props: {
 						}}
 						defaultValue={'Please select your current company'}
 						style={{ width: '100%' }}
+						dropdownRender={menu => (
+							<div>
+							  {menu}
+							  <Divider style={{ margin: '4px 0' }} />
+							  <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}>
+								<Input 
+									style={{ flex: 'auto' }} 
+									value={companyName ?? ''} 
+									onChange={event => {
+										setCompanyName(event.target.value)
+									}} 
+								/>
+								<a
+								  style={{ flex: 'none', padding: '8px', display: 'block', cursor: 'pointer' }}
+								  onClick={addItem}
+								>
+								  <PlusOutlined /> Add Company
+								</a>
+							  </div>
+							</div>
+						  )}
 					>
 						{companyList.map((company) => company)}
 					</Select>

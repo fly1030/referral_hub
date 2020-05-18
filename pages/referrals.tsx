@@ -128,7 +128,7 @@ function AvailableCases(props: { [key: string]: Array<{ [key: string]: any }> })
 		)
 	}
 
-	if (currentReferrer == null) {
+	if (currentReferrer == null || currentReferrer.length === 0) {
 		return (
 			<>
 				<MainHead title="YesOnward" />
