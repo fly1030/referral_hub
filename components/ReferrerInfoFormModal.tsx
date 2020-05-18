@@ -40,8 +40,8 @@ function ReferrerInfoFormModal(props: {
 		</Option>
 	))
 	companyList.push(
-		<Option value="Others" key="Others">
-			{'Others'}
+		<Option value="Other" key="Other">
+			{'New Company'}
 		</Option>,
 	)
 

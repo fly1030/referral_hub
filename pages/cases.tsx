@@ -8,6 +8,7 @@ import MainHead from 'components/MainHead'
 import PageTopBar from 'components/PageTopBar';
 import { sendCaseClosedEmail } from 'pages/api/sendCaseClosedEmail';
 import CaseCloseConfirmModal from 'components/CaseCloseConfirmModal';
+import CaseUnclaimConfirmModal from 'components/CaseUnclaimedConfirmationModal';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const firebase = loadDB()
@@ -44,23 +45,64 @@ async function onCaseClosed(
     firestore.collection('cases').doc(caseID).set(updatedData);
 }
 
+async function onCaseUnclaimed(
+    caseInfo: {[key: string]: any} | null, 
+) {
+    if (caseInfo == null) {
+        return;
+    }
+	const firebase = loadDB();
+    const firestore = firebase.firestore();
+    const caseID = caseInfo.caseID;
+    const caseDoc = await firestore.collection('cases').doc(caseID).get()
+    const caseDataFromDB = caseDoc.data()
+    const updatedData = {...caseDataFromDB, ...{
+        caseStatus: 'Requested',
+        referrerEmail: '',
+      }}
+    firestore.collection('cases').doc(caseID).set(updatedData);
+}
+
 function getExtra(
     claimedCase: {[key: string]: any},
-    onClicked: () => void,
+    onCloseClicked: () => void,
+    onUnclaimClicked: () => void,
     isCaseClosed: boolean,
 ) {
-    return  (
+    const caseStatus = claimedCase.caseStatus
+    if (caseStatus === 'Closed') {
+        return  (
+            <Button 
+                type="primary" 
+                onClick={() => {}}
+                disabled={true}
+            >
+                Close
+            </Button>
+        )
+    }
+    return [
+        <Button 
+            style={{marginRight: '4px'}}
+            onClick={(event) => {
+                onUnclaimClicked()
+                event.stopPropagation();
+            }}
+            disabled={isCaseClosed}
+        >
+            Unclaim
+        </Button>,
         <Button 
             type="primary" 
             onClick={(event) => {
-                onClicked();
+                onCloseClicked();
                 event.stopPropagation();
             }}
-            disabled={isCaseClosed || claimedCase.caseStatus === 'Closed'}
+            disabled={isCaseClosed || caseStatus === 'Closed'}
         >
             Close
         </Button>
-    )
+    ]
 }
 
 function filterCasesByReferrer(
@@ -161,6 +203,8 @@ function MyCasesAsReferrer(
     const [confirmCloseDialogVisible, setConfirmCloseDialogVisible] = useState<boolean>(false)
     const [currentCase, setCurrentCase] = useState<{[key: string]: any} | null>(null)
     const [closedCases, setClosedCases] = useState<Array<string>>([])
+    const [unclaimedCases, setUnclaimedCases] = useState<Array<string>>([])
+    const [confirmUnclaimDialogVisible, setConfirmUnclaimDialogVisible] = useState<boolean>(false)
 
     return (
         <>
@@ -168,6 +212,10 @@ function MyCasesAsReferrer(
             <Collapse style={{margin: 20}}>
                 {
                     props.referrerCases.map((caseInfo) => {
+                        const currCaseID = caseInfo.caseID
+                        if (unclaimedCases.includes(currCaseID)) {
+                            return null
+                        }
                         let caseStatus = caseInfo.caseStatus
                         if (closedCases.includes(caseInfo.caseID)) {
                             caseStatus = 'Closed'
@@ -186,6 +234,10 @@ function MyCasesAsReferrer(
                                     () => {
                                         setCurrentCase(caseInfo)
                                         setConfirmCloseDialogVisible(true)
+                                    },
+                                    () => {
+                                        setCurrentCase(caseInfo)
+                                        setConfirmUnclaimDialogVisible(true)
                                     },
                                     closedCases.includes(caseInfo.caseID),
                                 )}>
@@ -230,6 +282,18 @@ function MyCasesAsReferrer(
                     }
                 }}
                 onCancel={() => {setConfirmCloseDialogVisible(false)}} 
+            />
+            <CaseUnclaimConfirmModal 
+                visible = {confirmUnclaimDialogVisible}
+                onConfirm={() => {
+                    onCaseUnclaimed(currentCase);
+                    setConfirmUnclaimDialogVisible(false)
+                    if (currentCase != null) {
+                        const updatedClosedCases = [...unclaimedCases, currentCase.caseID]
+                        setUnclaimedCases(updatedClosedCases)
+                    }
+                }}
+                onCancel={() => {setConfirmUnclaimDialogVisible(false)}} 
             />
         </>
     )
