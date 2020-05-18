@@ -4,6 +4,7 @@ export const Companies = [
 	{ key: 'microsoft', name: 'Microsoft', careerPage: 'https://careers.microsoft.com/us/en'},
 	{ key: 'fb', name: 'Facebook', careerPage: 'https://www.facebook.com/careers/jobs'},
 	{ key: 'google', name: 'Google', careerPage: 'https://careers.google.com/jobs/results/?company=Google'},
+	{ key: 'databricks', name: 'Databricks', careerPage: 'https://databricks.com/company/careers/open-positions'},
 	{ key: 'apple', name: 'Apple', careerPage: 'https://jobs.apple.com/en-us/search?location=united-states-USA'},
 	{ key: 'linkedin', name: 'Linkedin', careerPage: 'https://www.linkedin.com/company/linkedin/jobs/?src=or-search'},
 	{ key: 'doordash', name: 'DoorDash', careerPage: 'https://www.doordash.com/careers/'},
