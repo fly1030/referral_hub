@@ -12,6 +12,7 @@ import { Companies } from 'lib/companies'
 import HowtoSection from '../components/HowtoSection'
 import { GetServerSideProps } from 'next'
 import PageFooter from 'components/IndexFooter'
+import { LogoCompanies } from 'lib/logoCompanies'
 
 const style = {
 	entryButton: { border: '2px solid lightblue', borderRadius: 10, maxWidth: 300 },
@@ -170,7 +171,7 @@ const Index = (props: { [key: string]: number }) => {
 			</Divider>
 
 			<div style={style.companyLogos} className="flex justify-center flex-wrap">
-				{Companies.map((company, index) => (
+				{LogoCompanies.map((company, index) => (
 					<div className="p2" key={index}>
 						<img style={style.logo} src={`/img/logos/${company.key}.png`} />
 					</div>
