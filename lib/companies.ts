@@ -14,6 +14,7 @@ export const Companies = [
 	{ key: 'dropbox', name: 'Dropbox', careerPage: 'https://www.dropbox.com/jobs'},
 	{ key: 'instacart', name: 'Instacart', careerPage: 'https://instacart.careers/current-openings/'},
 	{ key: 'uber', name: 'Uber', careerPage: 'https://www.uber.com/us/en/careers/list/' },
+	{ key: 'hulu', name: 'Hulu', careerPage: 'https://careers.hulu.com/search-jobs' },
 ]
 export type Companies = typeof Companies
 export type Company = Companies[number]
