@@ -189,7 +189,7 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 						<TextArea 
 							rows={4}
 							style={{ width: '100%' }}
-							placeholder="Highlights of your career to help the referrer know you better..."
+							placeholder="Why are you a good fit for the positions you're applying? Highlights of your career."
 							defaultValue=""
 							onChange={(e) => {
 								setComments(e.target.value)
@@ -350,7 +350,12 @@ function Status() {
 						setIsCancellationDialogVisible(false)
 					}}
 				/>
-				<StatusDialog visible={isStatusDialogVisible} onClose={() => setIsStatusDialogVisible(false)} company={referCompany} referredCases={referredCases} />
+				<StatusDialog 
+					visible={isStatusDialogVisible} 
+					onClose={() => setIsStatusDialogVisible(false)} 
+					company={referCompany} 
+					referredCases={referredCases} 
+				/>
 			</div>
 		</>
 	)
