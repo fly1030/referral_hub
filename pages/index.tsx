@@ -99,7 +99,6 @@ const Index = (props: { [key: string]: number }) => {
 			? () => {
 					setLoginModalVisible(true)
 					setIsReferralButtonClicked(true)
-					console.log('curPath: ', curPath);
 					if (curPath != null && curPath.includes('source='))
 					{
 						onFBAccess(curPath)
