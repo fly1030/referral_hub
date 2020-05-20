@@ -11,6 +11,7 @@ import CaseCancelConfirmModal from 'components/CaseCancelConfirmationModal'
 import { CloseCircleOutlined, FireTwoTone } from '@ant-design/icons'
 import JobIDSelector from 'components/JobIDSelector'
 const { Option } = Select
+const { TextArea } = Input;
 
 const style = {
 	list: {
@@ -114,7 +115,15 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 			}
 			visible={props.visible}
 			okButtonProps={{
-				disabled: !positions || positions.length === 0 || !resume || !yoe || !jobIDs || jobIDs.length === 0,
+				disabled: 
+					!positions || 
+					positions.length === 0 || 
+					!resume || 
+					!yoe || 
+					!jobIDs || 
+					jobIDs.length === 0 ||
+					!comments ||
+					comments.length === 0,
 			}}
 			onOk={() => {
 				const companyName = props.company?.name
@@ -175,11 +184,12 @@ function ReferralDialog(props: { visible: boolean; company: Company | null; onCl
 						</Select>
 					</Input.Group>
 				</Form.Item>
-				<Form.Item label="Comments" name="comments" rules={[{ required: false, message: 'Enter comments for your application' }]}>
+				<Form.Item label="Highlights" name="comments" rules={[{ required: true, message: 'Enter comments for your application' }]}>
 					<Input.Group compact>
-						<Input
+						<TextArea 
+							rows={4}
 							style={{ width: '100%' }}
-							placeholder="Anythig else you want to add..."
+							placeholder="Highlights of your career to help the referrer know you better..."
 							defaultValue=""
 							onChange={(e) => {
 								setComments(e.target.value)
