@@ -81,6 +81,7 @@ const Index = (props: { [key: string]: number }) => {
 	const [isCandidateButtonClicked, setIsCandidateButtonClicked] = useState(false)
 	const { closedCasesCount, referrersCount } = props
 	const router = useRouter()
+	const curPath = router.asPath
 
 	useEffect(() => {
 		const firebase = loadDB()
@@ -91,11 +92,6 @@ const Index = (props: { [key: string]: number }) => {
 				setUser(null)
 			}
 		})
-		const curPath = router.asPath
-		if (curPath != null && curPath.includes('source='))
-			{
-				onFBAccess(curPath)
-			}
 	}, [])
 
 	const onLeftClick =
@@ -103,6 +99,11 @@ const Index = (props: { [key: string]: number }) => {
 			? () => {
 					setLoginModalVisible(true)
 					setIsReferralButtonClicked(true)
+					console.log('curPath: ', curPath);
+					if (curPath != null && curPath.includes('source='))
+					{
+						onFBAccess(curPath)
+					}
 			  }
 			: () => {
 					window.location.href = '/referrals'
@@ -113,6 +114,10 @@ const Index = (props: { [key: string]: number }) => {
 			? () => {
 					setLoginModalVisible(true)
 					setIsCandidateButtonClicked(true)
+					if (curPath != null && curPath.includes('source='))
+					{
+						onFBAccess(curPath)
+					}
 			  }
 			: () => {
 					window.location.href = '/status'
