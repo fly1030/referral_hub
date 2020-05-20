@@ -13,6 +13,7 @@ import HowtoSection from '../components/HowtoSection'
 import { GetServerSideProps } from 'next'
 import PageFooter from 'components/IndexFooter'
 import { LogoCompanies } from 'lib/logoCompanies'
+import { useRouter } from 'next/router'
 
 const style = {
 	entryButton: { border: '2px solid lightblue', borderRadius: 10, maxWidth: 300 },
@@ -51,12 +52,35 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	return { props: { closedCasesCount, referrersCount } }
 }
 
+async function onFBAccess(paramString: string) {
+	const firebase = loadDB();
+	const firestore = firebase.firestore();
+	const fbAdsCountDoc = firestore.collection('fbcounts').doc('page_load');
+    const fbAdsCounts = await fbAdsCountDoc.get()
+	const fbAdsCountsFromDB = fbAdsCounts.data()
+	let updatedData = null;
+	if (paramString === '/?source=fbreferrers') {
+		updatedData = {
+			candidate_page_count: fbAdsCountsFromDB?.candidate_page_count ?? 0,
+			referrer_page_count: (fbAdsCountsFromDB?.referrer_page_count ?? 0) + 1,
+		}
+		fbAdsCountDoc.set(updatedData);
+	} else if (paramString === '/?source=fbcandidates') {
+		updatedData = {
+			candidate_page_count: (fbAdsCountsFromDB?.candidate_page_count ?? 0) + 1,
+			referrer_page_count: fbAdsCountsFromDB?.referrer_page_count ?? 0,
+		}
+		fbAdsCountDoc.set(updatedData);
+	}
+}
+
 const Index = (props: { [key: string]: number }) => {
 	const [user, setUser] = useState<User | null>(null)
 	const [loginModalVisible, setLoginModalVisible] = useState(false)
 	const [isReferralButtonClicked, setIsReferralButtonClicked] = useState(false)
 	const [isCandidateButtonClicked, setIsCandidateButtonClicked] = useState(false)
 	const { closedCasesCount, referrersCount } = props
+	const router = useRouter()
 
 	useEffect(() => {
 		const firebase = loadDB()
@@ -67,6 +91,11 @@ const Index = (props: { [key: string]: number }) => {
 				setUser(null)
 			}
 		})
+		const curPath = router.asPath
+		if (curPath != null && curPath.includes('source='))
+			{
+				onFBAccess(curPath)
+			}
 	}, [])
 
 	const onLeftClick =
