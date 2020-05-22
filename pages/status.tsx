@@ -1,4 +1,4 @@
-import { List, Button, Modal, Form, Select, Input, Spin, Tooltip } from 'antd'
+import { List, Button, Modal, Form, Select, Input, Spin, Tooltip, Avatar, Card } from 'antd'
 import { Companies, Company } from 'lib/companies'
 import MainHead from 'components/MainHead'
 import { useState, useEffect, ReactNode } from 'react'
@@ -316,16 +316,19 @@ function Status() {
 								setIsCancellationDialogVisible(true)
 							},
 						)
+
 						return (
 							<List.Item actions={dialogActionButton}>
 								<List.Item.Meta 
 									avatar={
-										<Tooltip placement="topLeft" title={item.name}>
-											<img 
-												style={style.logo} 
-												src={`/img/logos/${item.key}.png`} 
-											/>
-										</Tooltip>
+										<div>
+											<Avatar shape="square" size="large" src={`/img/logos/${item.key}.png`} />
+										</div>
+									}
+									title={
+										<div style={{paddingTop: 8}}>
+											<b>{item.name}</b>
+										</div>
 									}
 								/>
 							</List.Item>
