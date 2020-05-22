@@ -206,7 +206,7 @@ const Index = (props: { [key: string]: number }) => {
 			<div style={style.companyLogos} className="flex justify-center flex-wrap">
 				{LogoCompanies.map((company, index) => (
 					<div className="p2" key={index}>
-						<img style={style.logo} src={`/img/logos/${company.key}.png`} />
+						<img style={style.logo} src={`/img/logos/${company.key}_old.png`} />
 					</div>
 				))}
 			</div>
