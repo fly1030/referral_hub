@@ -16,6 +16,7 @@ export const Companies = [
 	{ key: 'instacart', name: 'Instacart', careerPage: 'https://instacart.careers/current-openings/'},
 	{ key: 'linkedin', name: 'Linkedin', careerPage: 'https://www.linkedin.com/company/linkedin/jobs/?src=or-search'},
 	{ key: 'netflix', name: 'Netflix', careerPage: 'https://jobs.netflix.com/'},
+	{ key: 'servicenow', name: 'ServiceNow', careerPage: 'https://www.servicenow.com/careers.html'},
 	{ key: 'uber', name: 'Uber', careerPage: 'https://www.uber.com/us/en/careers/list/' },
 	{ key: 'ibm', name: 'Ibm', careerPage: 'https://careers.ibm.com/'},
 	{ key: 'rivian', name: 'Rivian', careerPage: 'https://rivian.com/careers/' },
