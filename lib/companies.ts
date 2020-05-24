@@ -18,6 +18,7 @@ export const Companies = [
 	{ key: 'netflix', name: 'Netflix', careerPage: 'https://jobs.netflix.com/'},
 	{ key: 'servicenow', name: 'ServiceNow', careerPage: 'https://www.servicenow.com/careers.html'},
 	{ key: 'uber', name: 'Uber', careerPage: 'https://www.uber.com/us/en/careers/list/' },
+	{ key: 'oracle', name: 'Oracle', careerPage: 'https://oracle.taleo.net/careersection/2/jobsearch.ftl?lang=en'},
 	{ key: 'ibm', name: 'Ibm', careerPage: 'https://careers.ibm.com/'},
 	{ key: 'rivian', name: 'Rivian', careerPage: 'https://rivian.com/careers/' },
 	{ key: 'ti', name: 'Ti', careerPage: 'https://careers.ti.com/applicant-login/' },
