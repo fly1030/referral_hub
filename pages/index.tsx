@@ -92,6 +92,7 @@ const Index = (props: { [key: string]: number }) => {
 				setUser(null)
 			}
 		})
+		firebase.analytics();
 	}, [])
 
 	const onLeftClick =
