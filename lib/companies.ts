@@ -22,6 +22,7 @@ export const Companies = [
 	{ key: 'uber', name: 'Uber', careerPage: 'https://www.uber.com/us/en/careers/list/' },
 	{ key: 'ibm', name: 'Ibm', careerPage: 'https://careers.ibm.com/'},
 	{ key: 'rivian', name: 'Rivian', careerPage: 'https://rivian.com/careers/' },
+	{ key: 'ymedialabs', name: 'Y Media Labs', careerPage: 'https://ymedialabs.com/careers' },
 	{ key: 'ti', name: 'Ti', careerPage: 'https://careers.ti.com/applicant-login/' },
 	{ key: 'mathworks', name: 'Mathworks', careerPage: 'https://www.mathworks.com/company/jobs/opportunities.html'},
 	{ key: 'lacework', name: 'Lacework', careerPage: 'https://www.lacework.com/careers/?p=job'},
